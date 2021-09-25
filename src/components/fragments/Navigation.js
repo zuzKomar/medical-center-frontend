@@ -1,19 +1,19 @@
 import React from "react";
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 function Navigation(){
     return(
-        <nav>
-            <ul>
-                <li><Link to="/">Moje konto</Link> </li>
-                <li><Link to="/wizyty">Wizyty</Link> </li>
-                <li><Link to="/skierowania">Skierowania</Link></li>
-                <li><Link to="/grafik-lekarzy">Grafik lekarzy</Link></li>
-                <li><Link to="/badania">Badania</Link></li>
-                <li><Link to="/recepty">Recepty</Link></li>
+        <nav >
+            <ul className="nav">
+                <li><NavLink to="/moje-konto" style={{textDecoration:"none"}}>MOJE KONTO</NavLink> </li>
+                <li><NavLink to="/wizyty" style={{textDecoration:"none"}}>WIZYTY</NavLink> </li>
+                <li><NavLink to="/skierowania" style={{textDecoration:"none"}}>SKIEROWANIA</NavLink></li>
+                <li><NavLink to="/grafik-lekarzy" style={{textDecoration:"none"}}>GRAFIK LEKARZY</NavLink></li>
+                <li><NavLink to="/badania" style={{textDecoration:"none"}}>BADANIA</NavLink></li>
+                <li><NavLink to="/recepty" style={{textDecoration:"none"}}>RECEPTY</NavLink></li>
             </ul>
         </nav>
     )
 }
 
-export default Navigation
+export default Navigation;
