@@ -1,11 +1,12 @@
 import Navigation from "./components/fragments/Navigation";
-import RefferalList from "./components/referral/ReferralList";
+import ReferralList from "./components/referral/ReferralList";
 import {
     BrowserRouter as Router,
     Switch,
     Route
 } from "react-router-dom";
 import {useState} from 'react'
+import HomePage from "./components/patient/HomePage";
 
 function App() {
     const [referrals, setReferrals] = useState([
@@ -33,7 +34,10 @@ function App() {
           <div>
               <h1>Medical app</h1>
               <Navigation/>
-              <RefferalList referrals={referrals}/>
+              <Switch>
+                  <Route exact path="/moje_konto" component={HomePage}/>
+              </Switch>
+              {/*<ReferralList referrals={referrals}/>*/}
           </div>
       </Router>
   );

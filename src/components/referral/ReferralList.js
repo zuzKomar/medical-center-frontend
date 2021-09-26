@@ -3,7 +3,7 @@ import Referral from "./Referral";
 
 
 
-const RefferalList = ({referrals}) =>{
+const ReferralList = ({referrals}) =>{
     return(
         <div className="referralList">
             {referrals.map((referral) =>(
@@ -13,4 +13,4 @@ const RefferalList = ({referrals}) =>{
     )
 }
 
-export default RefferalList
+export default ReferralList
