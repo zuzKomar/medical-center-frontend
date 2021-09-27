@@ -22,42 +22,64 @@ const HomePage = () => {
         return data
     }
 
-    return(
-        <main style={{width:"70%"}}>
-            <div>
-                <form className="form">
+    if(!data) {
+        return null;
+    }else{
 
-                    <label htmlFor="firstName">Imię</label>
-                    <input type="text" name="firstName" defaultValue={data.firstName} />
+        return(
+            <main>
+                <div>
+                    <form className="form">
+                        <div>
+                            <label htmlFor="firstName">Imię</label>
+                            <input type="text" name="firstName" defaultValue={data.firstName} />
+                        </div>
 
-                    <label htmlFor="lastName">Nazwisko</label>
-                    <input type="text" name="lastName" defaultValue={data.lastName} />
+                        <div>
+                            <label htmlFor="lastName">Nazwisko</label>
+                            <input type="text" name="lastName" defaultValue={data.lastName} />
+                        </div>
 
-                    <label htmlFor="pesel">Pesel</label>
-                    <input type="text" name="pesel" defaultValue={data.pesel} />
+                        <div>
+                            <label htmlFor="pesel">Pesel</label>
+                            <input type="text" name="pesel" defaultValue={data.pesel} />
+                        </div>
 
-                    <label htmlFor="birthdate">Data urodzenia</label>
-                    <input type="text" name="birthdate" defaultValue={data.birthDate} />
+                        <div>
+                            <label htmlFor="birthdate">Data urodzenia</label>
+                            <input type="text" name="birthdate" defaultValue={data.birthDate} />
+                        </div>
 
-                    <label htmlFor="phone">Numer telefonu</label>
-                    <input type="text" name="phone" defaultValue={data.patient.phone} />
+                        <div>
+                            <label htmlFor="phone">Numer telefonu</label>
+                            <input type="text" name="phone" defaultValue={(data.patient) ? data.patient.phone : ''} />
 
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" defaultValue={data.email} />
+                        </div>
 
-                    <label htmlFor="country">Państwo</label>
-                    <input type="text" name="country" defaultValue={data.patient.address.country} />
+                        <div>
+                            <label htmlFor="email">Email</label>
+                            <input type="email" name="email" defaultValue={data.email} />
+                        </div>
 
-                    <label htmlFor="city">Miasto</label>
-                    <input type="text" name="city" defaultValue={data.patient.address.city} />
+                        <div>
+                            <label htmlFor="country">Państwo</label>
+                            <input type="text" name="country" defaultValue={(data.patient) ? data.patient.address.country : ''} />
+                        </div>
 
-                    <label htmlFor="street">Ulica</label>
-                    <input type="text" name="street" defaultValue={data.patient.address.street + ' ' +data.patient.address.streetNumber} />
-                </form>
-            </div>
-        </main>
-    )
+                        <div>
+                            <label htmlFor="city">Miasto</label>
+                            <input type="text" name="city" defaultValue={(data.patient) ? data.patient.address.city : ''} />
+                        </div>
 
+                        <div>
+                            <label htmlFor="street">Ulica</label>
+                            <input type="text" name="street" defaultValue={(data.patient) ? (data.patient.address.street + ' ' +data.patient.address.streetNumber) : ''} />
+                        </div>
+                    </form>
+                </div>
+            </main>
+        )
+    }
 }
 
 export default HomePage;
