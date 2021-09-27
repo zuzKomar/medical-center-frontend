@@ -32,48 +32,48 @@ const HomePage = () => {
                     <form className="form">
                         <div>
                             <label htmlFor="firstName">Imię</label>
-                            <input type="text" name="firstName" defaultValue={data.firstName} />
+                            <input type="text" name="firstName" defaultValue={(data.person ? data.person.firstName : '')} />
                         </div>
 
                         <div>
                             <label htmlFor="lastName">Nazwisko</label>
-                            <input type="text" name="lastName" defaultValue={data.lastName} />
+                            <input type="text" name="lastName" defaultValue={(data.person ? data.person.lastName : '')} />
                         </div>
 
                         <div>
                             <label htmlFor="pesel">Pesel</label>
-                            <input type="text" name="pesel" defaultValue={data.pesel} />
+                            <input type="text" name="pesel" defaultValue={(data.person ? data.person.email : '')} />
                         </div>
 
                         <div>
                             <label htmlFor="birthdate">Data urodzenia</label>
-                            <input type="text" name="birthdate" defaultValue={data.birthDate} />
+                            <input type="text" name="birthdate" defaultValue={(data.person ? data.person.birthDate : '')} />
                         </div>
 
                         <div>
                             <label htmlFor="phone">Numer telefonu</label>
-                            <input type="text" name="phone" defaultValue={(data.patient) ? data.patient.phone : ''} />
+                            <input type="text" name="phone" defaultValue={data.phone} />
 
                         </div>
 
                         <div>
                             <label htmlFor="email">Email</label>
-                            <input type="email" name="email" defaultValue={data.email} />
+                            <input type="email" name="email" defaultValue={(data.person ? data.person.email : '')} />
                         </div>
 
                         <div>
                             <label htmlFor="country">Państwo</label>
-                            <input type="text" name="country" defaultValue={(data.patient) ? data.patient.address.country : ''} />
+                            <input type="text" name="country" defaultValue={(data.address) ? data.address.country : ''} />
                         </div>
 
                         <div>
                             <label htmlFor="city">Miasto</label>
-                            <input type="text" name="city" defaultValue={(data.patient) ? data.patient.address.city : ''} />
+                            <input type="text" name="city" defaultValue={(data.address) ? data.address.city : ''} />
                         </div>
 
                         <div>
                             <label htmlFor="street">Ulica</label>
-                            <input type="text" name="street" defaultValue={(data.patient) ? (data.patient.address.street + ' ' +data.patient.address.streetNumber) : ''} />
+                            <input type="text" name="street" defaultValue={(data.address) ? (data.address.street + ' ' +data.address.streetNumber) : ''} />
                         </div>
                     </form>
                 </div>
