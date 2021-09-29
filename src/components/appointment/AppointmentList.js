@@ -1,9 +1,14 @@
 import React, {useState, useEffect} from "react";
 import Appointment from "./Appointment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
+
+
 
 const AppointmentList = () =>{
 
     const [appointments, setAppointments] = useState([]);
+    const [appDate, setAppDate] = useState(new Date());
 
     useEffect(() =>{
         const getAppointments = async () =>{
@@ -48,7 +53,8 @@ const AppointmentList = () =>{
             <div className="appDate">
                 <div className="dateInput">
                     <label htmlFor="appDate">Data:</label>
-                    <input type="datetime-local" id="appDate" name="appDate"/>
+                    <DatePicker dateFormat="Pp" selected={appDate} onChange={(date) => setAppDate(date)}/>
+
                 </div>
             </div>
             <div className="appointmentList">
