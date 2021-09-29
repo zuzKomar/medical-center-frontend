@@ -131,7 +131,7 @@ body{
     text-align: center;
 }
 
-.appointment{
+.appointmentAndCheckup{
     background-color: #eeeeee;
     display: inline-block;
     justify-content: center;
@@ -154,7 +154,7 @@ body{
     text-align: right;
 }
 
-.appointmentHeader{
+.appointmentAndCheckupHeader{
     font-weight: bold;
     font-size: 26px;
 }
@@ -163,7 +163,7 @@ body{
     font-size: 20px;
 }
 
-.recommendations{
+.subsections{
     display: flex;
     justify-content: left;
 }

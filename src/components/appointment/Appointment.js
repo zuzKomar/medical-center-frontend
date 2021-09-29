@@ -20,9 +20,9 @@ class Appointment extends React.Component{
     render() {
         const app = this.props.appointment;
         return(
-            <div className="appointment" onClick={(e)=> this.togglePanel(e)}>
+            <div className="appointmentAndCheckup" onClick={(e)=> this.togglePanel(e)}>
                 <div className="top">
-                    <p className="appointmentHeader">Internista - konsultacja</p>
+                    <p className="appointmentAndCheckupHeader">Internista - konsultacja</p>
                     <div className="data">
                         <p>Data:</p>
                         <p>{app.date}</p>
@@ -38,7 +38,7 @@ class Appointment extends React.Component{
                     <div>
                         <hr/>
 
-                        <div className="recommendations">
+                        <div className="subsections">
                             <FaCheck size={42}/>
                             <p className="header">Zalecenia</p>
                         </div>
@@ -47,24 +47,24 @@ class Appointment extends React.Component{
                         </ol>
                         <hr/>
 
-                        <div className="recommendations">
+                        <div className="subsections">
                             <FaFile size={42}/>
                             <p className="header">Zrealizowane badania</p>
                         </div>
                         <p>Brak badań zrealizowanych podczas wizyty</p>
                         <hr/>
 
-                        <div className="recommendations">
+                        <div className="subsections">
                             <FaShare size={42}/>
                             <p className="header">Skierowania</p>
                         </div>
-                        <div className="recommendations">
+                        <div className="subsections">
                             <p>Internista - wizyta kontrolna</p>
                             <button>UMÓW WIZYTĘ</button>
                         </div>
                         <hr/>
 
-                        <div className="recommendations">
+                        <div className="subsections">
                             <GiMedicines size={42}/>
                             <p className="header">e-Recepty</p>
                         </div>
