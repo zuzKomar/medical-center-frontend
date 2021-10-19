@@ -21,9 +21,9 @@ const CheckUpList = () =>{
     }
 
     return(
-        <div className="container">
-            <div className="checkupHeader">
-                <h1>Twoje badania</h1>
+        <div>
+            <div className="listHeader">
+                <h2>Twoje badania</h2>
             </div>
             <div className="appointmentList">
                 {checkups.map((checkup) =>(

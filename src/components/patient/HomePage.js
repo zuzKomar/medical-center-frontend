@@ -14,7 +14,7 @@ const HomePage = () => {
     }, [])
 
     const fetchPatient = async () => {
-        const res = await fetch('http://localhost:5000/patients/1')
+        const res = await fetch('http://localhost:8080/patients/1')
         const data = await res.json()
 
         return data
@@ -27,51 +27,54 @@ const HomePage = () => {
         return(
             <main>
                 <div>
+                    <div className="listHeader">
+                        <h2>Twoje dane</h2>
+                    </div>
                     <form className="form">
                         <div>
                             <label htmlFor="firstName">Imię</label>
-                            <input type="text" name="firstName" defaultValue={(data.person ? data.person.firstName : '')} />
+                            <input type="text" name="firstName" defaultValue={data.firstName} />
                         </div>
 
                         <div>
                             <label htmlFor="lastName">Nazwisko</label>
-                            <input type="text" name="lastName" defaultValue={(data.person ? data.person.lastName : '')} />
+                            <input type="text" name="lastName" defaultValue={data.lastName} />
                         </div>
 
                         <div>
                             <label htmlFor="pesel">Pesel</label>
-                            <input type="text" name="pesel" defaultValue={(data.person ? data.person.email : '')} />
+                            <input type="text" name="pesel" defaultValue={data.pesel} />
                         </div>
 
                         <div>
                             <label htmlFor="birthdate">Data urodzenia</label>
-                            <input type="text" name="birthdate" defaultValue={(data.person ? data.person.birthDate : '')} />
+                            <input type="text" name="birthdate" defaultValue={data.birthDate} />
                         </div>
 
                         <div>
                             <label htmlFor="phone">Numer telefonu</label>
-                            <input type="text" name="phone" defaultValue={data.phone} />
+                            <input type="text" name="phone" defaultValue={data.phoneNumber} />
 
                         </div>
 
                         <div>
                             <label htmlFor="email">Email</label>
-                            <input type="email" name="email" defaultValue={(data.person ? data.person.email : '')} />
+                            <input type="email" name="email" defaultValue={data.email} />
                         </div>
 
                         <div>
                             <label htmlFor="country">Państwo</label>
-                            <input type="text" name="country" defaultValue={(data.address) ? data.address.country : ''} />
+                            <input type="text" name="country" defaultValue={data.address.country} />
                         </div>
 
                         <div>
                             <label htmlFor="city">Miasto</label>
-                            <input type="text" name="city" defaultValue={(data.address) ? data.address.city : ''} />
+                            <input type="text" name="city" defaultValue={data.address.city} />
                         </div>
 
                         <div>
                             <label htmlFor="street">Ulica</label>
-                            <input type="text" name="street" defaultValue={(data.address) ? (data.address.street + ' ' +data.address.streetNumber) : ''} />
+                            <input type="text" name="street" defaultValue={data.address.street + ' ' +data.address.streetNumber} />
                         </div>
                     </form>
                 </div>

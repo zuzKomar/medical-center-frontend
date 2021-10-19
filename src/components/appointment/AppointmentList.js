@@ -9,11 +9,13 @@ const AppointmentList = () =>{
 
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(new Date());
+    const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
 
     useEffect(() =>{
         const getAppointments = async () =>{
             const appointments = await fetchAppointments()
             setAppointments(appointments)
+            setFilteredAppointments(appointments)
         }
 
         getAppointments()
@@ -27,21 +29,35 @@ const AppointmentList = () =>{
         return data
     }
 
+    const handleFacilityFilter = () =>{
+        let facilityAppointments = appointments.filter(appointment => (appointment.type === "facility"));
+        setFilteredAppointments(facilityAppointments);
+    }
+
+    const handlePhoneFilter = () =>{
+        let phoneAppointments = appointments.filter(appointment => (appointment.type === "phone"));
+        setFilteredAppointments(phoneAppointments);
+    }
+
+    const handleShowAll = () =>{
+        setFilteredAppointments(appointments);
+    }
+
     return(
         <div>
             <div className="appointmentListHeader">
                 <div className="checkBoxesAndButton">
                     <div className="checkboxes">
                         <div className="checkbox">
-                            <input type="radio" id="all" name="box" value="all" checked/>
+                            <input type="radio" id="all" name="box" value="all" onChange={handleShowAll}/>
                             <label htmlFor="all">Wszystkie</label>
                         </div>
                         <div className="checkbox">
-                            <input type="radio" id="normal" name="box" value="normal"/>
+                            <input type="radio" id="normal" name="box" value="normal" onChange={handleFacilityFilter}/>
                             <label htmlFor="normal">Wizyta w placówce</label>
                         </div>
                         <div className="checkbox">
-                            <input type="radio" id="tele" name="box" value="tele"/>
+                            <input type="radio" id="tele" name="box" value="tele" onChange={handlePhoneFilter}/>
                             <label htmlFor="tele">Teleporada</label>
                         </div>
                     </div>
@@ -58,7 +74,7 @@ const AppointmentList = () =>{
                 </div>
             </div>
             <div className="appointmentList">
-                {appointments.map((appointment)=>(
+                {filteredAppointments.map((appointment)=>(
                     <Appointment key={appointment.id} appointment = {appointment}/>
                 ))}
             </div>

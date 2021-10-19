@@ -51,7 +51,7 @@ class Appointment extends React.Component{
                             <FaFile size={42}/>
                             <p className="header">Zrealizowane badania</p>
                         </div>
-                        <p>Brak badań zrealizowanych podczas wizyty</p>
+                        <p>{(app.service ? (app.service.name) : 'Brak badań zrealizowanych podczas wizyty')}</p>
                         <hr/>
 
                         <div className="subsections">
