@@ -13,22 +13,20 @@ import {
 import PrescriptionRenewal from "./components/prescription/PrescriptionRenewal";
 
 
-
 function App() {
   return (
       <Router>
-          <div>
-              <h1>Medical app</h1>
               <Navigation/>
-              <Switch>
-                  <Route exact path="/moje_konto" component={HomePage}/>
-                  <Route exact path="/wizyty" component={AppointmentList}/>
-                  <Route exact path="/skierowania" component={ReferralList}/>
-                  <Route exact path="/badania" component={CheckUpList}/>
-                  <Route exact path="/recepty" component={PrescriptionList}/>
-                  <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
-              </Switch>
-          </div>
+              <div className="content">
+                  <Switch>
+                      <Route exact path="/moje-konto" component={HomePage}/>
+                      <Route exact path="/wizyty" component={AppointmentList}/>
+                      <Route exact path="/skierowania" component={ReferralList}/>
+                      <Route exact path="/badania" component={CheckUpList}/>
+                      <Route exact path="/recepty" component={PrescriptionList}/>
+                      <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
+                  </Switch>
+              </div>
       </Router>
   );
 }
