@@ -12,7 +12,7 @@ return(
             <p>Data wystawienia: {referral.issueDate}</p>
             <p>Skierowanie ważne do: {referral.expiryDate}</p>
             { !referral.used  &&
-                <button className="actionButton">Umów</button>
+                <button className="actionButton">UMÓW WIZYTĘ</button>
             }
         </div>
         <hr/>

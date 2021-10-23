@@ -8,7 +8,6 @@ body{
     display: flex;
     margin: 0 auto;
     margin-top: 1%;
-
     font-family: sans-serif;
     font-size: 100%;
     flex-flow: row nowrap;
@@ -55,7 +54,7 @@ body{
 .navItemLanguages{
     font-family: 'Montserrat', sans-serif;
     font-size: 26px;
-    color: #2f3bdf;
+    color: #006666 !important;
     justify-content: right;
     margin-right: 2%;
 }
@@ -64,7 +63,9 @@ body{
     font-weight: bolder;
     text-decoration: underline !important;
     font-size: 32px;
+    color: #006666 !important;
 }
+
 
 .itemsList{
     display: flex;
@@ -219,66 +220,66 @@ body{
     justify-content: center;
     flex-direction: column;
     padding-top: 15px;
-
 }
 
 .appointmentListHeader{
     display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+    width: 80%;
+    justify-content: flex-start;
     margin-top: 1%;
 }
 
 .checkboxes{
     display: flex;
+    margin-bottom: 2%;
 }
 
 .checkbox{
     margin: 0 15px 0 15px;
-    font-size: 18px;
+    font-size: 22px;
     font-family: 'Montserrat', sans-serif;
 }
 
 .checkBoxesAndButton{
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 100%;
 }
 
 .actionButton{
     background-color: white;
     padding: 10px 24px;
     color: #008CBA;
-    border: 2px solid #006666;
+    border: 2px solid #05867e;
     border-radius: 12px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     height: auto;
 }
 
 .actionButton:hover{
-    background-color: #006666;
+    background-color: #05867e;
     color: white;
 }
 
 .appDate{
     display: flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: flex-start;
+    width: 80%;
 }
 
 .dateInput{
     display: flex;
-    width: 80%;
-    justify-content: left;
+    width: 100%;
+    justify-content: flex-start;
+
 }
 
 .renewPrescriptionBtn{
     background-color: white;
     padding: 10px 24px;
     color: #008CBA;
-    border: 2px solid #008CBA; /* Green */
+    border: 2px solid #008CBA;
     border-radius: 12px;
     cursor: pointer;
     font-size: 18px;
@@ -325,9 +326,7 @@ body{
         margin: 0;
     }
 
-    /*nav ul li {*/
-    /*    flex-basis: 100%;*/
-    /*}*/
+
     .navCollapse{
         display: flex;
         justify-content: flex-start;

@@ -64,17 +64,14 @@ const AppointmentList = () =>{
                             <label htmlFor="tele">Teleporada</label>
                         </div>
                     </div>
-                    <div>
+                    <div >
                         <button className="actionButton">UMÓW WIZYTĘ</button>
                     </div>
                 </div>
             </div>
             <div className="appDate">
-                <div className="dateInput">
                     <label htmlFor="appDate">Data:</label>
                     <DatePicker dateFormat="Pp" selected={appDate} onChange={(date) => setAppDate(date)}/>
-
-                </div>
             </div>
             <div className="appointmentList">
                 {filteredAppointments.map((appointment)=>(
