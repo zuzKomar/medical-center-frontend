@@ -5,12 +5,19 @@ body{
 }
 
 .content{
+    display: flex;
+    margin: 0 auto;
+    margin-top: 1%;
+
     font-family: sans-serif;
     font-size: 100%;
     flex-flow: row nowrap;
     justify-content: center;
     align-content: center;
     align-items: center;
+    background-color: #E9E9E9;
+    width: 80%;
+    border-radius:12px;
 }
 
 .navContainer{
@@ -59,7 +66,7 @@ body{
     font-size: 32px;
 }
 
-.referralList{
+.itemsList{
     display: flex;
     width: 100%;
     align-items: center;
@@ -69,21 +76,22 @@ body{
 }
 
 .referral{
-    background-color: #eeeeee;
+    background-color: #ffffff;
     display: inline-block;
     justify-content: center;
     border-radius:12px;
     width: 80%;
     padding: 15px;
     margin-top: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    /*padding-bottom: 1%;*/
     font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .referralDiv1{
     display: flex;
-    margin-top: -1%;
+    justify-content: flex-start;
 }
 
 .referralHeader{
@@ -98,12 +106,15 @@ body{
     border-radius: 15px;
     font-weight: bold;
     height: 20%;
-    margin-top: 1%;
+    /*margin-top: 1%;*/
 }
 
 .referralDiv2{
     display: flex;
     justify-content: space-between;
+    font-size: 20px;
+    align-items: center;
+
 }
 
 
@@ -143,7 +154,7 @@ body{
 }
 
 .appointmentAndCheckup{
-    background-color: #eeeeee;
+    background-color: #ffffff;
     display: inline-block;
     justify-content: center;
     border-radius:12px;
@@ -179,20 +190,25 @@ body{
     justify-content: left;
 }
 
+.subsectionsReferral{
+    display: flex;
+    justify-content: space-between;
+}
+
 
 .listHeader{
+    display: flex;
+    justify-content: space-between;
     background-color: #CECBCB;
-    margin-top: 2%;
     position: center;
     padding: 1%;
     border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
+    width: 98%;
 }
 .listHeader h2{
     font-weight: lighter;
     font-size: 44px;
-    color: #495A9F;
+    color: #006666;
     margin-left: 4%;
 }
 
@@ -203,6 +219,7 @@ body{
     justify-content: center;
     flex-direction: column;
     padding-top: 15px;
+
 }
 
 .appointmentListHeader{
@@ -210,6 +227,7 @@ body{
     width: 100%;
     align-items: center;
     justify-content: center;
+    margin-top: 1%;
 }
 
 .checkboxes{
@@ -228,15 +246,20 @@ body{
     width: 80%;
 }
 
-.bookAppBtn{
+.actionButton{
     background-color: white;
     padding: 10px 24px;
     color: #008CBA;
-    border: 2px solid #008CBA; /* Green */
+    border: 2px solid #006666;
     border-radius: 12px;
     cursor: pointer;
     font-size: 18px;
-    height: 140%;
+    height: auto;
+}
+
+.actionButton:hover{
+    background-color: #006666;
+    color: white;
 }
 
 .appDate{
@@ -276,6 +299,15 @@ body{
 .prescriptionListHeader p{
     margin-left: 6%;
     margin-right: 8%;
+}
+
+.prescriptionRenewal{
+    width: 90%;
+    background-color: white;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    border-radius:12px;
+    padding: 1%;
 }
 
 

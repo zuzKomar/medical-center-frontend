@@ -5,7 +5,7 @@ function PrescriptionListTable({prescriptionData}){
 
 
     return(
-        <table className="table table-hover">
+        <table className="table table-hover" style={{backgroundColor:"white", width : '90%'}}>
             <thead>
                 <tr>
                     <th>Data złożenia</th>

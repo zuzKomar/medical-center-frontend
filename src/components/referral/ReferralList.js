@@ -24,7 +24,10 @@ const ReferralList = () =>{
     }
 
     return(
-        <div className="referralList">
+        <div className="itemsList">
+            <div className="listHeader">
+                <h2>Twoje skierowania</h2>
+            </div>
             {referrals.map((referral) =>(
                 <Referral key={referral.id} referral={referral}/>
                 ))}

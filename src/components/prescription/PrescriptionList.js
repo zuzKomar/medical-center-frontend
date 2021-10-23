@@ -29,15 +29,15 @@ const PrescriptionList = () =>{
     }
 
     return(
-        <main>
+        <div className="itemsList">
             <div className="listHeader">
                 <h2>Twoje recepty</h2>
-                <button type="button" className="btn btn-outline-primary btn-rounded waves-effect" onClick={handleClick}>ODNÓW RECEPTĘ</button>
+                <button type="button" className="actionButton" onClick={handleClick}>ODNÓW RECEPTĘ</button>
             </div>
             <div className="appointmentList">
                 <PrescriptionListTable prescriptionData={prescriptions}/>
             </div>
-        </main>
+        </div>
     )
 }
 

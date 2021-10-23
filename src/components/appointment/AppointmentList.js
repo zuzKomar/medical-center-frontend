@@ -44,7 +44,10 @@ const AppointmentList = () =>{
     }
 
     return(
-        <div>
+        <div className="itemsList">
+            <div className="listHeader">
+                <h2>Twoje wizyty</h2>
+            </div>
             <div className="appointmentListHeader">
                 <div className="checkBoxesAndButton">
                     <div className="checkboxes">
@@ -62,7 +65,7 @@ const AppointmentList = () =>{
                         </div>
                     </div>
                     <div>
-                        <button className="bookAppBtn">UMÓW WIZYTĘ</button>
+                        <button className="actionButton">UMÓW WIZYTĘ</button>
                     </div>
                 </div>
             </div>

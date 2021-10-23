@@ -54,14 +54,19 @@ class Appointment extends React.Component{
                         <p>{(app.service ? (app.service.name) : 'Brak badań zrealizowanych podczas wizyty')}</p>
                         <hr/>
 
-                        <div className="subsections">
-                            <FaShare size={42}/>
-                            <p className="header">Skierowania</p>
+                        <div className="subsectionsReferral">
+                            <div>
+                                <div className="subsections">
+                                    <FaShare size={42}/>
+                                    <p className="header">Skierowania</p>
+                                </div>
+                                <p>Internista - wizyta kontrolna</p>
+                            </div>
+                            <div>
+                                <button className="actionButton">UMÓW WIZYTĘ</button>
+                            </div>
                         </div>
-                        <div className="subsections">
-                            <p>Internista - wizyta kontrolna</p>
-                            <button>UMÓW WIZYTĘ</button>
-                        </div>
+
                         <hr/>
 
                         <div className="subsections">

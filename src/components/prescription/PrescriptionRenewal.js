@@ -38,15 +38,16 @@ const PrescriptionRenewal = () =>{
 
 
     return(
-        <main>
+        <div className="itemsList">
             <div className="listHeader">
                 <h2>Odnowienie recepty</h2>
-                <button type="button" className="btn btn-outline-primary btn-rounded waves-effect">ODNÓW RECEPTĘ</button>
+                <button type="button" className="actionButton">ODNÓW RECEPTĘ</button>
             </div>
-            <h4>Wybierz leki</h4>
-            <h5>Poniżej znajdują się leki, które możesz zamówić online</h5>
-            <table className="table table-striped">
-                <thead>
+            <div className="prescriptionRenewal">
+                <h4>Wybierz leki</h4>
+                <h5>Poniżej znajdują się leki, które możesz zamówić online</h5>
+                <table className="table table-striped">
+                    <thead>
                     <tr>
                         <th>Zamów</th>
                         <th>Nazwa leku</th>
@@ -54,14 +55,15 @@ const PrescriptionRenewal = () =>{
                         <th>Data ostatniego przepisania</th>
                         <th>Pracownik medyczny</th>
                     </tr>
-                </thead>
-                <tbody>
-                {medicines.map((medicine)=>
-                    <Medication medication={medicine} key={medicine.id}/>
-                )}
-                </tbody>
-            </table>
-        </main>
+                    </thead>
+                    <tbody>
+                    {medicines.map((medicine)=>
+                        <Medication medication={medicine} key={medicine.id}/>
+                    )}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     )
 }
 

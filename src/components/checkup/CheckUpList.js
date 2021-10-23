@@ -21,15 +21,13 @@ const CheckUpList = () =>{
     }
 
     return(
-        <div>
+        <div className="itemsList">
             <div className="listHeader">
                 <h2>Twoje badania</h2>
             </div>
-            <div className="appointmentList">
                 {checkups.map((checkup) =>(
                     <CheckUp key={checkup.id} checkup={checkup}/>
                 ))}
-            </div>
         </div>
     )
 }
