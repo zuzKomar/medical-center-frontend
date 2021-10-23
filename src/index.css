@@ -50,6 +50,7 @@ body{
     font-size: 26px;
     color: #2f3bdf;
     justify-content: right;
+    margin-right: 2%;
 }
 
 .active{
@@ -292,8 +293,13 @@ body{
         margin: 0;
     }
 
-    nav ul li {
-        flex-basis: 100%;
+    /*nav ul li {*/
+    /*    flex-basis: 100%;*/
+    /*}*/
+    .navCollapse{
+        display: flex;
+        justify-content: flex-start;
+        justify-items: flex-start;
     }
 }
 
