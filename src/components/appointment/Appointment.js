@@ -1,13 +1,16 @@
 import React from "react";
-import {FaRegUser, FaCheck, FaFile, FaShare} from 'react-icons/fa'
+import {FaRegUser, FaCheck, FaFile} from 'react-icons/fa'
 import {GiMedicines} from 'react-icons/gi'
+import {withRouter} from "react-router-dom";
+
 
 class Appointment extends React.Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            open : false
+            open : false,
+            appointment : this.props.appointment
         }
 
         this.togglePanel = this.togglePanel.bind(this);
@@ -18,11 +21,11 @@ class Appointment extends React.Component{
     }
 
     render() {
-        const app = this.props.appointment;
+        const app = this.state.appointment;
         return(
-            <div className="appointmentAndCheckup" onClick={(e)=> this.togglePanel(e)}>
+            <div className="appointmentAndCheckup" onClick={this.togglePanel}>
                 <div className="top">
-                    <p className="appointmentAndCheckupHeader">Internista - konsultacja</p>
+                    <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : '')}</p>
                     <div className="data">
                         <p>Data:</p>
                         <p>{app.date}</p>
@@ -54,21 +57,6 @@ class Appointment extends React.Component{
                         <p>{(app.service ? (app.service.name) : 'Brak badań zrealizowanych podczas wizyty')}</p>
                         <hr/>
 
-                        <div className="subsectionsReferral">
-                            <div>
-                                <div className="subsections">
-                                    <FaShare size={42}/>
-                                    <p className="header">Skierowania</p>
-                                </div>
-                                <p>Internista - wizyta kontrolna</p>
-                            </div>
-                            <div>
-                                <button className="actionButton">UMÓW WIZYTĘ</button>
-                            </div>
-                        </div>
-
-                        <hr/>
-
                         <div className="subsections">
                             <GiMedicines size={42}/>
                             <p className="header">e-Recepty</p>
@@ -80,4 +68,4 @@ class Appointment extends React.Component{
     }
 }
 
-export default Appointment;
+export default withRouter(Appointment);

@@ -1,6 +1,15 @@
 import React from "react";
+import {useHistory} from 'react-router';
 
 const Referral = ({referral}) =>{
+    const history = useHistory();
+
+    const handleClick = ()=>{
+        history.push({
+            pathname: '/nowa-wizyta',
+            state: referral
+        });
+    }
 
 return(
     <div className="referral">
@@ -12,7 +21,7 @@ return(
             <p>Data wystawienia: {referral.issueDate}</p>
             <p>Skierowanie ważne do: {referral.expiryDate}</p>
             { !referral.used  &&
-                <button className="actionButton">UMÓW WIZYTĘ</button>
+                <button className="actionButton" onClick={handleClick}>UMÓW WIZYTĘ</button>
             }
         </div>
         <hr/>

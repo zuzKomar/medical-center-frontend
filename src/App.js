@@ -2,6 +2,7 @@ import Navigation from "./components/fragments/Navigation";
 import ReferralList from "./components/referral/ReferralList";
 import HomePage from "./components/patient/HomePage";
 import AppointmentList from "./components/appointment/AppointmentList";
+import NewAppointment from "./components/appointment/NewAppointment";
 import CheckUpList from "./components/checkup/CheckUpList";
 import PrescriptionList from "./components/prescription/PrescriptionList";
 
@@ -21,6 +22,7 @@ function App() {
                   <Switch>
                       <Route exact path="/moje-konto" component={HomePage}/>
                       <Route exact path="/wizyty" component={AppointmentList}/>
+                      <Route exact path="/nowa-wizyta" component={NewAppointment}/>
                       <Route exact path="/skierowania" component={ReferralList}/>
                       <Route exact path="/badania" component={CheckUpList}/>
                       <Route exact path="/recepty" component={PrescriptionList}/>

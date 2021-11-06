@@ -311,6 +311,36 @@ body{
     padding: 1%;
 }
 
+.newAppointmentForm{
+    background-color: white;
+    border-radius: 12px;
+    padding: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 50%;
+    font-size: 18px;
+}
+
+.availableAppointment{
+    background-color: #e6f2ff;
+    border-style: solid;
+    border-color: #cce6ff;
+    border-width: 2px;
+    display: flex;
+    justify-content: space-around;
+    border-radius:12px;
+    width: 80%;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+}
+
+.availableAppointment:hover{
+    background-color: #cce6ff;
+    cursor: pointer;
+}
 
 @media all and (max-width: 973px) {
     .nav{

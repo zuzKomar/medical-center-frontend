@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
+import { useHistory } from "react-router-dom";
 import Appointment from "./Appointment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
-
 
 
 const AppointmentList = () =>{
@@ -10,6 +10,7 @@ const AppointmentList = () =>{
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(new Date());
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
+    let history = useHistory();
 
     useEffect(() =>{
         const getAppointments = async () =>{
@@ -43,6 +44,10 @@ const AppointmentList = () =>{
         setFilteredAppointments(appointments);
     }
 
+    const handleClick = () =>{
+        history.push("/nowa-wizyta");
+    }
+
     return(
         <div className="itemsList">
             <div className="listHeader">
@@ -65,7 +70,7 @@ const AppointmentList = () =>{
                         </div>
                     </div>
                     <div >
-                        <button className="actionButton">UMÓW WIZYTĘ</button>
+                        <button className="actionButton" onClick={handleClick}>UMÓW WIZYTĘ</button>
                     </div>
                 </div>
             </div>
