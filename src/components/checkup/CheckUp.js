@@ -22,8 +22,8 @@ class CheckUp extends React.Component{
                     <p className="appointmentAndCheckupHeader">{(checkup.checkup ? checkup.checkup.name : '')}</p>
                     <div className="data">
                         <p>Data:</p>
-                        <p>{(checkup.appointment ? checkup.appointment.date : '')}</p>
-                        <p>{(checkup.appointment ? checkup.appointment.time : '')}</p>
+                        <p>{new Date(checkup.appointment.date).toISOString().slice(0,10)}</p>
+                        <p>{new Date(checkup.appointment.date).toISOString().slice(11,16)}</p>
                     </div>
                 </div>
                 <div>

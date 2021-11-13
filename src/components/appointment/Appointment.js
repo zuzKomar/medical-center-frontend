@@ -20,21 +20,22 @@ class Appointment extends React.Component{
         this.setState({open : !this.state.open})
     }
 
+
     render() {
         const app = this.state.appointment;
         return(
-            <div className="appointmentAndCheckup" onClick={this.togglePanel}>
+            <div className={new Date(app.date) <= Date.now() ? 'appointmentAndCheckup archivalApp' : 'appointmentAndCheckup incomingApp'} onClick={this.togglePanel}>
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : '')}</p>
                     <div className="data">
                         <p>Data:</p>
-                        <p>{app.date}</p>
-                        <p>{app.time}</p>
+                        <p>{app.date ? new Date(app.date).toISOString().slice(0,10) : ''}</p>
+                        <p>{app.date ? new Date(app.date).toISOString().slice(11,16) : ''}</p>
                     </div>
                 </div>
                 <div>
                     <FaRegUser size={42}/>
-                    lek.med. {(app.doctor? (app.doctor.person.firstName + ' ' + app.doctor.person.lastName) : '')}
+                    lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                 </div>
 
                 {this.state.open ? (
@@ -46,7 +47,7 @@ class Appointment extends React.Component{
                             <p className="header">Zalecenia</p>
                         </div>
                         <ol>
-                            <li>{app.recommendations}</li>
+                            <li>{app.description}</li>
                         </ol>
                         <hr/>
 

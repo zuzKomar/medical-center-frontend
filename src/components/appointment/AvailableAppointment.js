@@ -1,16 +1,25 @@
 import React from "react";
 
-const AvailableAppointment = ({appointment}) =>{
+const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment}) =>{
 
-    function handleClick(){
-        console.log('test click wizyta');
+    function handleClick(e){
+        e.preventDefault();
+        setSelectedAppointment(appointment);
+        setOpenModal(true);
     }
 
-
     return(
-        <div onClick={handleClick} className='availableAppointment'>
-            <p>{'Usługa: ' +appointment.service.name}</p>
-            <p>{'Data: '+new Date(appointment.date).toISOString().slice(0,10) +', godzina: '+ new Date(appointment.date).toISOString().slice(11,19)}</p>
+        <div className='availableAppointment' title={'Wybierz wizytę'}>
+            <div className="availableAppointmentDate">
+                <p>{new Date(appointment.date).toISOString().slice(0,10)}</p>
+                <p>{new Date(appointment.date).toISOString().slice(11,16)}</p>
+            </div>
+            <div className="availableAppointmentDoctor">
+                <p>{appointment.doctor ? 'dr '+appointment.doctor.firstName + ' '+ appointment.doctor.lastName : 'Personel medyczny'}</p>
+            </div>
+            <div className="availableAppointmentBtn">
+                <button className="actionButton" onClick={(e)=>handleClick(e)}>Umów</button>
+            </div>
         </div>
     )
 }

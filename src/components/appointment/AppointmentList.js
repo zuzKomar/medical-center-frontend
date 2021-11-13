@@ -1,20 +1,24 @@
 import React, {useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import Appointment from "./Appointment";
-import DatePicker from "react-datepicker";
+import Form from "react-bootstrap/Form";
 import "react-datepicker/dist/react-datepicker.css"
 
 
 const AppointmentList = () =>{
-
+    const formatYmd = date => date.toISOString().slice(0,10);
+    const facility = 'FACILITY';
+    const phone = 'TELEPHONE';
     const [appointments, setAppointments] = useState([]);
-    const [appDate, setAppDate] = useState(new Date());
+    const [appDate, setAppDate] = useState(formatYmd(new Date()));
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
     let history = useHistory();
 
     useEffect(() =>{
         const getAppointments = async () =>{
             const appointments = await fetchAppointments()
+                .then(apps=>apps.filter(app=>(app.patientId === 1)))
+                .then(apps=>apps.sort((a,b)=>new Date(b.date) - new Date(a.date)))
             setAppointments(appointments)
             setFilteredAppointments(appointments)
         }
@@ -31,12 +35,12 @@ const AppointmentList = () =>{
     }
 
     const handleFacilityFilter = () =>{
-        let facilityAppointments = appointments.filter(appointment => (appointment.type === "facility"));
+        let facilityAppointments = appointments.filter(appointment => (appointment.type === facility));
         setFilteredAppointments(facilityAppointments);
     }
 
     const handlePhoneFilter = () =>{
-        let phoneAppointments = appointments.filter(appointment => (appointment.type === "phone"));
+        let phoneAppointments = appointments.filter(appointment => (appointment.type === phone));
         setFilteredAppointments(phoneAppointments);
     }
 
@@ -75,8 +79,12 @@ const AppointmentList = () =>{
                 </div>
             </div>
             <div className="appDate">
-                    <label htmlFor="appDate">Data:</label>
-                    <DatePicker dateFormat="Pp" selected={appDate} onChange={(date) => setAppDate(date)}/>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Data:</Form.Label>
+                            <Form.Control type='date' onChange={(e) => setAppDate(e.target.value)} value={appDate}/>
+                        </Form.Group>
+                    </Form>
             </div>
             <div className="appointmentList">
                 {filteredAppointments.map((appointment)=>(

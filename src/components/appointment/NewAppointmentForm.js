@@ -184,7 +184,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
 
     return(
-                    <Form className="newAppointmentForm" onSubmit={handleSubmit}>
+                    <Form className="newAppointmentForm">
                         <Form.Group className="mb-3">
                             <Form.Label >Typ wizyty:</Form.Label>
                             <Form.Check type="radio" name="type" id="facility" label="W placówce" onClick={(e)=>{
@@ -195,7 +195,14 @@ const NewAppointmentForm = ({getAppointments}) =>{
                                         ['appType']:null
                                     })
                             }} isInvalid={!!errors.appType}/>
-                            <Form.Check type="radio" name="type" id="phone" label="Teleporada" onClick={(e)=>setAppointmentType('phone')} isInvalid={!!errors.appType}/>
+                            <Form.Check type="radio" name="type" id="phone" label="Teleporada" onClick={(e)=>{
+                                setAppointmentType('phone');
+                                if(!!errors['appType'])
+                                    setErrors({
+                                        ...errors,
+                                        ['appType']:null
+                                    })
+                            }} isInvalid={!!errors.appType}/>
                             <Form.Control.Feedback type='invalid'>{errors.appType}</Form.Control.Feedback>
                         </Form.Group>
                         <Row className="align-items-center mb-3">
