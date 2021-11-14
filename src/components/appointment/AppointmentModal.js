@@ -9,10 +9,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal}) => {
     useEffect(()=>{
         if(selectedAppointment!==undefined){
             setAppointment(selectedAppointment);
-            console.log("zmieniono app");
         }
-        console.log(appointment);
-
     }, [selectedAppointment])
 
     function bookAnAppointment(e){

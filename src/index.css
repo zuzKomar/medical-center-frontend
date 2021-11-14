@@ -19,6 +19,16 @@ body{
     border-radius:12px;
 }
 
+footer{
+    padding: 1rem;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 1%;
+    text-align: center;
+    position: static;
+    background-color: #636667;
+}
+
 .navContainer{
     box-shadow: 0 2px 15px 0 rgba(0,0,0,0.16);
 }
@@ -168,7 +178,7 @@ body{
     cursor: pointer;
 }
 
-.archivalApp{
+.todayApp{
     border-left: 10px solid;
     border-color: #2d74ab;
     /*box-shadow: -10px 0 5px -5px #2d74ab;*/
@@ -176,7 +186,12 @@ body{
 
 .incomingApp{
     border-left: 10px solid;
-    border-color: #95eba3;
+    border-color: #18a74b;
+}
+
+.archivalApp{
+    border-left: 10px solid;
+    border-color: #636667;
 }
 
 .top{

@@ -1,30 +1,67 @@
 import React from "react";
+import {useState, useEffect} from "react";
 import {FaRegUser, FaCheck, FaFile} from 'react-icons/fa'
 import {GiMedicines} from 'react-icons/gi'
-import {withRouter} from "react-router-dom";
+import {Button} from "react-bootstrap";
 
 
-class Appointment extends React.Component{
-    constructor(props) {
-        super(props);
+const Appointment = ({appointment, setCancelledAppointment}) =>{
+    const [app, setAppointment] = useState(appointment);
+    const [open, setOpen] = useState(false);
 
-        this.state = {
-            open : false,
-            appointment : this.props.appointment
+    useEffect(()=>{
+        if(appointment!==undefined){
+            setAppointment(appointment);
         }
+    }, [appointment])
 
-        this.togglePanel = this.togglePanel.bind(this);
+    function togglePanel(e){
+        e.preventDefault();
+        setOpen(!open);
     }
 
-    togglePanel(){
-        this.setState({open : !this.state.open})
+    function handleConfirmation(e){
+        e.preventDefault();
+        let updatedApp = app;
+        updatedApp.confirmed = true;
+        setAppointment(updatedApp);
+
+        fetch(`http://localhost:5000/appointments/${appointment.id}`, {
+            method: 'PATCH',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                confirmed : true
+            }),
+        }).then((res)=>res.json())
+            .then(window.alert('wizyta została potwierdzona'))
+            .catch((err)=>console.log(err));
     }
 
+    function handleCancellation(e){
+        e.preventDefault();
+        let updatedApp = app;
+        updatedApp.patientId = null;
+        setCancelledAppointment(updatedApp);
+        setAppointment(updatedApp);
 
-    render() {
-        const app = this.state.appointment;
+
+        fetch(`http://localhost:5000/appointments/${appointment.id}`,{
+            method: 'PATCH',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                patientId : null
+            }),
+        }).then((res)=>res.json())
+            .then(window.alert('wizyta została odwołana'))
+            .catch((err)=>console.log(err));
+    }
+
         return(
-            <div className={new Date(app.date) <= Date.now() ? 'appointmentAndCheckup archivalApp' : 'appointmentAndCheckup incomingApp'} onClick={this.togglePanel}>
+            <div className={new Date(app.date).getDate() > new Date(Date.now()).getDate() ? 'appointmentAndCheckup incomingApp' : (((new Date(app.date).getDate()) === (new Date().getDate())) && (new Date(app.date).getTime()) >= (new Date().getTime())) ? 'appointmentAndCheckup todayApp': 'appointmentAndCheckup archivalApp'} onClick={e=>togglePanel(e)}>
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : '')}</p>
                     <div className="data">
@@ -33,18 +70,25 @@ class Appointment extends React.Component{
                         <p>{app.date ? new Date(app.date).toISOString().slice(11,16) : ''}</p>
                     </div>
                 </div>
-                <div>
-                    <FaRegUser size={42}/>
-                    lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                <div style={{display: 'flex', justifyContent:'space-between'}}>
+                    <div>
+                        <FaRegUser size={42}/>
+                        lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                    </div>
+                    {((((new Date(app.date).getDate()) === (new Date().getDate())) && (new Date(app.date).getTime()) >= (new Date().getTime())) && app.confirmed === false)&&
+                        <Button variant='primary' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź przybycie</Button>
+                    }
+                    {(new Date(app.date).getDate() > new Date(Date.now()).getDate()) &&
+                        <Button variant='success' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj</Button>
+                    }
                 </div>
 
-                {this.state.open ? (
+                {open ? (
                     <div>
                         <hr/>
-
                         <div className="subsections">
                             <FaCheck size={42}/>
-                            <p className="header">Zalecenia</p>
+                            <p className="header">Opis</p>
                         </div>
                         <ol>
                             <li>{app.description}</li>
@@ -66,7 +110,6 @@ class Appointment extends React.Component{
 
                     </div>) : null}
             </div>);
-    }
 }
 
-export default withRouter(Appointment);
+export default Appointment;

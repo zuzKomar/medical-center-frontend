@@ -12,6 +12,7 @@ import {
     Route
 } from "react-router-dom";
 import PrescriptionRenewal from "./components/prescription/PrescriptionRenewal";
+import Footer from "./components/fragments/Footer";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                       <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
                   </Switch>
               </div>
+          <Footer/>
       </Router>
   );
 }

@@ -12,6 +12,7 @@ const AppointmentList = () =>{
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(formatYmd(new Date()));
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
+    const [canceledAppointment, setCancelledAppointment] = useState(undefined);
     let history = useHistory();
 
     useEffect(() =>{
@@ -24,7 +25,20 @@ const AppointmentList = () =>{
         }
 
         getAppointments()
-    }, [])
+    }, [canceledAppointment])
+
+
+    function checkAppId(app){
+        return app.patientId !=null;
+    }
+
+
+    useEffect(()=>{
+        if(canceledAppointment!==undefined){
+            const result = appointments.filter(checkAppId);
+            setAppointments(result);
+        }
+    },[canceledAppointment])
 
 
     const fetchAppointments = async () =>{
@@ -88,7 +102,7 @@ const AppointmentList = () =>{
             </div>
             <div className="appointmentList">
                 {filteredAppointments.map((appointment)=>(
-                    <Appointment key={appointment.id} appointment = {appointment}/>
+                    <Appointment key={appointment.id} appointment={appointment} setCancelledAppointment={setCancelledAppointment}/>
                 ))}
             </div>
         </div>
