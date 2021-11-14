@@ -18,6 +18,7 @@ import Footer from "./components/fragments/Footer";
 function App() {
   return (
       <Router>
+          <div style={{position: 'relative', paddingBottom:'50px'}}>
               <Navigation/>
               <div className="content">
                   <Switch>
@@ -30,7 +31,8 @@ function App() {
                       <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
                   </Switch>
               </div>
-          <Footer/>
+              <Footer/>
+          </div>
       </Router>
   );
 }
