@@ -1,33 +1,41 @@
 import React from "react";
 import {useHistory} from 'react-router';
+import {useState, useEffect} from "react";
 
-const Referral = ({referral}) =>{
+const Referral = ({referral, setSelectedReferral}) =>{
     const history = useHistory();
+    const [ref, setRef] = useState(referral);
 
-    const handleClick = ()=>{
+    useEffect(()=>{
+        if(referral !== undefined){
+            setRef(referral);
+        }
+    },[referral])
+
+    const handleClick = (e)=>{
+        e.preventDefault();
+        setSelectedReferral(referral);
+        console.log(referral.id);
         history.push({
             pathname: '/nowa-wizyta',
-            state: referral
+            state: ref
         });
     }
 
 return(
     <div className="referral">
         <div className="referralDiv1">
-            <p className="referralHeader">{((referral.service.name).includes('adanie') ? 'Skierowanie na '+ referral.service.name : referral.service.name)}</p>
-            <label className="serviceType">{referral.service.name}</label>
+            <p className="referralHeader">{ref.medicalServiceDTO.name}</p>
+            {/*<label className="serviceType">{ref.medicalServiceDTO.name}</label>*/}
         </div>
         <div className="referralDiv2">
-            <p>Data wystawienia: {referral.issueDate}</p>
-            <p>Skierowanie ważne do: {referral.expiryDate}</p>
-            { !referral.used  &&
-                <button className="actionButton" onClick={handleClick}>UMÓW WIZYTĘ</button>
-            }
+            <p>Data wystawienia: {ref.issueDate}</p>
+            <p>Skierowanie ważne do: {ref.expiryDate}</p>
         </div>
         <hr/>
-        <div>
-            <p>Wizyta zlecona przez:</p>
-            lek.med. {referral.doctor}
+        <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
+            {/*{((new Date(ref.expiryDate).getDate()) >= (new Date().getDate()))  &&*/}
+            <button className="actionButton" onClick={(e)=>handleClick(e)}>UMÓW WIZYTĘ</button>
         </div>
     </div>
 )}

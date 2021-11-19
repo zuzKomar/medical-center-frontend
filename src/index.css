@@ -183,13 +183,18 @@ footer{
 
 .todayApp{
     border-left: 10px solid;
-    border-color: #2d74ab;
+    border-color: #18a74b;
     /*box-shadow: -10px 0 5px -5px #2d74ab;*/
+}
+
+.appToConfirm{
+    border-left: 10px solid;
+    border-color: #C70039;
 }
 
 .incomingApp{
     border-left: 10px solid;
-    border-color: #18a74b;
+    border-color: #2d74ab;
 }
 
 .archivalApp{
@@ -433,7 +438,7 @@ footer{
     left: 0;
     right: 0;
     width: 500px;
-    height: 550px;
+    height: 600px;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background: #ffffff;

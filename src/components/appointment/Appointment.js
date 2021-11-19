@@ -60,8 +60,13 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
             .catch((err)=>console.log(err));
     }
 
+
+    const formatYmd = date => date.toISOString().slice(0, 10);
         return(
-            <div className={new Date(app.date).getDate() > new Date(Date.now()).getDate() ? 'appointmentAndCheckup incomingApp' : (((new Date(app.date).getDate()) === (new Date().getDate())) && (new Date(app.date).getTime()) >= (new Date().getTime())) ? 'appointmentAndCheckup todayApp': 'appointmentAndCheckup archivalApp'} onClick={e=>togglePanel(e)}>
+            <div className={app.date ? (new Date(new Date().setDate(new Date().getDate()+1)) < (new Date(app.date.slice(0,10)))) ? 'appointmentAndCheckup incomingApp'  :
+                (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.confirmed === false) ? 'appointmentAndCheckup appToConfirm' :
+                ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.confirmed === true) ? 'appointmentAndCheckup todayApp' :
+                'appointmentAndCheckup archivalApp') : ''} onClick={e=>togglePanel(e)}>
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : '')}</p>
                     <div className="data">
@@ -70,18 +75,18 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                         <p>{app.date ? new Date(app.date).toISOString().slice(11,16) : ''}</p>
                     </div>
                 </div>
-                <div style={{display: 'flex', justifyContent:'space-between'}}>
+                {app.date? <div style={{display: 'flex', justifyContent:'space-between'}}>
                     <div>
                         <FaRegUser size={42}/>
                         lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                     </div>
-                    {((((new Date(app.date).getDate()) === (new Date().getDate())) && (new Date(app.date).getTime()) >= (new Date().getTime())) && app.confirmed === false)&&
-                        <Button variant='primary' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź przybycie</Button>
+                    {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.confirmed === false))&&
+                        <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
                     }
-                    {(new Date(app.date).getDate() > new Date(Date.now()).getDate()) &&
-                        <Button variant='success' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj</Button>
+                    {(new Date(new Date().setDate(new Date().getDate())) <= (new Date(app.date.slice(0,10)))) &&
+                        <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
                     }
-                </div>
+                </div> : ''}
 
                 {open ? (
                     <div>

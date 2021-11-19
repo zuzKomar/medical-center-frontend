@@ -40,7 +40,8 @@ const AppointmentList = () =>{
         }
     },[canceledAppointment])
 
-
+    //dorobić drugi get na planned appointments
+    //przerobić istniejący get na done appointments
     const fetchAppointments = async () =>{
         const res = await fetch('http://localhost:5000/appointments')
         const data = await res.json()

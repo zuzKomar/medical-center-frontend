@@ -1,0 +1,433 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "phone": "606405908",
+      "address": {
+        "id": 1,
+        "street": "Okopowa",
+        "streetNumber": "10",
+        "postCode": "01-057",
+        "city": "Warszawa",
+        "country": "Polska"
+      },
+      "person": {
+        "id": 1,
+        "firstName": "Jan",
+        "lastName": "Kowalski",
+        "email": "jankowalski@wp.pl",
+        "birthDate": "2-05-1998",
+        "pesel": "98050205697"
+      }
+    }
+  ],
+  "referrals": [
+    {
+      "expiryDate": "2021-12-14",
+      "id": 1,
+      "issueDate": "2021-11-14",
+      "medicalServiceDTO": {
+        "doneByMedicalStaff": false,
+        "facilityService": true,
+        "id": 1,
+        "name": "Badanie RTG",
+        "specializationId": 0
+      }
+    },
+    {
+      "expiryDate": "2021-12-16",
+      "id": 2,
+      "issueDate": "2021-11-16",
+      "medicalServiceDTO": {
+        "doneByMedicalStaff": false,
+        "facilityService": false,
+        "id": 2,
+        "name": "Teleporada",
+        "specializationId": 0
+      }
+    },
+    {
+      "expiryDate": "2021-12-15",
+      "id": 3,
+      "issueDate": "2021-11-15",
+      "medicalServiceDTO": {
+        "doneByMedicalStaff": false,
+        "facilityService": true,
+        "id": 3,
+        "name": "Badanie USG jamy brzusznej",
+        "specializationId": 1
+      }
+    }
+  ],
+  "appointments": [
+    {
+      "confirmed": true,
+      "date": "2021-11-14T22:30:00.735Z",
+      "doctor": {
+        "birthDate": "2-05-1998",
+        "email": "jankowalski@wp.pl",
+        "firstName": "Jan",
+        "id": 1,
+        "languages": [
+          "PL"
+        ],
+        "lastName": "Kowalski",
+        "pesel": "98050205697",
+        "PWZ": 1
+      },
+      "description": "Badanie krwi - morfologia",
+      "id": 1,
+      "service": {
+        "id": 1,
+        "name": "Badanie USG piersi",
+        "facility": true
+      },
+      "type": "FACILITY",
+      "patientId": 1
+    },
+    {
+      "confirmed": true,
+      "date": "2021-11-04T12:30:00.735Z",
+      "description": "Antybiotyk 2x dziennie przez tydzień + osłona",
+      "id": 2,
+      "service": {
+        "id": 1,
+        "name": "Teleporada",
+        "facility": false
+      },
+      "type": "TELEPHONE",
+      "doctor": {
+        "birthDate": "2-05-1998",
+        "email": "jankowalski@wp.pl",
+        "firstName": "Krzysztof",
+        "id": 1,
+        "languages": [
+          "PL"
+        ],
+        "lastName": "Borysewicz",
+        "pesel": "98050205697",
+        "PWZ": 2
+      },
+      "patientId": 1
+    },
+    {
+      "confirmed": true,
+      "date": "2021-11-20T23:00:00.735Z",
+      "description": "",
+      "id": 3,
+      "service": {
+        "id": 1,
+        "name": "Badanie USG jamy brzusznej",
+        "facility": true
+      },
+      "type": "FACILITY",
+      "doctor": {
+        "birthDate": "2-05-1998",
+        "email": "jankowalski@wp.pl",
+        "firstName": "Krzysztof",
+        "id": 1,
+        "languages": [
+          "PL"
+        ],
+        "lastName": "Janiak",
+        "pesel": "98050205697",
+        "PWZ": 1
+      },
+      "patientId": 1,
+      "referralId": 1
+    },
+    {
+      "confirmed": false,
+      "date": "2021-11-21T10:30:00.735Z",
+      "description": "",
+      "id": 4,
+      "service": {
+        "id": 1,
+        "name": "Badanie USG jamy brzusznej",
+        "facility": true
+      },
+      "type": "FACILITY",
+      "doctor": {
+        "birthDate": "2-05-1998",
+        "email": "jankowalski@wp.pl",
+        "firstName": "Małgorzata",
+        "id": 1,
+        "languages": [
+          "PL"
+        ],
+        "lastName": "Mołek",
+        "pesel": "98050205697",
+        "PWZ": 1
+      },
+      "patientId": null,
+      "referralId": 2
+    },
+    {
+      "confirmed": true,
+      "date": "2021-11-19T23:00:00.735Z",
+      "description": "",
+      "id": 5,
+      "service": {
+        "id": 1,
+        "name": "Badanie USG jamy brzusznej",
+        "facility": true
+      },
+      "type": "FACILITY",
+      "doctor": {
+        "birthDate": "2-05-1998",
+        "email": "jankowalski@wp.pl",
+        "firstName": "Krzystof",
+        "id": 1,
+        "languages": [
+          "PL"
+        ],
+        "lastName": "Kowalski",
+        "pesel": "98050205697",
+        "PWZ": 1
+      },
+      "patientId": 1,
+      "referralId": 1
+    }
+  ],
+  "appointmentCheckups": [
+    {
+      "id": 1,
+      "checkup": {
+        "id": 1,
+        "name": "Badanie USG piersi"
+      },
+      "result": "Nie zdiagnozowano żadnych niepokojących zmian",
+      "description": "wynik badania prawidłowy, kolejne badanie za rok",
+      "appointment": {
+        "id": 1,
+        "date": "2021-11-04T10:30:00.735Z",
+        "doctor": {
+          "PWZ": "70965",
+          "person": {
+            "id": 1,
+            "firstName": "Krzysztof",
+            "lastName": "Barteczko",
+            "email": "jankowalski@wp.pl",
+            "birthDate": "2-05-1998",
+            "pesel": "98050205697"
+          }
+        }
+      }
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": 1,
+      "accessCode": "123",
+      "dateFrom": "25.10.2021",
+      "binaryCode": "110011",
+      "appointment": {
+        "id": 1,
+        "date": "25.10.2021",
+        "confirmation": "t",
+        "recommendations": "",
+        "appointmentDescription": "",
+        "doctorId": 1,
+        "patientId": 1
+      },
+      "doctor": {
+        "PWZNumber": "7079",
+        "person": {
+          "id": 1,
+          "firstName": "Konrad",
+          "lastName": "Stonoga",
+          "email": "kstonoga@gmail.com",
+          "password": "stonoga123",
+          "birthdate": "02.02.1987",
+          "pesel": "87020215468"
+        }
+      },
+      "patient": {
+        "telNumber": "555666777",
+        "person": {
+          "id": 1,
+          "firstName": "Halina",
+          "lastName": "Kula",
+          "email": "hkula@gmail.com",
+          "password": "kula123",
+          "birthdate": "02.02.1987",
+          "pesel": "87020215458"
+        }
+      },
+      "medicines": [
+        {
+          "numberOfPackages": "1",
+          "dosing": "1 x dziennie",
+          "medicine": {
+            "id": 1,
+            "name": "Locoid",
+            "unit": "gr",
+            "extandable": true
+          }
+        },
+        {
+          "numberOfPackages": "1",
+          "dosing": "",
+          "medicine": {
+            "id": 5,
+            "name": "Clotrimazolum Aflofarm",
+            "unit": "gr",
+            "extandable": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "accessCode": "123",
+      "dateFrom": "25.10.2021",
+      "binaryCode": "110011",
+      "appointment": {
+        "id": 1,
+        "date": "25.10.2021",
+        "confirmation": "t",
+        "recommendations": "",
+        "appointmentDescription": "",
+        "doctorId": 1,
+        "patientId": 1
+      },
+      "doctor": {
+        "PWZNumber": "7079",
+        "person": {
+          "id": 1,
+          "firstName": "Konrad",
+          "lastName": "Stonoga",
+          "email": "kstonoga@gmail.com",
+          "password": "stonoga123",
+          "birthdate": "02.02.1987",
+          "pesel": "87020215468"
+        }
+      },
+      "patient": {
+        "telNumber": "555666777",
+        "person": {
+          "id": 1,
+          "firstName": "Halina",
+          "lastName": "Kula",
+          "email": "hkula@gmail.com",
+          "password": "kula123",
+          "birthdate": "02.02.1987",
+          "pesel": "87020215458"
+        }
+      },
+      "medicines": [
+        {
+          "numberOfPackages": "1",
+          "dosing": "1 x dziennie",
+          "medicine": {
+            "id": 1,
+            "name": "Mupirox",
+            "unit": "gr",
+            "extandable": false
+          }
+        },
+        {
+          "numberOfPackages": "1",
+          "dosing": "",
+          "medicine": {
+            "id": 5,
+            "name": "Maść cynkowa",
+            "unit": "gr",
+            "extandable": true
+          }
+        }
+      ]
+    }
+  ],
+  "doctors": [
+    {
+      "id": "1",
+      "firstName": "Paweł",
+      "lastName": "Krzywda",
+      "email": "pk@wp.pl",
+      "password": "kula123",
+      "birthdate": "02.02.1973",
+      "PWZ": "55024"
+    },
+    {
+      "id": "1",
+      "firstName": "Robert",
+      "lastName": "Nowacki",
+      "email": "pk@wp.pl",
+      "password": "kula123",
+      "birthdate": "02.02.1973",
+      "PWZ": "55024"
+    },
+    {
+      "id": "1",
+      "firstName": "Małgorzata",
+      "lastName": "Michalska",
+      "email": "pk@wp.pl",
+      "password": "kula123",
+      "birthdate": "02.02.1973",
+      "PWZ": "55024"
+    },
+    {
+      "id": "1",
+      "firstName": "Magdalena",
+      "lastName": "Kulik",
+      "email": "pk@wp.pl",
+      "password": "kula123",
+      "birthdate": "02.02.1973",
+      "PWZ": "55024"
+    },
+    {
+      "id": "1",
+      "firstName": "Jakub",
+      "lastName": "Ochojski",
+      "email": "pk@wp.pl",
+      "password": "kula123",
+      "birthdate": "02.02.1973",
+      "PWZ": "55024"
+    }
+  ],
+  "services": [
+    {
+      "doneByMedicalStaff": false,
+      "facilityService": true,
+      "id": "1",
+      "name": "Badanie USG jamy brzusznej",
+      "specializationId": 1
+    },
+    {
+      "doneByMedicalStaff": false,
+      "facilityService": true,
+      "id": "2",
+      "name": "Badanie USG piersi",
+      "specializationId": 1
+    },
+    {
+      "doneByMedicalStaff": false,
+      "facilityService": true,
+      "id": "3",
+      "name": "Badanie USG jajników",
+      "specializationId": 1
+    },
+    {
+      "doneByMedicalStaff": true,
+      "facilityService": true,
+      "id": "4",
+      "name": "Badanie krwi - Morfologia",
+      "specializationId": 0
+    },
+    {
+      "doneByMedicalStaff": false,
+      "facilityService": false,
+      "id": "5",
+      "name": "Teleporada",
+      "specializationId": 2
+    },
+    {
+      "doneByMedicalStaff": false,
+      "facilityService": true,
+      "id": "6",
+      "name": "Konsultacja dermatologiczna",
+      "specializationId": 3
+    }
+  ]
+}

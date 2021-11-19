@@ -51,19 +51,26 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
     useEffect(()=>{
         if(service !== undefined){
-            const getDoctors = async () =>{
-                const doctors = await fetchDoctors()
-                setDoctors(doctors)
+            if(service.doneByMedicalStaff === false){
+                const getDoctors = async () =>{
+                    const doctors = await fetchDoctors()
+                    setDoctors(doctors)
+                    const doctorSelect = document.querySelector('#doctorr');
+                    doctorSelect.disabled = false;
+                }
+                getDoctors()
+            }else{
+                const doctorSelect = document.querySelector('#doctorr');
+                doctorSelect.disabled = true;
             }
-
-            getDoctors()
         }
 
     },[service])
 
     useEffect(()=>{
         if(receivedReferral !== undefined){
-            if(receivedReferral.service.facility === true){
+            setSelectedReferral(receivedReferral);
+            if(receivedReferral.medicalServiceDTO.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
                 radioBtnFacility.checked = true;
@@ -72,14 +79,14 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
-            setService(receivedReferral.service);
+            setService(receivedReferral.medicalServiceDTO);
         }
 
     },[receivedReferral])
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
-            if(selectedReferral.service.facility === true){
+            if(selectedReferral.medicalServiceDTO.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
                 radioBtnFacility.checked = true;
@@ -88,7 +95,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
-            setService(selectedReferral.service);
+            setService(selectedReferral.medicalServiceDTO);
         }
 
     }, [selectedReferral])
@@ -102,8 +109,6 @@ const NewAppointmentForm = ({getAppointments}) =>{
         }
         getReferrals()
     }, [])
-
-
 
 
     const fetchReferrals = async () =>{
@@ -121,14 +126,10 @@ const NewAppointmentForm = ({getAppointments}) =>{
     }
 
     const fetchServices = async (type) =>{
-        const res = await fetch('http://localhost:5000/services?facility='+type)
+        const res = await fetch('http://localhost:5000/services?facilityService='+type)
         const data = await res.json();
 
         return data;
-    }
-
-    function fetchAvailableAppointments(){
-        return  fetch('http://localhost:5000/availableApps');
     }
 
 
@@ -169,15 +170,24 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
     function handleSubmit(e){
         e.preventDefault();
+
         const errors = findFormErrors();
 
         if(Object.keys(errors).length > 0){
             setErrors(errors)
         }else{
             if(doctor !== undefined){
-                getAppointments(appointmentType, language, service, doctor, dateFrom, dateTo);
+                if(selectedReferral !== undefined){
+                    getAppointments(appointmentType, language, service, doctor, dateFrom, dateTo, selectedReferral);
+                }else{
+                    getAppointments(appointmentType, language, service, doctor, dateFrom, dateTo, null);
+                }
             }else{
-                getAppointments(appointmentType, language, service, null,  dateFrom, dateTo);
+                if(selectedReferral !== undefined){
+                    getAppointments(appointmentType, language, service, null,  dateFrom, dateTo, selectedReferral);
+                }else{
+                    getAppointments(appointmentType, language, service, null,  dateFrom, dateTo, null);
+                }
             }
         }
     }
@@ -234,7 +244,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                         <Form.Group className="mb-3">
                             <Form.Label>Usługa:</Form.Label>
                             <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                                <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.service.name : "Wybierz usługę"}</option>
+                                <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalServiceDTO.name : "Wybierz usługę"}</option>
                                 {services.map((ser)=>(
                                     <option value={ser.name} onClick={(e)=>{
                                         setService(ser);
@@ -250,7 +260,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Lekarz:</Form.Label>
-                            <Form.Select>
+                            <Form.Select id='doctorr'>
                                 <option value="0">Wybierz lekarza</option>
                                 {doctors.map((doc) =>(
                                     <option value={doc.firstName + ' ' + doc.lastName} onClick={(e)=>setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
@@ -272,7 +282,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                             </Col>
                         </Row>
                         <div style={{display:"flex", justifyContent: 'center'}}>
-                            <Button variant='primary' onClick={e=>handleSubmit(e)} >Szukaj wizyty</Button>
+                            <Button variant='primary' onClick={e=>handleSubmit(e)}>Szukaj wizyty</Button>
                         </div>
                     </Form>
     )

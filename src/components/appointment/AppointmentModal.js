@@ -2,29 +2,58 @@ import React from 'react';
 import {useState, useEffect} from "react";
 import {useHistory} from 'react-router';
 
-const AppointmentModal = ({selectedAppointment, setOpenModal}) => {
+const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral}) => {
     const history = useHistory();
     const [appointment, setAppointment] = useState(selectedAppointment);
+    const [referral, setReferral] = useState(selectedReferral);
 
     useEffect(()=>{
-        if(selectedAppointment!==undefined){
+        if(selectedAppointment !== undefined){
             setAppointment(selectedAppointment);
+
         }
     }, [selectedAppointment])
 
+    useEffect(()=>{
+        if(selectedReferral !== undefined){
+            setReferral(selectedReferral);
+        }
+    },[selectedReferral])
+
     function bookAnAppointment(e){
         e.preventDefault();
+
+        //bedzie inna koncowka
+        //http://localhost:8080/appointments/{id}/reservation    PATCH
+
+        const formatYmd = date => date.toISOString().slice(0, 10);
+        let data;
+        if(referral !== null){
+            data = {
+                patientId : 1,
+                referralId : referral.id
+            }
+        }else{
+            data = {
+                patientId : 1
+            }
+        }
+
+        if(formatYmd(new Date()) === appointment.date.slice(0,10)){
+            data = {
+                ...data,
+                confirmed : true
+            };
+        }
 
         fetch(`http://localhost:5000/appointments/${selectedAppointment.id}`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                patientId : 1
-            }),
+            body: JSON.stringify(data),
         }).then((res) => res.json())
-            .then(window.alert('umówiono wizytę'))
+            .then(window.alert('Umówiono wizytę'))
             .then(history.push({
                 pathname : '/wizyty'
             })).catch((err)=> console.log(err));
@@ -57,6 +86,10 @@ const AppointmentModal = ({selectedAppointment, setOpenModal}) => {
                     {appointment.doctor &&  <div className="modalSection">
                         <p>Doktor:</p>
                         <p>{appointment.doctor.firstName + ' ' + appointment.doctor.lastName}</p>
+                    </div>}
+                    {referral !== null && <div className="modalSection">
+                        <p>Wykorzystane skierowanie:</p>
+                        <p>{referral ? 'tak' : 'nie'}</p>
                     </div>}
                 </div>
                 <div className="modalFooter">

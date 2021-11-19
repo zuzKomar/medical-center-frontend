@@ -10,11 +10,13 @@ const NewAppointment = () =>{
     const [appointments, setAppointments] = useState([]);
     const [receivedService, setReceivedService] = useState(undefined);
     const [selectedAppointment, setSelectedAppointment] = useState(undefined);
+    const [selectedReferral, setSelectedReferral] = useState(undefined);
     const [openModal, setOpenModal] = useState(false);
 
 
-    function handleAppointmentSearch(appointmentType, language, service, doctor, dateFrom, dateTo){
+    function handleAppointmentSearch(appointmentType, language, service, doctor, dateFrom, dateTo, selectedReferral){
         setReceivedService(service);
+        setSelectedReferral(selectedReferral);
     }
 
     useEffect(()=>{
@@ -32,7 +34,6 @@ const NewAppointment = () =>{
     useEffect(()=>{
         if(selectedAppointment!==undefined){
             setSelectedAppointment(selectedAppointment)
-            console.log(selectedAppointment.id);
         }
     }, [selectedAppointment])
 
@@ -49,13 +50,13 @@ const NewAppointment = () =>{
                 <h2>Nowa wizyta</h2>
             </div>
                 <NewAppointmentForm getAppointments={handleAppointmentSearch}/>
-            {appointments.length > 0 ? <h3>Dostępne wizyty</h3> : ''}
+            {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>Dostępne wizyty</h3> : ''}
             {appointments.length > 0 ?
                 appointments.map((app)=>(
                 <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
             )) : (receivedService!== undefined ? 'Brak dostępnych wizyt spełniających wybrane kryteria' : '')}
 
-            {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal}/> : ''}
+            {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral}/> : ''}
         </div>
     )
 }
