@@ -19,7 +19,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
     const [appointmentType, setAppointmentType] = useState(undefined);
     const [language, setLanguage] = useState(languages[0]);
     const [service, setService] = useState(undefined);
-    const [receivedReferral, setReceivedRefferal] = useState(referral ? referral : undefined);
+    const [receivedReferral, setReceivedReferral] = useState(referral ? referral : undefined);
     const [selectedReferral, setSelectedReferral] = useState(receivedReferral ? receivedReferral : undefined);
     const [doctor, setSelectedDoctor] = useState(undefined);
 
@@ -102,21 +102,30 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
 
 
+    // Getting patient's referrals
     useEffect(()=>{
-        const getReferrals = async () =>{
-            const referrals = await fetchReferrals()
-            setReferrals(referrals)
+        async function fetchReferrals() {
+            const response = await fetch('http://localhost:8080/patients/1/referrals')
+            await response.json().then(data => {
+                setReferrals(data)
+            }).catch(err => {
+                console.log(err)
+            });
         }
-        getReferrals()
-    }, [])
+        fetchReferrals();
+    }, []);
 
 
-    const fetchReferrals = async () =>{
-        const res = await fetch('http://localhost:5000/referrals')
-        const data = await res.json();
-
-        return data;
-    }
+    // const fetchReferrals = async () =>{
+    //     await fetch('http://localhost:8080/patients/1/referrals')
+    //         .then((response) => {
+    //             return response.json().then((data) => {
+    //                 return data;
+    //             }).catch((err) => {
+    //                 console.log(err);
+    //             })
+    //         });
+    // }
 
     const fetchDoctors = async () =>{
         const res = await fetch('http://localhost:5000/doctors')
@@ -219,9 +228,9 @@ const NewAppointmentForm = ({getAppointments}) =>{
                             <Col>
                                 <Form.Group>
                                     <Form.Label>Język:</Form.Label>
-                                    <Form.Select id='selectedLanguage'>
+                                    <Form.Select id='selectedLanguage' onChange={e => setLanguage(e.target.value)}>
                                         {languages.map((lang)=>(
-                                            <option value={lang} onClick={(e)=>setLanguage(lang)}>{lang}</option>
+                                            <option value={lang} >{lang}</option>
                                         ))}
                                     </Form.Select>
                                 </Form.Group>
