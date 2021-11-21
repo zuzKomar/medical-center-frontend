@@ -23,9 +23,6 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
     function bookAnAppointment(e){
         e.preventDefault();
 
-        //bedzie inna koncowka
-        //http://localhost:8080/appointments/{id}/reservation    PATCH
-
         const formatYmd = date => date.toISOString().slice(0, 10);
         let data;
         if(referral !== null){
@@ -46,7 +43,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
             };
         }
 
-        fetch(`http://localhost:5000/appointments/${selectedAppointment.id}`,{
+        fetch(`http://localhost:8080/appointments/${selectedAppointment.id}/reserve`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',

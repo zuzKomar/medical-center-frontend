@@ -68,7 +68,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                 ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.confirmed === true) ? 'appointmentAndCheckup todayApp' :
                 'appointmentAndCheckup archivalApp') : ''} onClick={e=>togglePanel(e)}>
                 <div className="top">
-                    <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : '')}</p>
+                    <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : app.serviceName)}</p>
                     <div className="data">
                         <p>Data:</p>
                         <p>{app.date ? new Date(app.date).toISOString().slice(0,10) : ''}</p>
@@ -87,33 +87,35 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                         <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
                     }
                 </div> : ''}
+                {app.recommendations  ? <>
+                    {open ? (
+                        <div>
+                            <hr/>
+                            <div className="subsections">
+                                <FaCheck size={42}/>
+                                <p className="header">Zalecenia</p>
+                            </div>
+                            <ol>
+                                <li>{app.recommendations}</li>
+                            </ol>
+                            <hr/>
 
-                {open ? (
-                    <div>
-                        <hr/>
-                        <div className="subsections">
-                            <FaCheck size={42}/>
-                            <p className="header">Opis</p>
-                        </div>
-                        <ol>
-                            <li>{app.description}</li>
-                        </ol>
-                        <hr/>
+                            <div className="subsections">
+                                <FaFile size={42}/>
+                                <p className="header">Zrealizowane badania</p>
+                            </div>
+                            <p>{app.serviceName}</p>
+                            <hr/>
 
-                        <div className="subsections">
-                            <FaFile size={42}/>
-                            <p className="header">Zrealizowane badania</p>
-                        </div>
-                        <p>{(app.service ? (app.service.name) : 'Brak badań zrealizowanych podczas wizyty')}</p>
-                        <hr/>
+                            <div className="subsections">
+                                <GiMedicines size={42}/>
+                                <p className="header">e-Recepty</p>
+                            </div>
+                            <p>{app.prescriptions ? 'Wystawiono elektroniczną receptę': 'Brak recept'}</p>
 
-                        <div className="subsections">
-                            <GiMedicines size={42}/>
-                            <p className="header">e-Recepty</p>
-                        </div>
-                        <p>Brak recept wystawionych na tej wizycie</p>
+                        </div>) : null}
+                    </> : null}
 
-                    </div>) : null}
             </div>);
 }
 

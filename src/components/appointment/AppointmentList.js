@@ -18,7 +18,6 @@ const AppointmentList = () =>{
     useEffect(() =>{
         const getAppointments = async () =>{
             const appointments = await fetchAppointments()
-                .then(apps=>apps.filter(app=>(app.patientId === 1)))
                 .then(apps=>apps.sort((a,b)=>new Date(b.date) - new Date(a.date)))
             setAppointments(appointments)
             setFilteredAppointments(appointments)
@@ -40,13 +39,16 @@ const AppointmentList = () =>{
         }
     },[canceledAppointment])
 
-    //dorobić drugi get na planned appointments
-    //przerobić istniejący get na done appointments
-    const fetchAppointments = async () =>{
-        const res = await fetch('http://localhost:5000/appointments')
-        const data = await res.json()
 
-        return data
+    const fetchAppointments = async () =>{
+        const res1 = await fetch('http://localhost:8080/patients/1/doneAppointments');
+        const data1 = await res1.json();
+        const res2 = await fetch('http://localhost:8080/patients/1/plannedAppointments');
+        const data2 = await res2.json();
+        const data = data2.concat(data1);
+
+        return data;
+
     }
 
     const handleFacilityFilter = () =>{

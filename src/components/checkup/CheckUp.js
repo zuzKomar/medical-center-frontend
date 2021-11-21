@@ -19,16 +19,16 @@ class CheckUp extends React.Component{
         return(
             <div className="appointmentAndCheckup" onClick={(e)=> this.togglePanel(e)}>
                 <div className="top">
-                    <p className="appointmentAndCheckupHeader">{(checkup.checkup ? checkup.checkup.name : '')}</p>
+                    <p className="appointmentAndCheckupHeader">{checkup.diagnosticTestName}</p>
                     <div className="data">
-                        <p>Data:</p>
-                        <p>{new Date(checkup.appointment.date).toISOString().slice(0,10)}</p>
-                        <p>{new Date(checkup.appointment.date).toISOString().slice(11,16)}</p>
+                        {/*<p>Data:</p>*/}
+                        {/*<p>{new Date(checkup.appointment.date).toISOString().slice(0,10)}</p>*/}
+                        {/*<p>{new Date(checkup.appointment.date).toISOString().slice(11,16)}</p>*/}
                     </div>
                 </div>
                 <div>
                     <FaRegUser size={42}/>
-                    lek.med. {(checkup.appointment ? (checkup.appointment.doctor.person.firstName + ' ' + checkup.appointment.doctor.person.lastName) : '')}
+                    Pracownik medyczny
                 </div>
 
                 {this.state.open ? (

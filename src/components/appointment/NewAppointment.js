@@ -12,18 +12,30 @@ const NewAppointment = () =>{
     const [selectedAppointment, setSelectedAppointment] = useState(undefined);
     const [selectedReferral, setSelectedReferral] = useState(undefined);
     const [openModal, setOpenModal] = useState(false);
+    const [dateFrom, setDateFrom] = useState(undefined);
+    const [dateTo, setDateTo] = useState(undefined);
+    const [doctor, setDoctor] = useState(undefined);
+    const [language, setLanguage] = useState(undefined);
 
 
     function handleAppointmentSearch(appointmentType, language, service, doctor, dateFrom, dateTo, selectedReferral){
         setReceivedService(service);
         setSelectedReferral(selectedReferral);
+        setDateFrom(dateFrom);
+        setDateTo(dateTo);
+        setDoctor(doctor);
+        if(language==='polski'){
+            setLanguage("PL");
+        }else{
+            setLanguage("EN");
+        }
     }
 
     useEffect(()=>{
         if(receivedService !== undefined){
             const getAvailableAppointments = async () =>{
-                const apps = await fetchAppointments()
-                    .then(apps=>apps.filter(app=>(app.patientId === null)))
+                const apps = await fetchAppointments();
+
                 setAppointments(apps)
             }
 
@@ -38,7 +50,13 @@ const NewAppointment = () =>{
     }, [selectedAppointment])
 
     const fetchAppointments = async ()=>{
-        const res = await fetch('http://localhost:5000/appointments')
+        let res;
+        if(doctor!==null){
+            res = await fetch(`http://localhost:8080/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+        }else{
+            res = await fetch(`http://localhost:8080/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+        }
+
         const data = await res.json();
 
         return data;

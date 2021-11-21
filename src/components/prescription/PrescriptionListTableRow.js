@@ -4,19 +4,19 @@ const PrescriptionListTableRow = ({prescription}) =>{
 
     return(
         <tr key={prescription.id}>
-            <td>{prescription.dateFrom}</td>
+            <td>{prescription.creationDate}</td>
             <td>
-                {(prescription.medicines ?
+                {(prescription.medications ?
                     <ul>
-                    {prescription.medicines.map((medicine)=>(
-                        <li key={medicine.id}>{medicine.medicine.name}</li>
+                    {prescription.medications.map((medicine)=>(
+                        <li key={medicine.id}>{medicine.name}</li>
                     ))}
                     </ul> : '')}
             </td>
             <td>
-                {(prescription.medicines ?
+                {(prescription.medications ?
                     <ul>
-                    {prescription.medicines.map((medicine)=>(
+                    {prescription.medications.map((medicine)=>(
                         <li key={medicine.id}>{medicine.numberOfPackages}</li>
                     ))}
                     </ul> : '')}

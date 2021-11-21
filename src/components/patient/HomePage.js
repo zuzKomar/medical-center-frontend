@@ -23,17 +23,16 @@ const HomePage = () => {
     if(!data) {
         return null;
     }else{
-
         return(
-            <main>
-                <div>
+
+                <div className="itemsList">
                     <div className="listHeader">
                         <h2>Twoje dane</h2>
                     </div>
                     <form className="form">
                         <div>
                             <label htmlFor="firstName">Imię</label>
-                            <input type="text" name="firstName" defaultValue={data.firstName} />
+                            <input type="text" name="firstName" value={data.firstName} />
                         </div>
 
                         <div>
@@ -64,21 +63,21 @@ const HomePage = () => {
 
                         <div>
                             <label htmlFor="country">Państwo</label>
-                            <input type="text" name="country" defaultValue={data.address.country} />
+                            <input type="text" name="country" defaultValue={data.address ? data.address.country : ''} />
                         </div>
 
                         <div>
                             <label htmlFor="city">Miasto</label>
-                            <input type="text" name="city" defaultValue={data.address.city} />
+                            <input type="text" name="city" defaultValue={data.address ? data.address.city : ''} />
                         </div>
 
                         <div>
                             <label htmlFor="street">Ulica</label>
-                            <input type="text" name="street" defaultValue={data.address.street + ' ' +data.address.streetNumber} />
+                            <input type="text" name="street" defaultValue={data.address ? (data.address.street + ' ' +data.address.streetNumber) : ''} />
                         </div>
                     </form>
                 </div>
-            </main>
+
         )
     }
 }

@@ -14,7 +14,7 @@ const CheckUpList = () =>{
     },[])
 
     const fetchCheckups = async () =>{
-        const res = await fetch('http://localhost:5000/appointmentCheckups')
+        const res = await fetch('http://localhost:8080/patients/1/diagnosticTests')
         const data = await res.json();
 
         return data;

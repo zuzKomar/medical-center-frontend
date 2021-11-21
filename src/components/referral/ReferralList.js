@@ -17,7 +17,6 @@ const ReferralList = () =>{
 
     useEffect(()=>{
         if(selectedReferral!==undefined) {
-            console.log(selectedReferral.id);
             setReferrals(referrals.filter(filterReferrals));
 
         }
@@ -25,7 +24,7 @@ const ReferralList = () =>{
 
 
     const fetchReferrals = async() => {
-        const res = await fetch('http://localhost:5000/referrals')
+        const res = await fetch('http://localhost:8080/patients/1/referrals')
         const data = await res.json()
 
         return data

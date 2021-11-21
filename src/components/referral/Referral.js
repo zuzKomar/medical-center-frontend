@@ -15,7 +15,7 @@ const Referral = ({referral, setSelectedReferral}) =>{
     const handleClick = (e)=>{
         e.preventDefault();
         setSelectedReferral(referral);
-        console.log(referral.id);
+
         history.push({
             pathname: '/nowa-wizyta',
             state: ref
@@ -25,7 +25,7 @@ const Referral = ({referral, setSelectedReferral}) =>{
 return(
     <div className="referral">
         <div className="referralDiv1">
-            <p className="referralHeader">{ref.medicalServiceDTO.name}</p>
+            <p className="referralHeader">{ref.medicalService.name}</p>
             {/*<label className="serviceType">{ref.medicalServiceDTO.name}</label>*/}
         </div>
         <div className="referralDiv2">

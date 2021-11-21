@@ -17,17 +17,17 @@ const PrescriptionRenewal = () =>{
 
 
     const fetchPrescriptions = async () =>{
-        const res = await fetch('http://localhost:5000/prescriptions')
+        const res = await fetch('http://localhost:8080/patients/1/prescriptions')
         const data = await res.json()
         let medicines = [];
 
         data.map((prescription) =>{
-            prescription.medicines.map((med)=>{
-                if(med.medicine.extandable === true){
+            prescription.medications.map((med)=>{
+                if(med.extendable === true){
                     const medicine = {
                         ...med,
-                        dateFrom : prescription.dateFrom,
-                        doctor : prescription.doctor.person.firstName + ' ' + prescription.doctor.person.lastName
+                        creationDate : prescription.creationDate,
+                        doctor : prescription.doctorFirstName + ' ' + prescription.doctorLastName
                     };
                     medicines.push(medicine);
                 }

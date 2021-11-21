@@ -18,7 +18,7 @@ const PrescriptionList = () =>{
 
 
     const fetchPrescriptions = async () =>{
-        const res = await fetch('http://localhost:5000/prescriptions')
+        const res = await fetch('http://localhost:8080/patients/1/prescriptions')
         const data = await res.json();
 
         return data;

@@ -19,7 +19,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
     const [appointmentType, setAppointmentType] = useState(undefined);
     const [language, setLanguage] = useState(languages[0]);
     const [service, setService] = useState(undefined);
-    const [receivedReferral, setReceivedRefferal] = useState(referral ? referral : undefined);
+    const [receivedReferral, setReceivedReferral] = useState(referral ? referral : undefined);
     const [selectedReferral, setSelectedReferral] = useState(receivedReferral ? receivedReferral : undefined);
     const [doctor, setSelectedDoctor] = useState(undefined);
 
@@ -70,7 +70,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
     useEffect(()=>{
         if(receivedReferral !== undefined){
             setSelectedReferral(receivedReferral);
-            if(receivedReferral.medicalServiceDTO.facilityService === true){
+            if(receivedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
                 radioBtnFacility.checked = true;
@@ -79,14 +79,14 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
-            setService(receivedReferral.medicalServiceDTO);
+            setService(receivedReferral.medicalService);
         }
 
     },[receivedReferral])
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
-            if(selectedReferral.medicalServiceDTO.facilityService === true){
+            if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
                 radioBtnFacility.checked = true;
@@ -95,7 +95,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
-            setService(selectedReferral.medicalServiceDTO);
+            setService(selectedReferral.medicalService);
         }
 
     }, [selectedReferral])
@@ -112,21 +112,33 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
 
     const fetchReferrals = async () =>{
-        const res = await fetch('http://localhost:5000/referrals')
+        const res = await fetch('http://localhost:8080/patients/1/referrals');
         const data = await res.json();
 
         return data;
     }
 
     const fetchDoctors = async () =>{
-        const res = await fetch('http://localhost:5000/doctors')
+        let res;
+        if(language === 'polski'){
+            res = await fetch('http://localhost:8080/doctors/services?language=PL&medicalServiceId='+service.id);
+        }else{
+            res = await fetch('http://localhost:8080/doctors/services?language=EN&medicalServiceId='+service.id);
+        }
+
         const data = await res.json();
 
         return data;
     }
 
     const fetchServices = async (type) =>{
-        const res = await fetch('http://localhost:5000/services?facilityService='+type)
+        let res;
+        if(type === true){
+            res = await fetch("http://localhost:8080/medicalServices?type=FACILITY");
+        }else{
+            res = await fetch("http://localhost:8080/medicalServices?type=TELEPHONE");
+        }
+
         const data = await res.json();
 
         return data;
@@ -244,7 +256,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                         <Form.Group className="mb-3">
                             <Form.Label>Usługa:</Form.Label>
                             <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                                <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalServiceDTO.name : "Wybierz usługę"}</option>
+                                <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
                                 {services.map((ser)=>(
                                     <option value={ser.name} onClick={(e)=>{
                                         setService(ser);
