@@ -111,6 +111,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 setAppointmentType('TELEPHONE');
                 radioBtnPhone.checked = true;
             }
+            setService(parsedSelectedReferral.medicalService);
 
             radioBtnFacility.disabled = true;
             radioBtnPhone.disabled = true;
@@ -118,7 +119,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
             radioBtnFacility.disabled = false;
             radioBtnPhone.disabled = false;
         }
-    })
+    }, [selectedReferral])
 
     // Getting patient's referrals
     useEffect(()=>{
@@ -132,9 +133,6 @@ const NewAppointmentForm = ({getAppointments}) =>{
         }
         fetchReferrals();
     }, []);
-
-
-
 
     // const fetchReferrals = async () =>{
     //     await fetch('http://localhost:8080/patients/1/referrals')
@@ -259,7 +257,6 @@ const NewAppointmentForm = ({getAppointments}) =>{
                     <Form.Group>
                         <Form.Label>Skierowanie:</Form.Label>
                         <Form.Select id='selectedReferral' defaultValue={"default"} onChange={e => {
-                            console.log(JSON.stringify(e.target.value));
                             setSelectedReferral(e.target.value);
                         }}>
                             <option value="default">"Wykorzystaj skierowanie"</option>
@@ -281,21 +278,10 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 <Form.Select id='selectService' defaultValue={"default"} isInvalid={!!errors.serviceMess} onChange={e => {
                     setService(e.target.value);
                 }}>
-                    {/*<option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalServiceDTO.name : "Wybierz usługę"}</option>*/}
                     <option value="default">"Wybierz usługę"</option>
                     {services.map((service) => (
                         <option key={service.id} value={service}>{service.name}</option>
                     ))}
-                    {/*{services.map((ser)=>(*/}
-                    {/*    <option value={ser.name} onClick={(e)=>{*/}
-                    {/*        setService(ser);*/}
-                    {/*        if(!!errors['serviceMess'])*/}
-                    {/*            setErrors({*/}
-                    {/*                ...errors,*/}
-                    {/*                ['serviceMess']:null*/}
-                    {/*            })*/}
-                    {/*    }}>{ser.name}</option>*/}
-                    {/*))}*/}
                 </Form.Select>
                 <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
             </Form.Group>
