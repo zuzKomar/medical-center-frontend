@@ -12,7 +12,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
     useEffect(()=>{
         if(appointment!==undefined){
             setAppointment(appointment);
-            console.log(appointment.date);
+
         }
     }, [appointment])
 
