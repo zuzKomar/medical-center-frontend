@@ -12,6 +12,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
     useEffect(()=>{
         if(appointment!==undefined){
             setAppointment(appointment);
+            console.log(appointment.date);
         }
     }, [appointment])
 
@@ -60,7 +61,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
             .catch((err)=>console.log(err));
     }
 
-
+    var x = (new Date()).getTimezoneOffset() * 60000;
     const formatYmd = date => date.toISOString().slice(0, 10);
         return(
             <div className={app.date ? (new Date(new Date().setDate(new Date().getDate()+1)) < (new Date(app.date.slice(0,10)))) ? 'appointmentAndCheckup incomingApp'  :
@@ -71,8 +72,8 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : app.serviceName)}</p>
                     <div className="data">
                         <p>Data:</p>
-                        <p>{app.date ? new Date(app.date).toISOString().slice(0,10) : ''}</p>
-                        <p>{app.date ? new Date(app.date).toISOString().slice(11,16) : ''}</p>
+                        <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
+                        <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                     </div>
                 </div>
                 {app.date? <div style={{display: 'flex', justifyContent:'space-between'}}>
