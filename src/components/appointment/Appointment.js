@@ -83,7 +83,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                     {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.confirmed === false))&&
                         <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
                     }
-                    {(new Date(new Date().setDate(new Date().getDate())) <= (new Date(app.date.slice(0,10)))) &&
+                    {((new Date(new Date().setDate(new Date().getDate())) <= (new Date(app.date.slice(0,10))))&&(app.confirmed === false)) &&
                         <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
                     }
                 </div> : ''}

@@ -21,9 +21,9 @@ class CheckUp extends React.Component{
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{checkup.diagnosticTestName}</p>
                     <div className="data">
-                        {/*<p>Data:</p>*/}
-                        {/*<p>{new Date(checkup.appointment.date).toISOString().slice(0,10)}</p>*/}
-                        {/*<p>{new Date(checkup.appointment.date).toISOString().slice(11,16)}</p>*/}
+                        <p>Data:</p>
+                        <p>{new Date(checkup.appointmentDate).toISOString().slice(0,10)}</p>
+                        <p>{new Date(checkup.appointmentDate).toISOString().slice(11,16)}</p>
                     </div>
                 </div>
                 <div>
