@@ -5,18 +5,18 @@ import Button from "react-bootstrap/Button";
 import {Formik} from "formik";
 import * as yup from "yup";
 
-const schema = yup.object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    pesel: yup.string().required(),
-    birthDate: yup.date().required(),
-    phoneNumber: yup.string().required(),
-    email: yup.string().required(),
-    street: yup.string().required(),
-    streetNumber: yup.string().required(),
-    city: yup.string().required(),
-    postCode: yup.string().required(),
-    country: yup.string().required()
+const schema = yup.object().shape({
+    firstName: yup.string().min(2, 'Imię powinno zawierać min. 2 znaki').max(50, 'Imię powinno zawierać maks. 50 znaków').required('Pole wymagane!'),
+    lastName: yup.string().min(2, 'Nazwisko powinno zawierać min. 2 znaki').max(50, 'Nazwisko powinno zawierać maks. 50 znaków').required('Pole wymagane!'),
+    pesel: yup.string().min(11, 'Pesel powinien zawierać 11 cyfr').max(11, 'Pesel powinien zawierać 11 cyfr').required('Pole wymagane!'),
+    birthDate: yup.date().required('Pole wymagane!'),
+    phoneNumber: yup.string().min(9, 'Numer telefonu powinien miec min. 9 cyfr').required('Pole wymagane!'),
+    email: yup.string().email('Nieprawidłowy adres email').required('Pole wymagane!'),
+    street: yup.string().min(2).required('Pole wymagane!'),
+    streetNumber: yup.string().required('Pole wymagane!'),
+    city: yup.string().required('Pole wymagane!'),
+    postCode: yup.string().required('Pole wymagane!'),
+    country: yup.string().required('Pole wymagane!')
 });
 
 const HomePage = () => {
@@ -108,8 +108,11 @@ const HomePage = () => {
                         <h2>Twoje dane</h2>
                     </div>
                     <Formik validationSchema={schema}
-                            enableReinitialize
-                            onSubmit={(e)=>handleSubmit(e)}
+                            enableReinitialize={true}
+                            onSubmit={handleSubmit}
+                            initialErrors={{}}
+                            validateOnChange={true}
+                            validateOnMount={true}
                             initialValues={{
                         firstName : firstName,
                         lastName : lastName,
@@ -124,27 +127,26 @@ const HomePage = () => {
                         country : country
                     }} >
                         {({
-                            handleSubmit,
                             handleChange,
-                            handleBlur,
+                            handleSubmit,
                             values,
                             touched,
                             isValid,
                             errors
                         })=>(
-                            <Form className="newAppointmentForm" onSubmit={handleSubmit} noValidate>
+                            <Form className="newAppointmentForm" onSubmit={handleSubmit}>
                                 <Row className="align-items-center mb-3">
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Imię:</Form.Label>
-                                            <Form.Control type="text" name="firstName" placeholder="Imię" size="lg" defaultValue={values.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
+                                            <Form.Control type="text" name="firstName" placeholder="Imię" size="lg" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
                                             <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Nazwisko:</Form.Label>
-                                            <Form.Control type="text" name="lastName" placeholder="Nazwisko" size="lg" defaultValue={values.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
+                                            <Form.Control type="text" name="lastName" placeholder="Nazwisko" size="lg"  defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
                                             <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -153,14 +155,15 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Pesel:</Form.Label>
-                                            <Form.Control type="text" name="pesel" placeholder="PESEL" size="lg" defaultValue={values.pesel} isValid={touched.pesel && !errors.pesel} onChange={(e)=>setPesel(e.target.value)}/>
+                                            <Form.Control type="text" name="pesel" placeholder="PESEL" size="lg" defaultValue={values.pesel} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={(e)=>setPesel(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Data urodzenia:</Form.Label>
-                                            <Form.Control type="date" name="birthDate" placeholder="Data urodzenia" size="lg" defaultValue={values.birthDate} isValid={touched.birthDate && !errors.birthDate} onChange={(e)=>setBirthDate(e.target.value)}/>
+                                            <Form.Control type="date" name="birthDate" placeholder="Data urodzenia" size="lg" defaultValue={values.birthDate} isInvalid={!!errors.birthDate} isValid={touched.birthDate && !errors.birthDate} onChange={(e)=>setBirthDate(e.target.value)}/>
+                                            <Form.Control.Feedback type="invalid">{errors.birthDate}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                 </Row>
@@ -168,13 +171,14 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Telefon:</Form.Label>
-                                            <Form.Control type="text" name="phoneNumber "placeholder="Telefon" size="lg" defaultValue={values.phoneNumber} isValid={touched.phoneNumber && !errors.phoneNumber} onChange={(e)=>setPhone(e.target.value)}/>
+                                            <Form.Control type="text" name="phoneNumber" placeholder="Telefon" size="lg" defaultValue={values.phoneNumber} isInvalid={!!errors.phoneNumber} isValid={touched.phoneNumber && !errors.phoneNumber} onChange={(e)=>setPhone(e.target.value)}/>
+                                            <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Email:</Form.Label>
-                                            <Form.Control type="email" name="email" placeholder="Email" size="lg" defaultValue={values.email} isValid={touched.email && !errors.email} onChange={(e)=>setEmail(e.target.value)}/>
+                                            <Form.Control type="email" name="email" placeholder="Email" size="lg" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={(e)=>setEmail(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -184,14 +188,14 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Ulica:</Form.Label>
-                                            <Form.Control type="text" name="street "placeholder="Ulica" size="lg" defaultValue={values.street} isValid={touched.street && !errors.street} onChange={(e)=>setStreet(e.target.value)}/>
+                                            <Form.Control type="text" name="street" placeholder="Ulica" size="lg" defaultValue={values.street} isInvalid={!!errors.street} isValid={touched.street && !errors.street} onChange={(e)=>setStreet(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.street}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Numer:</Form.Label>
-                                            <Form.Control type="text" name="streetNumber" placeholder="Numer" size="lg" defaultValue={values.streetNumber} isValid={touched.streetNumber && !errors.streetNumber} onChange={(e)=>setStreetNumber(e.target.value)}/>
+                                            <Form.Control type="text" name="streetNumber" placeholder="Numer" size="lg" defaultValue={values.streetNumber} isInvalid={!!errors.streetNumber} isValid={touched.streetNumber && !errors.streetNumber} onChange={(e)=>setStreetNumber(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.streetNumber}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -200,14 +204,14 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Miasto:</Form.Label>
-                                            <Form.Control type="text" name="city" placeholder="Miasto" size="lg" defaultValue={values.city} isValid={touched.city && !errors.city} onChange={(e)=>setCity(e.target.value)}/>
+                                            <Form.Control type="text" name="city" placeholder="Miasto" size="lg" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={handleChange}/>
                                             <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Kod pocztowy:</Form.Label>
-                                            <Form.Control type="text" name="postCode" placeholder="Kod pocztowy" size="lg" defaultValue={values.postCode} isValid={touched.postCode && !errors.postCode} onChange={(e)=>setPostCode(e.target.value)}/>
+                                            <Form.Control type="text" name="postCode" placeholder="Kod pocztowy" size="lg" defaultValue={values.postCode} isInvalid={!!errors.postCode} isValid={touched.postCode && !errors.postCode} onChange={(e)=>setPostCode(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.postCode}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -216,7 +220,7 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Państwo:</Form.Label>
-                                            <Form.Control type="text" name="country" placeholder="Państwo" size="lg"defaultValue={values.country} isValid={touched.country && !errors.country} onChange={(e)=>setCountry(e.target.value)}/>
+                                            <Form.Control type="text" name="country" placeholder="Państwo" size="lg" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} onChange={(e)=>setCountry(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
