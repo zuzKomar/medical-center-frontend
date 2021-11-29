@@ -20,6 +20,8 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
         }
     },[selectedReferral])
 
+    var x = (new Date()).getTimezoneOffset() * 60000;
+
     function bookAnAppointment(e){
         e.preventDefault();
 
@@ -36,7 +38,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
             }
         }
 
-        if(formatYmd(new Date()) === appointment.date.slice(0,10)){
+        if(formatYmd(new Date()) === new Date(new Date(appointment.date)-x).toISOString().slice(0,10)){
             data = {
                 ...data,
                 confirmed : true
@@ -57,6 +59,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
     }
 
 
+    const formatYmd = date => date.toISOString().slice(0, 10);
     return (
         <div className="modalBackground">
             <div className='modalContainer'>
@@ -70,11 +73,15 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
                 <div className="modalBody">
                     <div className="modalSection">
                         <p>Data:</p>
-                        <p>{new Date(appointment.date).toISOString().slice(0,10)}</p>
+                        <p>{new Date(new Date(appointment.date)-x).toISOString().slice(0,10)}</p>
                     </div>
                     <div className="modalSection">
                         <p>Godzina:</p>
-                        <p>{new Date(appointment.date).toISOString().slice(11,16)}</p>
+                        <p>{new Date(new Date(appointment.date)-x).toISOString().slice(11,16)}</p>
+                    </div>
+                    <div className="modalSection">
+                        <p>Typ wizyty:</p>
+                        <p>{appointment.type === 'FACILITY' ? 'Wizyta w placówce' : 'Teleporada'}</p>
                     </div>
                     <div className="modalSection">
                         <p>Usługa:</p>
@@ -88,12 +95,15 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
                         <p>Wykorzystane skierowanie:</p>
                         <p>{referral ? 'tak' : 'nie'}</p>
                     </div>}
-                </div>
+                    {(new Date(new Date(appointment.date)-x).toISOString().slice(0,10) === (formatYmd(new Date()))) && <div className="warning">
+                        <p>Wizyta zostanie automatycznie potwierdzona</p>
+                    </div>}
                 <div className="modalFooter">
                     <button onClick={()=>setOpenModal(false)} className="cancelButton">Anuluj</button>
                     <button onClick={(e)=>bookAnAppointment(e)}>Potwierdź</button>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

@@ -27,7 +27,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
         updatedApp.confirmed = true;
         setAppointment(updatedApp);
 
-        fetch(`http://localhost:5000/appointments/${appointment.id}`, {
+        fetch(`http://localhost:8080/appointments/${appointment.id}/confirm`, {
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
         setAppointment(updatedApp);
 
 
-        fetch(`http://localhost:5000/appointments/${appointment.id}`,{
+        fetch(`http://localhost:8080/appointments/${appointment.id}/cancel`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                     {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.confirmed === false))&&
                         <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
                     }
-                    {((new Date(new Date().setDate(new Date().getDate())) <= (new Date(app.date.slice(0,10))))&&(app.confirmed === false)) &&
+                    {((formatYmd(new Date()) < formatYmd(new Date(new Date(app.date)-x)))&&(app.confirmed === true)) &&
                         <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
                     }
                 </div> : ''}

@@ -437,8 +437,8 @@ footer{
     margin-right: auto;
     left: 0;
     right: 0;
-    width: 500px;
-    height: 600px;
+    width: 30%;
+    height: 32%;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background: #ffffff;
@@ -483,8 +483,14 @@ footer{
     margin-top : 4%;
 }
 
-.modalContainer .modalFooter {
+.modalContainer .warning{
+    color: red;
+    font-size:80%;
+    display: flex;
+    justify-content: center;
+}
 
+.modalContainer .modalFooter {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -515,7 +521,7 @@ footer{
 }
 
 
-@media all and (max-width: 973px) {
+@media all and (max-width: 500px) {
     .nav{
         background-color: red;
     }
@@ -542,8 +548,8 @@ footer{
         margin-right: auto;
         left: 0;
         right: 0;
-        width: 400px;
-        height: 550px;
+        width: 90%;
+        height: 32%;
         border-radius: 12px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         background: #ffffff;
