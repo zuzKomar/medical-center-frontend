@@ -31,6 +31,8 @@ function Navigation(){
                         </Nav>
                         <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
                             <NavDropdown.Item href="/moje-konto">Moje konto</NavDropdown.Item>
+                            <NavDropdown.Item href="/moje-pliki">Moje pliki</NavDropdown.Item>
+                            <NavDropdown.Item href="/dodaj-plik">Dodaj plik</NavDropdown.Item>
                             <NavDropdown title="Język" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#angielski" >Angielski</NavDropdown.Item>
                                 <NavDropdown.Item href="#polski">Polski</NavDropdown.Item>
