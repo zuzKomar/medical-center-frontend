@@ -3,8 +3,9 @@ import {useState, useEffect} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Schedule from "./Schedule";
 
-const DoctorSchedule = () =>{
+const ScheduleForm = () =>{
     const [specializations, setSpecializations] = useState([]);
     const [doctors, setDoctors] = useState([]);
     const [selectedSpecialization, setSelectedSpecialization] = useState(undefined);
@@ -48,13 +49,15 @@ const DoctorSchedule = () =>{
         return data
     }
 
-    function clearSpecialization(e){
+    function clearSpecialization(){
         setSelectedSpecialization(undefined);
         setDoctors([]);
+        setSchedule(undefined);
     }
 
-    function clearDoctor(e){
+    function clearDoctor(){
         setSelectedDoctor(undefined);
+        setSchedule(undefined);
     }
 
     const findFormErrors = () =>{
@@ -84,10 +87,6 @@ const DoctorSchedule = () =>{
                 })
                 .catch((err)=>console.log(err));
         }
-
-        if(schedule !== undefined){
-           Object.entries(schedule).forEach(([key,value])=>Object.entries(value).forEach(([key,value])=>console.log(value)));
-        }
     }
 
     return(
@@ -101,10 +100,11 @@ const DoctorSchedule = () =>{
                         <Form.Group>
                             <Form.Label>Wybierz specjalizację:</Form.Label>
                             <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}>
-                                <option onClick={e=>clearSpecialization(e)}>{'Wybierz specjalizację'}</option>
+                                <option onClick={clearSpecialization}>{'Wybierz specjalizację'}</option>
                                 {specializations.map((spec)=>(
                                     <option value={spec} onClick={(e)=>{
                                         setSelectedSpecialization(spec);
+                                        setSchedule(undefined);
                                         if(!!errors['specialization'])
                                             setErrors({
                                                 ...errors,
@@ -122,10 +122,11 @@ const DoctorSchedule = () =>{
                         <Form.Group>
                             <Form.Label>Wybierz lekarza:</Form.Label>
                             <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor}>
-                                <option onClick={e=>clearDoctor(e)}>{'Wybierz lekarza'}</option>
+                                <option onClick={clearDoctor}>{'Wybierz lekarza'}</option>
                                 {doctors.map((doc)=>(
                                     <option value={doc} onClick={(e)=>{
                                         setSelectedDoctor(doc);
+                                        setSchedule(undefined);
                                         if(!!errors['doctor'])
                                             setErrors({
                                                 ...errors,
@@ -142,8 +143,10 @@ const DoctorSchedule = () =>{
                     <Button variant='primary' onClick={e=>handleSubmit(e)}>Pokaż grafik</Button>
                 </div>
             </Form>
+            {(schedule !== undefined && selectedDoctor !== undefined && selectedSpecialization !== undefined) &&
+            <Schedule schedule={schedule} />}
         </div>
     )
 }
 
-export default DoctorSchedule;
+export default ScheduleForm;

@@ -3,7 +3,7 @@ import HomePage from "./components/patient/HomePage";
 import AppointmentList from "./components/appointment/AppointmentList";
 import NewAppointment from "./components/appointment/NewAppointment";
 import ReferralList from "./components/referral/ReferralList";
-import DoctorSchedule from "./components/schedule/DoctorSchedule";
+import ScheduleForm from "./components/schedule/ScheduleForm";
 import CheckUpList from "./components/checkup/CheckUpList";
 import PrescriptionList from "./components/prescription/PrescriptionList";
 
@@ -27,7 +27,7 @@ function App() {
                       <Route exact path="/wizyty" component={AppointmentList}/>
                       <Route exact path="/nowa-wizyta" component={NewAppointment}/>
                       <Route exact path="/skierowania" component={ReferralList}/>
-                      <Route exact path="/grafik" component={DoctorSchedule}/>
+                      <Route exact path="/grafik" component={ScheduleForm}/>
                       <Route exact path="/badania" component={CheckUpList}/>
                       <Route exact path="/recepty" component={PrescriptionList}/>
                       <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
