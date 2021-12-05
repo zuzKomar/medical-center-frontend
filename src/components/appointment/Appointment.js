@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import {FaRegUser, FaCheck, FaFile} from 'react-icons/fa'
 import {GiMedicines} from 'react-icons/gi'
 import {Button} from "react-bootstrap";
+import {baseUrl} from "../../config/config";
 
 
 const Appointment = ({appointment, setCancelledAppointment}) =>{
@@ -27,7 +28,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
         updatedApp.confirmed = true;
         setAppointment(updatedApp);
 
-        fetch(`http://localhost:8080/appointments/${appointment.id}/confirm`, {
+        fetch(`${baseUrl}/appointments/${appointment.id}/confirm`, {
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
         setAppointment(updatedApp);
 
 
-        fetch(`http://localhost:8080/appointments/${appointment.id}/cancel`,{
+        fetch(`${baseUrl}/appointments/${appointment.id}/cancel`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',

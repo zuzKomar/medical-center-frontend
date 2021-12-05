@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Referral from "./Referral";
+import {baseUrl} from "../../config/config";
 
 
 const ReferralList = () =>{
@@ -24,7 +25,7 @@ const ReferralList = () =>{
 
 
     const fetchReferrals = async() => {
-        const res = await fetch('http://localhost:8080/patients/1/referrals')
+        const res = await fetch(`${baseUrl}/patients/1/referrals`)
         const data = await res.json()
 
         return data

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import PrescriptionListTable from "./PrescriptionListTable";
+import {baseUrl} from "../../config/config";
 
 const PrescriptionList = () =>{
 
@@ -18,7 +19,7 @@ const PrescriptionList = () =>{
 
 
     const fetchPrescriptions = async () =>{
-        const res = await fetch('http://localhost:8080/patients/1/prescriptions')
+        const res = await fetch(`${baseUrl}/patients/1/prescriptions`)
         const data = await res.json();
 
         return data;

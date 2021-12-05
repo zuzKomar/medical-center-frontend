@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import CheckUp from "./CheckUp";
+import {baseUrl} from "../../config/config";
 
 const CheckUpList = () =>{
 
@@ -14,7 +15,7 @@ const CheckUpList = () =>{
     },[])
 
     const fetchCheckups = async () =>{
-        const res = await fetch('http://localhost:8080/patients/1/diagnosticTests')
+        const res = await fetch(`${baseUrl}/patients/1/diagnosticTests`)
         const data = await res.json();
 
         return data;

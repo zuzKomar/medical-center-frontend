@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import NewAppointmentForm from "./NewAppointmentForm";
 import AvailableAppointment from "./AvailableAppointment";
 import AppointmentModal from "./AppointmentModal";
+import {baseUrl} from "../../config/config";
 
 const NewAppointment = () =>{
     const [appointments, setAppointments] = useState([]);
@@ -52,9 +53,9 @@ const NewAppointment = () =>{
     const fetchAppointments = async ()=>{
         let res;
         if(doctor!==null){
-            res = await fetch(`http://localhost:8080/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+            res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
         }else{
-            res = await fetch(`http://localhost:8080/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+            res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
         }
 
         const data = await res.json();

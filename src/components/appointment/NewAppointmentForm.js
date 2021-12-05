@@ -5,6 +5,7 @@ import {useHistory} from 'react-router';
 import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import {baseUrl} from "../../config/config";
 
 
 const NewAppointmentForm = ({getAppointments}) =>{
@@ -112,7 +113,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
 
     const fetchReferrals = async () =>{
-        const res = await fetch('http://localhost:8080/patients/1/referrals');
+        const res = await fetch(`${baseUrl}/patients/1/referrals`);
         const data = await res.json();
 
         return data;
@@ -121,9 +122,9 @@ const NewAppointmentForm = ({getAppointments}) =>{
     const fetchDoctors = async () =>{
         let res;
         if(language === 'polski'){
-            res = await fetch('http://localhost:8080/doctors/services?language=PL&medicalServiceId='+service.id);
+            res = await fetch(`${baseUrl}/doctors/services?language=PL&medicalServiceId=`+service.id);
         }else{
-            res = await fetch('http://localhost:8080/doctors/services?language=EN&medicalServiceId='+service.id);
+            res = await fetch(`${baseUrl}/doctors/services?language=EN&medicalServiceId=`+service.id);
         }
 
         const data = await res.json();
@@ -134,9 +135,9 @@ const NewAppointmentForm = ({getAppointments}) =>{
     const fetchServices = async (type) =>{
         let res;
         if(type === true){
-            res = await fetch("http://localhost:8080/medicalServices?type=FACILITY");
+            res = await fetch(`${baseUrl}/medicalServices?type=FACILITY`);
         }else{
-            res = await fetch("http://localhost:8080/medicalServices?type=TELEPHONE");
+            res = await fetch(`${baseUrl}/medicalServices?type=TELEPHONE`);
         }
 
         const data = await res.json();

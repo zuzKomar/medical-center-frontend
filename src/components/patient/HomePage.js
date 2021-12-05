@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {Formik} from "formik";
 import * as yup from "yup";
+import {baseUrl} from "../../config/config";
 
 const schema = yup.object().shape({
     firstName: yup.string().min(2, 'Imię powinno zawierać min. 2 znaki').max(50, 'Imię powinno zawierać maks. 50 znaków').required('Pole wymagane!'),
@@ -64,7 +65,7 @@ const HomePage = () => {
     },[data])
 
     const fetchPatient = async () => {
-        const res = await fetch('http://localhost:8080/patients/1')
+        const res = await fetch(`${baseUrl}/patients/1`)
         const data = await res.json()
 
         return data
@@ -89,9 +90,9 @@ const HomePage = () => {
             patientsFiles,
             };
 
-        fetch('http://localhost:8080/patients',{
+        fetch(`${baseUrl}/patients`,{
             method: 'PUT',
-            headers: {'Access-Control-Allow-Origin': 'http://localhost:8080',
+            headers: {'Access-Control-Allow-Origin': `${baseUrl}`,
                 'Content-Type': 'application/json;charset=UTF-8'},
             body: JSON.stringify(newObj)
         }).then((res)=>res.json())
