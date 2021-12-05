@@ -3,57 +3,85 @@ import {useHistory} from 'react-router';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-function UploadNewFile(){
+function UploadNewFile() {
     const history = useHistory();
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(undefined);
 
+    const createImage = (newImage) => fetch('http://localhost:8080/patients/1/files', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Access-Control-Allow-Origin': 'http://localhost:8080'
+        },
+        body: newImage
+    }).then(res =>res.blob())
+        .then(console.log)
 
-    function readFileDataAsBase64(e) {
-        let file = e.target.files[0];
-
-
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-                resolve(event.target.result);
-            };
-
-            reader.onerror = (err) => {
-                reject(err);
-            };
-
-            reader.readAsDataURL(file);
-            //setSelectedFile(file);
-        });
-
+    const createPost = async (post) => {
+        try{
+            await createImage(post);
+        }catch (err){
+            console.log(err);
+        }
     }
 
-      function handleSubmit(){
-         if(selectedFile!==null){
-             const newObj = {
-                 file : selectedFile,
-                 id: 1,
-                 name : selectedFile.name
-             }
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
 
-             fetch('http://localhost:8080/patients/1/files',{
-                 method: 'POST',
-                 headers : {
-                     'Content-Type': 'application/json',
-                     'Access-Control-Allow-Origin': 'http://localhost:8080'
-                 },
-                 body: newObj
-             }).then((res)=>res.json())
-                 .catch((err)=>console.log(err));
-            console.log('poszlo');
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
 
-             history.push({
-                 pathname : '/moje-pliki'
-             });
-         }else{
-             window.alert('Należy wybrać plik');
-         }
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, {type: contentType});
+    }
+
+    const handleFileUpload = async (e) =>{
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        let data = base64.split('base64,')[1];
+        let binaryData = atob(data);
+        setSelectedFile(binaryData);
+
+        // let byteNumbers = new Array(binaryData.length);
+        // for(let i = 0; i<binaryData.length; i++){
+        //     byteNumbers[i] = binaryData.charCodeAt(i);
+        // }
+        //
+        // let test = new Uint8Array(byteNumbers);
+        // console.log(byteNumbers);
+    }
+
+     const handleSubmit = (e) =>{
+        e.preventDefault();
+        console.log(selectedFile);
+        createPost(selectedFile)
+            .then(()=>{
+                history.push({
+                    pathname : '/moje-pliki'
+                });
+            })
      }
 
     return(
@@ -64,10 +92,10 @@ function UploadNewFile(){
             <Form className="newAppointmentForm" >
                 <Form.Group controlId="formFile" className="mb-4">
                     <Form.Label>Dodaj plik</Form.Label>
-                    <Form.Control type="file" value={selectedFile} onChange={(e)=>setSelectedFile(e.target.value)}/>
+                    <input type="file" accept=".jpeg, .png, .jpg" onChange={(e)=>handleFileUpload(e)}/>
                 </Form.Group>
                 <div style={{display:"flex", justifyContent: 'center'}}>
-                    <Button variant='primary' onClick={handleSubmit}>Dodaj plik</Button>
+                    <Button variant='primary' onClick={(e)=>handleSubmit(e)}>Dodaj plik</Button>
                 </div>
             </Form>
         </div>
