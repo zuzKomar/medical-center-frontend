@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import Appointment from "./Appointment";
 import Form from "react-bootstrap/Form";
 import "react-datepicker/dist/react-datepicker.css"
+import {baseUrl} from "../../config/config";
 
 
 const AppointmentList = () =>{
@@ -41,9 +42,9 @@ const AppointmentList = () =>{
 
 
     const fetchAppointments = async () =>{
-        const res1 = await fetch('http://localhost:8080/patients/1/doneAppointments')
+        const res1 = await fetch(`${baseUrl}/patients/1/doneAppointments`)
         const data1 = await res1.json();
-        const res2 = await fetch('http://localhost:8080/patients/1/plannedAppointments')
+        const res2 = await fetch(`${baseUrl}/patients/1/plannedAppointments`)
         const data2 = await res2.json();
         const data = data2.concat(data1);
 

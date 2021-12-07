@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Medication from "../medication/Medication";
+import {baseUrl} from "../../config/config";
 
 const PrescriptionRenewal = () =>{
 
@@ -17,7 +18,7 @@ const PrescriptionRenewal = () =>{
 
 
     const fetchPrescriptions = async () =>{
-        const res = await fetch('http://localhost:8080/patients/1/prescriptions')
+        const res = await fetch(`${baseUrl}/patients/1/prescriptions`)
         const data = await res.json()
         let medicines = [];
 

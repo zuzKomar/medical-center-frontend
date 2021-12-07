@@ -2,14 +2,15 @@ import React, {useState} from "react";
 import {useHistory} from 'react-router';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import {baseUrl} from "../../config/config";
 
 function UploadNewFile() {
     const history = useHistory();
     const [selectedFile, setSelectedFile] = useState(undefined);
 
-    const createImage = (newImage) => fetch('http://localhost:8080/patients/1/files', {
+    const createImage = (newImage) => fetch(`${baseUrl}/patients/1/files`, {
         method: 'POST',
-        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080',
+        headers: {'Access-Control-Allow-Origin': `${baseUrl}`,
             'Content-Type': 'application/json;charset=UTF-8'},
         body: newImage
     }).then(res =>res.blob())
