@@ -9,10 +9,8 @@ function UploadNewFile() {
 
     const createImage = (newImage) => fetch('http://localhost:8080/patients/1/files', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Access-Control-Allow-Origin': 'http://localhost:8080'
-        },
+        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080',
+            'Content-Type': 'application/json;charset=UTF-8'},
         body: newImage
     }).then(res =>res.blob())
         .then(console.log)
@@ -62,15 +60,18 @@ function UploadNewFile() {
         const base64 = await convertToBase64(file);
         let data = base64.split('base64,')[1];
         let binaryData = atob(data);
-        setSelectedFile(binaryData);
 
-        // let byteNumbers = new Array(binaryData.length);
-        // for(let i = 0; i<binaryData.length; i++){
-        //     byteNumbers[i] = binaryData.charCodeAt(i);
-        // }
-        //
-        // let test = new Uint8Array(byteNumbers);
-        // console.log(byteNumbers);
+        let byteNumbers = new Array(binaryData.length);
+        for(let i = 0; i<binaryData.length; i++){
+            byteNumbers[i] = binaryData.charCodeAt(i);
+        }
+        let test = new Uint8Array(byteNumbers);
+        let fileToUpload = {
+            "file" : test,
+            "name" : "test",
+            id : 1
+        }
+        setSelectedFile(fileToUpload);
     }
 
      const handleSubmit = (e) =>{
