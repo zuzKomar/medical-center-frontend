@@ -97,7 +97,6 @@ const HomePage = () => {
             body: JSON.stringify(newObj)
         }).then((res)=>res.json())
             .catch((err)=>console.log(err));
-        console.log(firstName);
     }
 
     if(!data) {

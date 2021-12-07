@@ -243,12 +243,9 @@ const NewAppointmentForm = ({getAppointments}) =>{
                                 <Form.Group>
                                     <Form.Label>Skierowanie:</Form.Label>
                                     <Form.Select id='selectedReferral'>
-                                        <option>{ selectedReferral ? selectedReferral.issueDate : 'Wykorzystaj skierowanie'}</option>
-                                        {selectedReferral &&
                                         <option onClick={e=>{clearReferralFields(e)}}>Wykorzystaj skierowanie</option>
-                                        }
                                         {referrals.map((ref) => (
-                                            <option value={ref} onClick={(e)=>setSelectedReferral(ref)}>{ref.issueDate}</option>
+                                            <option value={ref} onClick={(e)=>setSelectedReferral(ref)}>{'Z dnia '+ref.issueDate + ' na usługę '+ref.medicalService.name}</option>
                                         ))}
                                     </Form.Select>
                                 </Form.Group>
@@ -256,11 +253,14 @@ const NewAppointmentForm = ({getAppointments}) =>{
                         </Row>
                         <Form.Group className="mb-3">
                             <Form.Label>Usługa:</Form.Label>
-                            <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
+                            <Form.Select id = 'selectedService' isInvalid={!!errors.serviceMess}>
                                 <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
                                 {services.map((ser)=>(
                                     <option value={ser.name} onClick={(e)=>{
                                         setService(ser);
+                                        setSelectedReferral(undefined);
+                                        let cancelledReferral = document.getElementById("selectedReferral");
+                                        cancelledReferral.value = "Wykorzystaj skierowanie";
                                         if(!!errors['serviceMess'])
                                             setErrors({
                                                 ...errors,
