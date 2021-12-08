@@ -82,12 +82,12 @@ const Schedule = ({schedule}) =>{
         let properAppointments = [];
 
         Object.entries(schedule).forEach((([key,value])=>Object.entries(value)
-            .forEach(([key,value])=>value.map(e=>{
+            .forEach(([key,value])=>{
                 let date = new Object();
-                date["startDate"] = convertDate(e.dateFrom);
-                date["endDate"] = convertDate(e.dateTo);
+                date["startDate"] = convertDate(value.startDate);
+                date["endDate"] = convertDate(value.endDate);
                 properAppointments.push(date);
-            }))))
+            })))
 
         return properAppointments;
     }

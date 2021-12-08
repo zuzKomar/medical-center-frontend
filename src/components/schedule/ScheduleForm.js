@@ -4,6 +4,7 @@ import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Schedule from "./Schedule";
+import {baseUrl} from "../../config/config";
 
 const ScheduleForm = () =>{
     const [specializations, setSpecializations] = useState([]);
@@ -36,14 +37,14 @@ const ScheduleForm = () =>{
     }, [selectedSpecialization])
 
     const fetchSpecializations = async () =>{
-        const res = await fetch('http://localhost:8080/specializations')
+        const res = await fetch(`${baseUrl}/specializations`)
         const data = await res.json()
 
         return data
     }
 
     const fetchDoctors = async () =>{
-        const res = await fetch(`http://localhost:8080/doctors/specialization?id=${selectedSpecialization.id}`)
+        const res = await fetch(`${baseUrl}/doctors/specialization?id=${selectedSpecialization.id}`)
         const data = await res.json()
 
         return data
@@ -80,7 +81,7 @@ const ScheduleForm = () =>{
         if(Object.keys(errors).length > 0){
             setErrors(errors);
         }else{
-            fetch(`http://localhost:8080/doctors/${selectedDoctor.id}/schedule?specializationId=${selectedSpecialization.id}`)
+            fetch(`${baseUrl}/doctors/${selectedDoctor.id}/schedule?specializationId=${selectedSpecialization.id}`)
                 .then((res)=>res.json())
                 .then((obj)=>{
                     setSchedule(obj)
