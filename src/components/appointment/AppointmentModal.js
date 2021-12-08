@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from "react";
 import {useHistory} from 'react-router';
+import {baseUrl} from "../../config/config";
 
 const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral}) => {
     const history = useHistory();
@@ -45,7 +46,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
             };
         }
 
-        fetch(`http://localhost:8080/appointments/${selectedAppointment.id}/reserve`,{
+        fetch(`${baseUrl}/appointments/${selectedAppointment.id}/reserve`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
