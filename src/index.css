@@ -298,6 +298,22 @@ footer{
     color: white;
 }
 
+.deleteButton{
+    background-color: white;
+    padding: 10px 24px;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    height: auto;
+}
+
+.deleteButton:hover{
+    background-color: #dc3545;
+    color: white;
+}
+
 .appDate{
     display: flex;
     justify-content: flex-start;
@@ -557,6 +573,16 @@ footer{
         display: flex;
         flex-direction: column;
         padding: 10px;
+    }
+}
+
+.marginTop {
+    margin-top: 1em;
+}
+
+@media all and (min-width: 768px) {
+    .marginTop {
+        margin-top: 2em;
     }
 }
 
