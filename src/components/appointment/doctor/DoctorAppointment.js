@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import {FaRegUser} from "react-icons/fa";
 import moment from "moment";
 import {useHistory} from 'react-router';
+import {GiConfirmed} from "react-icons/all";
 
 const DoctorAppointment = ({appointment}) => {
     const history = useHistory();
-    const [app, setAppointment] = useState(appointment);
 
     const handleClick = e => {
         e.preventDefault();
@@ -20,15 +20,16 @@ const DoctorAppointment = ({appointment}) => {
     let a = moment(Date.now());
     let b = moment(appointment.patient.birthDate)
     return (
-        <div className="appointmentAndCheckup archivalApp">
+        <div className={appointment.state === 'DONE' ? "appointmentAndCheckup todayApp" : "appointmentAndCheckup archivalApp"}>
             <div className="top">
                 <p className="appointmentAndCheckupHeader">{appointment.medicalServiceName}</p>
                 <div className="data">
+                    {appointment.state === 'DONE' && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
                     <p>Hour: {appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                 </div>
             </div>
             <div>
-                <p><FaRegUser size={42}/>{(appointment.patient? (appointment.patient.firstName + ' ' + appointment.patient.lastName) : '')}</p>
+                <p><FaRegUser size={42}/>{(appointment.patient ? (appointment.patient.firstName + ' ' + appointment.patient.lastName) : '')}</p>
                 <p>Age: {a.diff(b, 'year')}</p>
                 {appointment.type==='TELEPHONE' ? 'Phone number: ' + appointment.patient.phoneNumber : ''}
             </div>

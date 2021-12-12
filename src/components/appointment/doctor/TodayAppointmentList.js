@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import { useHistory } from "react-router-dom";
 import {baseUrl} from "../../../config/config";
 import DoctorAppointment from "./DoctorAppointment";
 

@@ -38,7 +38,7 @@ const AppointmentDetailsForm = () => {
     useEffect(() => {
         const getMedications = async () => {
             const checkUps = await fetchMedications()
-            setCheckUps(checkUps)
+            setMedications(checkUps)
         }
         getMedications()
     }, [])
@@ -96,10 +96,10 @@ const AppointmentDetailsForm = () => {
                 <Row className="g-2">
                     <Col md>
                         <Form.Group>
-                            <Form.Label column="sm">Choose a check-up: </Form.Label>
+                            <Form.Label column="sm">Choose a medication: </Form.Label>
                             <Form.Select aria-label="Floating label select example">
-                                {checkUps.map(function (checkUp) {
-                                    return <option key={checkUp.id} value={checkUp.id}>{checkUp.name}</option>
+                                {medications.map(function (medication) {
+                                    return <option key={medication.id} value={medication.id}>{medication.name}</option>
                                 })}
                             </Form.Select>
                         </Form.Group>
