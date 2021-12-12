@@ -28,7 +28,6 @@ const VisitsHistoryList = () => {
                 <h2>Visits History</h2>
             </div>
             <div className="appointmentList">
-                {/*{appointments.map(appointment => <div>{appointment.id}</div>)}*/}
                 {appointments.map(appointment => <ArchivalVisit key={appointment.id} appointment={appointment} />)}
             </div>
         </div>

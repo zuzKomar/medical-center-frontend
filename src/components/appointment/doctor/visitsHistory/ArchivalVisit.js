@@ -1,10 +1,10 @@
 import React from "react";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {FaCheck, FaFile, FaRegUser} from "react-icons/fa";
 import {GiMedicines} from "react-icons/gi";
 
 const ArchivalVisit = ({appointment}) => {
-    const [app, setAppointment] = useState(appointment);
+
     const [open, setOpen] = useState(false);
 
     function togglePanel(e){
@@ -16,7 +16,7 @@ const ArchivalVisit = ({appointment}) => {
     return(
         <div className="appointmentAndCheckup archivalApp" onClick={e => togglePanel(e)}>
             <div className="top">
-                <p className="appointmentAndCheckupHeader">{app.serviceName}</p>
+                <p className="appointmentAndCheckupHeader">{appointment.serviceName}</p>
                 <div className="data">
                     <p>Data:</p>
                     <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
@@ -26,10 +26,10 @@ const ArchivalVisit = ({appointment}) => {
             <div style={{display: 'flex', justifyContent:'space-between'}}>
                 <div>
                     <FaRegUser size={42}/>
-                    doctor {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                    doctor {(appointment.doctor? (appointment.doctor.firstName + ' ' + appointment.doctor.lastName) : '')}
                 </div>
             </div>
-            {app.recommendations  ? <>
+            {appointment.recommendations  ? <>
                 {open ? (
                     <div>
                         <hr/>
@@ -38,7 +38,7 @@ const ArchivalVisit = ({appointment}) => {
                             <p className="header">Recommendations</p>
                         </div>
                         <ol>
-                            <li>{app.recommendations}</li>
+                            <li>{appointment.recommendations}</li>
                         </ol>
                         <hr/>
 
@@ -46,14 +46,13 @@ const ArchivalVisit = ({appointment}) => {
                             <FaFile size={42}/>
                             <p className="header">Realized Check-ups</p>
                         </div>
-                        <p>{app.serviceName}</p>
+                        <p>{appointment.serviceName}</p>
                         <hr/>
-
                         <div className="subsections">
                             <GiMedicines size={42}/>
                             <p className="header">e-Prescriptions</p>
                         </div>
-                        <p>{app.prescriptions ? 'Electronic prescription issued': 'No prescription'}</p>
+                        <p>{appointment.prescriptions ? 'Electronic prescription issued': 'No prescription'}</p>
                 </div>) : null}
             </> : null}
         </div>

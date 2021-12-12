@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {useHistory} from "react-router-dom";
 import AppointmentDetailsForm from "./AppointmentDetailsForm";
 
@@ -30,8 +30,6 @@ const AppointmentDetails = () => {
             })
         }
     }
-
-    const [receivedAppointment, setReceivedAppointment] = useState(appointment ? appointment : undefined);
 
     return (
         <div className="itemsList">

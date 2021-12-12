@@ -3,12 +3,12 @@ import {useHistory} from "react-router-dom";
 import {baseUrl} from "../../../../config/config";
 import {Table} from "@material-ui/core";
 
-
 const FilesTable = () => {
 
     const [files, setFiles] = useState([]);
     let history = useHistory();
     const patient = history.location.state;
+    let i = 1;
 
     useEffect(() => {
         const getFiles = async () => {
@@ -23,7 +23,6 @@ const FilesTable = () => {
         return await res.json();
     }
 
-    let i = 1;
     return(
         <div className="itemsList">
             <div className="listHeader">

@@ -3,6 +3,7 @@ import {baseUrl} from "../../../config/config";
 import DoctorAppointment from "./DoctorAppointment";
 
 const TodayAppointmentList = () => {
+
     const [appointments, setAppointments] = useState([]);
 
     useEffect(() => {

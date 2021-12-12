@@ -5,6 +5,7 @@ import {baseUrl} from "../../../config/config";
 import RangeSlider from "react-bootstrap-range-slider";
 
 const AppointmentDetailsForm = () => {
+
     const [services, setServices] = useState([]);
     const [referralExpiryDate, setReferralExpiryDate] = useState([Date.now()]);
     const [checkUps, setCheckUps] = useState([]);
@@ -156,7 +157,7 @@ const AppointmentDetailsForm = () => {
                             <Form.Control type="file" size="sm" />
                         </Form.Group>
                     </Col>
-                    <Col md />
+                    <Col md/>
                 </Row>
             </div>
         </Form>
