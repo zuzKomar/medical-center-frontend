@@ -314,6 +314,22 @@ footer{
     color: white;
 }
 
+.addButton {
+    background-color: white;
+    padding: 10px 24px;
+    color: #18a74b;
+    border: 2px solid #18a74b;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    height: auto;
+}
+
+.addButton:hover{
+    background-color: #18a74b;
+    color: white;
+}
+
 .appDate{
     display: flex;
     justify-content: flex-start;
@@ -536,6 +552,9 @@ footer{
     background-color:  #900C3F;
 }
 
+.topBuffer {
+    margin-top: 20px!important;
+}
 
 @media all and (max-width: 500px) {
     .nav{
@@ -575,14 +594,3 @@ footer{
         padding: 10px;
     }
 }
-
-.marginTop {
-    margin-top: 1em;
-}
-
-@media all and (min-width: 768px) {
-    .marginTop {
-        margin-top: 2em;
-    }
-}
-
