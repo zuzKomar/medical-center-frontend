@@ -2,6 +2,7 @@ import React from "react";
 import {useHistory} from 'react-router';
 import {useState, useEffect} from "react";
 
+
 const Referral = ({referral, setSelectedReferral}) =>{
     const history = useHistory();
     const [ref, setRef] = useState(referral);
