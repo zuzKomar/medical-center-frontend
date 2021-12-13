@@ -45,7 +45,7 @@ footer{
 
 .navCollapse{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .navNav{
@@ -68,7 +68,7 @@ footer{
     font-family: 'Montserrat', sans-serif;
     font-size: 26px;
     color: #006666 !important;
-    justify-content: right;
+    justify-content: left;
     margin-right: 2%;
 }
 
@@ -520,6 +520,12 @@ footer{
     background-color:  #900C3F;
 }
 
+.fileTable{
+    text-align: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+}
 
 @media all and (max-width: 500px) {
     .nav{

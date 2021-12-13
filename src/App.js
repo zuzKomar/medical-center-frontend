@@ -1,7 +1,6 @@
 import Navigation from "./components/fragments/Navigation";
 import ReferralList from "./components/referral/ReferralList";
 import HomePage from "./components/patient/HomePage";
-import PatientFileList from "./components/patientFiles/PatientFileList";
 import UploadNewFile from "./components/patientFiles/UploadNewFile";
 import AppointmentList from "./components/appointment/AppointmentList";
 import NewAppointment from "./components/appointment/NewAppointment";
@@ -25,8 +24,7 @@ function App() {
               <div className="content">
                   <Switch>
                       <Route exact path="/moje-konto" component={HomePage}/>
-                      <Route exact path="/moje-pliki" component={PatientFileList}/>
-                      <Route exact path="/dodaj-plik" component={UploadNewFile}/>
+                      <Route exact path="/moje-pliki"  component={UploadNewFile}/>
                       <Route exact path="/wizyty" component={AppointmentList}/>
                       <Route exact path="/nowa-wizyta" component={NewAppointment}/>
                       <Route exact path="/skierowania" component={ReferralList}/>

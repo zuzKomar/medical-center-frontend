@@ -1,27 +1,38 @@
-import React, {useState} from "react";
-import {useHistory} from 'react-router';
+import React, {useState, useEffect, useRef} from "react";
 import Form from "react-bootstrap/Form";
+import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
+
 function UploadNewFile() {
-    const history = useHistory();
+    const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(undefined);
+    const [fileDescription, setFileDescription] = useState(undefined);
+    const [errors, setErrors] = useState({});
+    const ref = useRef();
 
-    const createImage = (newImage) => fetch(`${baseUrl}/patients/1/files`, {
-        method: 'POST',
-        headers: {'Access-Control-Allow-Origin': `${baseUrl}`,
-            'Content-Type': 'application/json;charset=UTF-8'},
-        body: newImage
-    }).then(res =>res.blob())
-        .then(console.log)
+    const reset = () =>{
+        ref.current.value = "";
+    };
 
-    const createPost = async (post) => {
-        try{
-            await createImage(post);
-        }catch (err){
-            console.log(err);
+    useEffect(()=>{
+        const getPatientFiles = async ()=>{
+            if(selectedFile === undefined){
+                const patientFiles = await fetchPatientFiles()
+                setFiles(patientFiles);
+            }
         }
+        getPatientFiles()
+
+    },[selectedFile])
+
+
+    const fetchPatientFiles = async ()=>{
+        const res = await fetch(`${baseUrl}/patients/1/files`)
+        const data = await res.json()
+
+        return data;
     }
 
     const convertToBase64 = (file) => {
@@ -37,25 +48,6 @@ function UploadNewFile() {
         });
     };
 
-    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-        const byteCharacters = atob(b64Data);
-        const byteArrays = [];
-
-        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-            const byteNumbers = new Array(slice.length);
-            for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            const byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
-        }
-
-        return new Blob(byteArrays, {type: contentType});
-    }
-
     const handleFileUpload = async (e) =>{
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
@@ -63,27 +55,85 @@ function UploadNewFile() {
         let binaryData = atob(data);
 
         let byteNumbers = new Array(binaryData.length);
-        for(let i = 0; i<binaryData.length; i++){
+        for(let i = 0; i < binaryData.length; i++){
             byteNumbers[i] = binaryData.charCodeAt(i);
         }
         let test = new Uint8Array(byteNumbers);
+        let array = Array.from(test);
+
+        let today = new Date();
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
         let fileToUpload = {
-            "file" : test,
-            "name" : "test",
-            id : 1
+            "upload_date" : date,
+            "file" : array,
+            "type" : e.target.files[0].type,
+            "name" : e.target.files[0].name,
         }
         setSelectedFile(fileToUpload);
     }
 
      const handleSubmit = (e) =>{
         e.preventDefault();
-        console.log(selectedFile);
-        createPost(selectedFile)
-            .then(()=>{
-                history.push({
-                    pathname : '/moje-pliki'
-                });
-            })
+
+        const errors = findFormErrors();
+
+        if(Object.keys(errors).length > 0){
+            setErrors(errors);
+        }else{
+            if(selectedFile !== undefined && fileDescription !== undefined){
+                selectedFile["description"] = fileDescription;
+                console.log(selectedFile);
+                fetch(`${baseUrl}/patients/1/files`,{
+                    method : 'POST',
+                    headers :{
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': `${baseUrl}`
+                    },
+                    body: JSON.stringify(selectedFile)
+                }).then(()=>{
+                    setSelectedFile(undefined)
+                    setFileDescription('');
+                    reset();
+                })
+                    .catch(err=>console.log(err));
+            }
+        }
+     }
+
+     const handleFileDownload = (e, file) => {
+         e.preventDefault();
+
+         fetch(`${baseUrl}/patients/1/files/${file.id}`)
+             .then(res => res.json())
+             .then(res => {
+                 let a = window.document.createElement('a');
+                 let byteArr = new Uint8Array(res.file);
+                 a.href = window.URL.createObjectURL(new Blob([byteArr], {type: file.type}))
+                 a.download = res.name;
+                 document.body.appendChild(a);
+                 a.click();
+                 document.body.removeChild(a);
+             });
+     }
+
+     const findFormErrors = () =>{
+        const newErrors = {};
+        const fileTypes = ["image/png", "image/jpeg", "application/pdf", "application/msword"]
+
+        if(selectedFile === undefined){
+            newErrors.file = 'Należy wybrać plik';
+        }
+
+        if(fileDescription === undefined || fileDescription === ''){
+            newErrors.description = 'Należy dodać opis';
+        }
+
+        if(selectedFile !== undefined && !fileTypes.includes(selectedFile.type)){
+            newErrors.file = 'Akcpeptowane rozszerzenia plików do png, jpeg, pdf, doc';
+        }
+
+        return newErrors;
      }
 
     return(
@@ -92,14 +142,58 @@ function UploadNewFile() {
                 <h2>Dodaj nowy plik</h2>
             </div>
             <Form className="newAppointmentForm" >
-                <Form.Group controlId="formFile" className="mb-4">
-                    <Form.Label>Dodaj plik</Form.Label>
-                    <input type="file" accept=".jpeg, .png, .jpg" onChange={(e)=>handleFileUpload(e)}/>
+                <Form.Group controlId="file" className="mb-2">
+                    <Form.Label>Plik</Form.Label>
+                    <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={(e)=>{
+                        handleFileUpload(e);
+                        if(!!errors['file'])
+                            setErrors({
+                                ...errors,
+                                ['file']:null
+                            })
+                    }}/>
+                    <Form.Control.Feedback type='invalid'>{errors.file}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="description" className="mb-2">
+                    <Form.Label>Opis pliku</Form.Label>
+                    <Form.Control as="textarea" value={fileDescription} isInvalid={!!errors.description} onChange={(e)=>{
+                        setFileDescription(e.target.value);
+                        if(!!errors['description'])
+                            setErrors({
+                                ...errors,
+                                ['description']:null
+                            })
+                    }}/>
+                    <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
                 </Form.Group>
                 <div style={{display:"flex", justifyContent: 'center'}}>
                     <Button variant='primary' onClick={(e)=>handleSubmit(e)}>Dodaj plik</Button>
                 </div>
             </Form>
+            {files.length > 0 ?
+                <Table className="table table-hover table-bordered fileTable" style={{width : '80%'}}>
+                    <thead style={{backgroundColor : '#e6eeff'}}>
+                    <tr>
+                        <th>Nazwa i format pliku</th>
+                        <th>Opis pliku</th>
+                        <th>Data dodania</th>
+                        <th>Akcja</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {files.map((file)=>
+                        <tr key={file.id}>
+                            <td>{file.name}</td>
+                            <td>{file.description}</td>
+                            <td>{file.uploadDate}</td>
+                            <td>
+                                <Button href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>Pobierz</Button>
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </Table> : 'Brak plików pacjenta'
+            }
         </div>
         );
 }
