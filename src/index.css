@@ -238,6 +238,10 @@ footer{
     justify-content: left;
 }
 
+.download{
+    margin-left: 2%;
+}
+
 .subsectionsReferral{
     display: flex;
     justify-content: space-between;
@@ -434,23 +438,19 @@ footer{
 
 .modalBackground {
     width: 100%;
-    height: 200%;
-    background-color: rgba(200, 200, 200);
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 120%;
+    background-color: rgba(200, 200, 200, 1);
+    position: fixed;
+    display: block;
 }
 
 
 .modalContainer {
-    position: center;
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
     width: 30%;
-    height: 32%;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background: #ffffff;
@@ -460,6 +460,16 @@ footer{
     padding: 10px;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
+}
+
+.smallerModal {
+    margin-top: 2%;
+    height: 56%;
+}
+
+.biggerModal {
+    margin-top : 8%;
+    height : 64%;
 }
 
 .modalContainer .modalTitle {

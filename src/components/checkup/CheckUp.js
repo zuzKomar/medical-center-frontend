@@ -8,7 +8,6 @@ const CheckUp = ({checkup}) =>{
     const [state, setState] = useState(false);
     const [checkUp, setChekup] = useState(checkup);
 
-
     function togglePanel(e){
         e.preventDefault();
         setState(!state)
@@ -17,7 +16,18 @@ const CheckUp = ({checkup}) =>{
     function handleFileDownload(e, checkup){
         e.preventDefault();
 
-        // fetch(`${baseUrl}/patients/1/diagnosticTests`)
+        fetch(`${baseUrl}/appointments/diagnosticTests?appointmentId=${checkup.appointmentId}&checkUpId=${checkup.checkUpId}`)
+            .then(res => res.json())
+            .then(res =>{
+                let a = window.document.createElement('a');
+                let byteArr = new Uint8Array(res.file);
+                a.href = window.URL.createObjectURL(new Blob([byteArr], {type : "application/pdf"}))
+                let date = new Date(res.appointmentDate).toISOString().slice(0,10);
+                a.download = 'Wynik_badania_wizyta_' + String(date);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
     }
 
 
@@ -62,13 +72,12 @@ const CheckUp = ({checkup}) =>{
                         <div className="subsections">
                             <FaFile size={42}/>
                             <p className="header">Pobierz wynik PDF</p>
-                            <Button href={`${baseUrl}/patients/1/diagnosticTests`} onClick={(e)=>{
+                            <Button className="download" href={`${baseUrl}/patients/1/diagnosticTests`} onClick={(e)=>{
                                 handleFileDownload(e, checkup);
                             }}>Pobierz</Button>
                         </div>
                     </>}
                 </div>) : null}
         </div>);
-
 }
 export default CheckUp;

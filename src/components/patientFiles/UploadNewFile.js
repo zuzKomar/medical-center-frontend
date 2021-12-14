@@ -94,7 +94,7 @@ function UploadNewFile() {
         }else{
             if(selectedFile !== undefined && fileDescription !== undefined){
                 selectedFile["description"] = fileDescription;
-                console.log(selectedFile);
+
                 fetch(`${baseUrl}/patients/1/files`,{
                     method : 'POST',
                     headers :{
@@ -114,7 +114,6 @@ function UploadNewFile() {
 
      const handleFileDownload = (e, file) => {
          e.preventDefault();
-
          fetch(`${baseUrl}/patients/1/files/${file.id}`)
              .then(res => res.json())
              .then(res => {

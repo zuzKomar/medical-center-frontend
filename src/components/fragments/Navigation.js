@@ -14,25 +14,25 @@ function Navigation(){
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="navbarToggleExternalContent" className="navCollapse">
                         <Nav className="navNav" activeKey={window.location.pathname}>
-                            <LinkContainer to="/wizyty" activeHref="active">
-                                <Nav.Link exact className="navItemLink">Wizyty</Nav.Link>
+                            <LinkContainer to="/wizyty" >
+                                <Nav.Link as={Link} className="navItemLink" activeClassName="active">Wizyty</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/skierowania" activeHref="active">
-                                <Nav.Link  exact className="navItemLink">Skierowania</Nav.Link>
+                            <LinkContainer to="/skierowania" >
+                                <Nav.Link as={Link} className="navItemLink" activeClassName="active">Skierowania</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/grafik" activeHref="active">
-                                <Nav.Link  exact className="navItemLink">Grafik lekarzy</Nav.Link>
+                            <LinkContainer to="/grafik" >
+                                <Nav.Link as={Link} className="navItemLink" activeClassName="active">Grafik lekarzy</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/badania" activeHref="active">
-                                <Nav.Link  exact className="navItemLink">Badania</Nav.Link>
+                            <LinkContainer to="/badania" >
+                                <Nav.Link as={Link} className="navItemLink" activeClassName="active">Badania</Nav.Link>
                             </LinkContainer>
                             <LinkContainer to="/recepty" activeHref="active">
-                                <Nav.Link exact className="navItemLink">Recepty</Nav.Link>
+                                <Nav.Link as={Link} className="navItemLink" activeClassName="active">Recepty</Nav.Link>
                             </LinkContainer>
                         </Nav>
                         <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
-                            <Nav.Link as={Link} exact to="/moje-konto">Moje konto</Nav.Link>
-                            <Nav.Link as={Link} exact to="/moje-pliki">Moje pliki</Nav.Link>
+                            <Nav.Link as={Link} to="/moje-konto">Moje konto</Nav.Link>
+                            <Nav.Link as={Link} to="/moje-pliki">Moje pliki</Nav.Link>
                             <NavDropdown title="Język" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#angielski" >Angielski</NavDropdown.Item>
                                 <NavDropdown.Item href="#polski">Polski</NavDropdown.Item>
