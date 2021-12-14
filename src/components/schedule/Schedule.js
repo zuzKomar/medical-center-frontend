@@ -94,7 +94,7 @@ const Schedule = ({schedule}) =>{
 
     return(
         <Paper>
-            <Scheduler data={appointments}>
+            <Scheduler data={appointments} firstDayOfWeek={1} locale='pl-PL'>
                 <ViewState/>
                 <WeekView
                     startDayHour={8}

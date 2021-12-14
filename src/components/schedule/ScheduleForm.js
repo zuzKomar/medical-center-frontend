@@ -1,5 +1,5 @@
 import React from "react";
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -13,6 +13,11 @@ const ScheduleForm = () =>{
     const [selectedDoctor, setSelectedDoctor] = useState(undefined);
     const [schedule, setSchedule] = useState(undefined);
     const [errors, setErrors] = useState({});
+    const ref = useRef();
+
+    const reset = () =>{
+        ref.current.value = "Wybierz lekarza";
+    };
 
     useEffect(()=>{
         const getSpecializations = async () =>{
@@ -104,8 +109,11 @@ const ScheduleForm = () =>{
                                 <option onClick={clearSpecialization}>{'Wybierz specjalizację'}</option>
                                 {specializations.map((spec)=>(
                                     <option value={spec} onClick={(e)=>{
-                                        setSelectedSpecialization(spec);
+                                        setSelectedDoctor(undefined);
+                                        reset();
                                         setSchedule(undefined);
+                                        setSelectedSpecialization(spec);
+
                                         if(!!errors['specialization'])
                                             setErrors({
                                                 ...errors,
@@ -122,7 +130,7 @@ const ScheduleForm = () =>{
                     <Col>
                         <Form.Group>
                             <Form.Label>Wybierz lekarza:</Form.Label>
-                            <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor}>
+                            <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}>
                                 <option onClick={clearDoctor}>{'Wybierz lekarza'}</option>
                                 {doctors.map((doc)=>(
                                     <option value={doc} onClick={(e)=>{

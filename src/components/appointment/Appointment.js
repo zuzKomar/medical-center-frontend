@@ -13,7 +13,6 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
     useEffect(()=>{
         if(appointment!==undefined){
             setAppointment(appointment);
-
         }
     }, [appointment])
 
@@ -46,8 +45,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
         let updatedApp = app;
         updatedApp.patientId = null;
         setCancelledAppointment(updatedApp);
-        setAppointment(updatedApp);
-
+        //setAppointment(updatedApp);
 
         fetch(`${baseUrl}/appointments/${appointment.id}/cancel`,{
             method: 'PATCH',
@@ -85,11 +83,12 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                     {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.confirmed === false))&&
                         <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
                     }
-                    {((formatYmd(new Date()) < formatYmd(new Date(new Date(app.date)-x)))&&(app.confirmed === true)) &&
+                    {((formatYmd(new Date()) < formatYmd(new Date(new Date(app.date)-x)))&&(app.confirmed === false)) &&
                         <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
                     }
                 </div> : ''}
-                {app.recommendations  ? <>
+                {app.diagnosticTests !== undefined  ?
+                    <>
                     {open ? (
                         <div>
                             <hr/>
@@ -98,15 +97,15 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                                 <p className="header">Zalecenia</p>
                             </div>
                             <ol>
-                                <li>{app.recommendations}</li>
+                                <li>{app.recommendations ? app.recommendations : 'Brak zaleceń'}</li>
                             </ol>
                             <hr/>
 
                             <div className="subsections">
                                 <FaFile size={42}/>
-                                <p className="header">Zrealizowane badania</p>
+                                <p className="header">Wykonane badania</p>
                             </div>
-                            <p>{app.serviceName}</p>
+                            <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test)=>test.diagnosticTestName)) : 'Brak wykonanych badań'}</p>
                             <hr/>
 
                             <div className="subsections">
@@ -117,7 +116,6 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
 
                         </div>) : null}
                     </> : null}
-
             </div>);
 }
 

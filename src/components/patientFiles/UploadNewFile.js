@@ -8,6 +8,7 @@ import {baseUrl} from "../../config/config";
 function UploadNewFile() {
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(undefined);
+    const [deletedFile, setDeletedFile] = useState(undefined);
     const [fileDescription, setFileDescription] = useState(undefined);
     const [errors, setErrors] = useState({});
     const ref = useRef();
@@ -27,6 +28,16 @@ function UploadNewFile() {
 
     },[selectedFile])
 
+    useEffect(()=>{
+        const getPatientFiles = async () =>{
+            if(deletedFile !== undefined){
+                const patientFiles = await fetchPatientFiles()
+                setFiles(patientFiles);
+                setDeletedFile(undefined);
+            }
+        }
+        getPatientFiles()
+    },[deletedFile])
 
     const fetchPatientFiles = async ()=>{
         const res = await fetch(`${baseUrl}/patients/1/files`)
@@ -117,6 +128,15 @@ function UploadNewFile() {
              });
      }
 
+     const handleFileDeletion = (e, file) =>{
+        e.preventDefault();
+
+        fetch(`${baseUrl}/patients/1/files/${file.id}`,{
+            method: 'DELETE',
+        }).then(res => res.json())
+            .catch(err => console.log(err))
+     }
+
      const findFormErrors = () =>{
         const newErrors = {};
         const fileTypes = ["image/png", "image/jpeg", "application/pdf", "application/msword"]
@@ -187,7 +207,17 @@ function UploadNewFile() {
                             <td>{file.description}</td>
                             <td>{file.uploadDate}</td>
                             <td>
-                                <Button href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>Pobierz</Button>
+                                <ul className="listActions">
+                                    <li>
+                                        <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>Pobierz</Button>
+                                    </li>
+                                    <li>
+                                        <Button variant='danger' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>{
+                                            setDeletedFile(file);
+                                            handleFileDeletion(e, file)
+                                        }}>Usuń</Button>
+                                    </li>
+                                </ul>
                             </td>
                         </tr>
                     )}

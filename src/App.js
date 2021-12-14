@@ -20,20 +20,22 @@ import Footer from "./components/fragments/Footer";
 function App() {
   return (
       <Router>
-          <div style={{position: 'relative', paddingBottom:'50px'}}>
+          <div>
               <Navigation/>
-              <div className="content">
-                  <Switch>
-                      <Route exact path="/moje-konto" component={HomePage}/>
-                      <Route exact path="/moje-pliki"  component={UploadNewFile}/>
-                      <Route exact path="/wizyty" component={AppointmentList}/>
-                      <Route exact path="/nowa-wizyta" component={NewAppointment}/>
-                      <Route exact path="/skierowania" component={ReferralList}/>
-                      <Route exact path="/grafik" component={ScheduleForm}/>
-                      <Route exact path="/badania" component={CheckUpList}/>
-                      <Route exact path="/recepty" component={PrescriptionList}/>
-                      <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
-                  </Switch>
+              <div className="wholePage">
+                  <div className="content">
+                      <Switch>
+                          <Route exact path="/moje-konto" component={HomePage}/>
+                          <Route exact path="/moje-pliki"  component={UploadNewFile}/>
+                          <Route exact path="/wizyty" component={AppointmentList}/>
+                          <Route exact path="/nowa-wizyta" component={NewAppointment}/>
+                          <Route exact path="/skierowania" component={ReferralList}/>
+                          <Route exact path="/grafik" component={ScheduleForm}/>
+                          <Route exact path="/badania" component={CheckUpList}/>
+                          <Route exact path="/recepty" component={PrescriptionList}/>
+                          <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
+                      </Switch>
+                  </div>
               </div>
               <Footer/>
           </div>

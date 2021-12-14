@@ -10,10 +10,10 @@ function Navigation(){
     return(
             <Navbar bg="light" variant="light" expand="lg" collapseOnSelect="true" sticky="top" className="navContainer">
                 <Container fluid>
-                    <Navbar.Brand className="navbar-brand"><img src={logo}/></Navbar.Brand>
+                    <Navbar.Brand className="navbar-brand"><img alt="Portal pacjenta" src={logo}/></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="navbarToggleExternalContent" className="navCollapse">
-                        <Nav className="navNav">
+                        <Nav className="navNav" activeKey={window.location.pathname}>
                             <LinkContainer to="/wizyty" activeHref="active">
                                 <Nav.Link exact className="navItemLink">Wizyty</Nav.Link>
                             </LinkContainer>
@@ -31,8 +31,8 @@ function Navigation(){
                             </LinkContainer>
                         </Nav>
                         <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
-                            <Nav.Link as={Link} to="/moje-konto">Moje konto</Nav.Link>
-                            <Nav.Link as={Link} to="/moje-pliki">Moje pliki</Nav.Link>
+                            <Nav.Link as={Link} exact to="/moje-konto">Moje konto</Nav.Link>
+                            <Nav.Link as={Link} exact to="/moje-pliki">Moje pliki</Nav.Link>
                             <NavDropdown title="Język" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="#angielski" >Angielski</NavDropdown.Item>
                                 <NavDropdown.Item href="#polski">Polski</NavDropdown.Item>
