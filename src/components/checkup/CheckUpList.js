@@ -9,13 +9,13 @@ const CheckUpList = () =>{
     useEffect(()=>{
         const getCheckups = async () =>{
             const checkups = await fetchCheckups()
-            setCheckups(checkups)
+            setCheckups(checkups.diagnosticTests)
         }
         getCheckups()
     },[])
 
     const fetchCheckups = async () =>{
-        const res = await fetch(`${baseUrl}/patients/1/diagnosticTests`)
+        const res = await fetch(`${baseUrl}/patients/1/diagnosticTests?size=5`)
         const data = await res.json();
 
         return data;

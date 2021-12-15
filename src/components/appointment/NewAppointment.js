@@ -37,7 +37,7 @@ const NewAppointment = () =>{
             const getAvailableAppointments = async () =>{
                 const apps = await fetchAppointments();
 
-                setAppointments(apps)
+                setAppointments(apps.appointments)
             }
 
             getAvailableAppointments()
@@ -55,9 +55,8 @@ const NewAppointment = () =>{
         if(doctor!==null){
             res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
         }else{
-            res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+            res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&size=5`);
         }
-
         const data = await res.json();
 
         return data;

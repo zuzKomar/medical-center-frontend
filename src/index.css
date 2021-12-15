@@ -329,6 +329,15 @@ footer{
 
 }
 
+/*.appointmentButtons{*/
+/*    display: flex;*/
+/*}*/
+
+/*.appointmentButtons Button{*/
+/*    margin: 1%;*/
+/*    width: 120%;*/
+/*}*/
+
 .renewPrescriptionBtn{
     background-color: white;
     padding: 10px 24px;

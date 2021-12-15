@@ -10,6 +10,9 @@ const AppointmentList = () =>{
     const formatYmd = date => date.toISOString().slice(0,10);
     const facility = 'FACILITY';
     const phone = 'TELEPHONE';
+    const reserved = 'RESERVED';
+    const confirmed = 'CONFIRMED';
+    const done = 'DONE';
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(formatYmd(new Date()));
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
@@ -18,10 +21,29 @@ const AppointmentList = () =>{
 
     useEffect(() =>{
         const getAppointments = async () =>{
+            let todaysVisits = [];
+            let visitToConfirm =[];
+            let futureVisits = [];
+            let pastVisits = [];
+            let finalApps=[];
             const appointments = await fetchAppointments()
-                .then(apps=>apps.sort((a,b)=>new Date(b.date) - new Date(a.date)))
-            setAppointments(appointments)
-            setFilteredAppointments(appointments)
+                .then(apps=>apps.appointments.map((app) => {
+                    if(((new Date(app.date.slice(0,10))) > new Date(new Date().setDate(new Date().getDate()+1)))&&app.state === reserved){ //z przyszlosci
+                        futureVisits.push(app)
+                    }else if(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.state === reserved){ //do potwierdzenia
+                        visitToConfirm.push(app)
+                    }else if(app.state === confirmed){ //dzisiejsze
+                        todaysVisits.push(app)
+                    }else if(app.state === done){ //z przeszlosci
+                        pastVisits.push(app)
+                    }
+                })).then(()=>{
+                    todaysVisits = todaysVisits.sort((a,b)=>new Date(a.date) - new Date(b.date))
+                    finalApps = [...visitToConfirm, ...todaysVisits, ...futureVisits, ...pastVisits];
+                })
+
+            setAppointments(finalApps);
+            setFilteredAppointments(finalApps);
         }
 
         getAppointments()
@@ -42,14 +64,10 @@ const AppointmentList = () =>{
 
 
     const fetchAppointments = async () =>{
-        const res1 = await fetch(`${baseUrl}/patients/1/doneAppointments`)
-        const data1 = await res1.json();
-        const res2 = await fetch(`${baseUrl}/patients/1/plannedAppointments`)
+        const res2 = await fetch(`${baseUrl}/patients/1/appointments?page=1&size=4`)
         const data2 = await res2.json();
-        const data = data2.concat(data1);
 
-        return data;
-
+        return data2;
     }
 
     const handleFacilityFilter = () =>{
