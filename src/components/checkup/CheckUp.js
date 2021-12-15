@@ -1,65 +1,83 @@
 import React from "react";
-import {FaRegUser, FaCheck, FaFile, FaShare} from 'react-icons/fa'
+import {useState} from "react";
+import {FaRegUser, FaCheck, FaFile, FaRegListAlt} from 'react-icons/fa'
+import {Button} from "react-bootstrap";
+import {baseUrl} from "../../config/config";
 
-class CheckUp extends React.Component{
-    constructor(props) {
-        super(props);
+const CheckUp = ({checkup}) =>{
+    const [state, setState] = useState(false);
+    const [checkUp, setChekup] = useState(checkup);
 
-        this.state={
-            open : false
-        }
-
+    function togglePanel(e){
+        e.preventDefault();
+        setState(!state)
     }
-    togglePanel(){
-        this.setState({open : !this.state.open})
+
+    function handleFileDownload(e, checkup){
+        e.preventDefault();
+
+        fetch(`${baseUrl}/appointments/diagnosticTests?appointmentId=${checkup.appointmentId}&checkUpId=${checkup.checkUpId}`)
+            .then(res => res.json())
+            .then(res =>{
+                let a = window.document.createElement('a');
+                let byteArr = new Uint8Array(res.file);
+                a.href = window.URL.createObjectURL(new Blob([byteArr], {type : "application/pdf"}))
+                let date = new Date(res.appointmentDate).toISOString().slice(0,10);
+                a.download = 'Wynik_badania_wizyta_' + String(date);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            })
     }
 
-    render() {
-        const checkup = this.props.checkup;
-        return(
-            <div className="appointmentAndCheckup" onClick={(e)=> this.togglePanel(e)}>
-                <div className="top">
-                    <p className="appointmentAndCheckupHeader">{checkup.diagnosticTestName}</p>
-                    <div className="data">
-                        <p>Data:</p>
-                        <p>{new Date(checkup.appointmentDate).toISOString().slice(0,10)}</p>
-                        <p>{new Date(checkup.appointmentDate).toISOString().slice(11,16)}</p>
-                    </div>
+
+    return(
+        <div className="appointmentAndCheckup" onClick={(e)=> togglePanel(e)}>
+            <div className="top">
+                <p className="appointmentAndCheckupHeader">{checkUp.diagnosticTestName}</p>
+                <div className="data">
+                    <p>Data:</p>
+                    <p>{new Date(checkUp.appointmentDate).toISOString().slice(0,10)}</p>
+                    <p>{new Date(checkUp.appointmentDate).toISOString().slice(11,16)}</p>
                 </div>
+            </div>
+            <div>
+                <FaRegUser size={42}/>
+                Pracownik medyczny
+            </div>
+
+            {state ? (
                 <div>
-                    <FaRegUser size={42}/>
-                    Pracownik medyczny
-                </div>
+                    <hr/>
+                    <div className="subsections">
+                        <FaRegListAlt size={42}/>
+                        <p className="header">Opis badania</p>
+                    </div>
+                    <div className="subsections">
+                        <p>{checkUp.doctorsDescription}</p>
+                    </div>
+                    <hr/>
 
-                {this.state.open ? (
+                    <div className="subsections">
+                        <FaCheck size={42}/>
+                        <p className="header">Wynik</p>
+                    </div>
                     <div>
-                        <hr/>
+                        <p>{checkUp.result ? checkUp.result : 'Wynik nie jest jeszcze dostępny'}</p>
+                    </div>
 
-                        <div className="subsections">
-                            <FaCheck size={42}/>
-                            <p className="header">Wynik</p>
-                        </div>
-                        <ol>
-                            <li>{checkup.result}</li>
-                        </ol>
+                    {(checkUp.result !== null && checkUp.file) &&
+                    <>
                         <hr/>
-
                         <div className="subsections">
                             <FaFile size={42}/>
                             <p className="header">Pobierz wynik PDF</p>
+                            <Button className="download" href={`${baseUrl}/patients/1/diagnosticTests`} onClick={(e)=>{
+                                handleFileDownload(e, checkup);
+                            }}>Pobierz</Button>
                         </div>
-                        <hr/>
-
-                        <div className="subsections">
-                            <FaShare size={42}/>
-                            <p className="header">Komentarz lekarza</p>
-                        </div>
-                        <div className="subsections">
-                            <p>{checkup.description}</p>
-                        </div>
-                    </div>) : null}
-            </div>);
-    }
+                    </>}
+                </div>) : null}
+        </div>);
 }
-
 export default CheckUp;

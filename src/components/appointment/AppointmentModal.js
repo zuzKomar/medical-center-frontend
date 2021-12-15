@@ -63,7 +63,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
     const formatYmd = date => date.toISOString().slice(0, 10);
     return (
         <div className="modalBackground">
-            <div className='modalContainer'>
+            <div className={(referral !== null || (new Date(new Date(appointment.date)-x).toISOString().slice(0,10) === (formatYmd(new Date())))) ? 'modalContainer biggerModal' : 'modalContainer smallerModal'}>
                 <div className="titleCloseBtn">
                     <button onClick={()=>setOpenModal(false)}> X </button>
                 </div>
