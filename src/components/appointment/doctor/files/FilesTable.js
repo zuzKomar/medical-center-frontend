@@ -3,13 +3,13 @@ import {useHistory} from "react-router-dom";
 import {baseUrl} from "../../../../config/config";
 import {Table} from "@material-ui/core";
 import Button from "react-bootstrap/Button";
+import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
 const FilesTable = () => {
 
     const [files, setFiles] = useState([]);
     let history = useHistory();
-    const patient = history.location.state;
-    let i = 1;
+    const appointment = history.location.state;
 
     useEffect(() => {
         const getFiles = async () => {
@@ -20,13 +20,13 @@ const FilesTable = () => {
     }, [])
 
     const fetchFiles = async () => {
-        const res = await fetch(`${baseUrl}/patients/${patient.id}/files`);
+        const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/files`);
         return await res.json();
     }
 
     const handleFileDownload = (e, file) => {
         e.preventDefault();
-        fetch(`${baseUrl}/patients/${patient.id}/files/${file.id}`)
+        fetch(`${baseUrl}/patients/${appointment.patient.id}/files/${file.id}`)
             .then(res => res.json())
             .then(res => {
                 let a = window.document.createElement('a');
@@ -44,6 +44,7 @@ const FilesTable = () => {
             <div className="listHeader">
                 <h2>Patient's files</h2>
             </div>
+            <AppointmentDetailsButtonPanel appointment={appointment} />
             {files.length > 0 ?
                 <Table className="table table-hover table-bordered fileTable topBuffer" style={{width : '80%'}}>
                     <thead style={{backgroundColor : '#e6eeff'}}>
