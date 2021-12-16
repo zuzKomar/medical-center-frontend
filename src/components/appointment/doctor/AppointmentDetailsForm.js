@@ -11,6 +11,8 @@ const AppointmentDetailsForm = () => {
     const [checkUps, setCheckUps] = useState([]);
     const [medications, setMedications] = useState([]);
     const [medicationQuantity, setMedicationQuantity] = useState(1);
+    const [referrals, setReferrals] = useState([]);
+    const [service, setService] = useState('cokolwiek');
 
     useEffect(() => {
         const getServices = async () => {
@@ -53,113 +55,131 @@ const AppointmentDetailsForm = () => {
 
     return (
         <Form className="newAppointmentForm">
-            <Form.Group className="mb-3" controlId="detailsForm.ControlTextArea1">
-                <Form.Label>Visit's description:</Form.Label>
-                <Form.Control as="textarea" rows={3} />
+            <Form.Group className="mb-3">
+                <Form.Label>Service:</Form.Label>
+                <Form.Select id = 'selectService'>
+                    <option value="0">CHUJ</option>
+                    {services.map((ser)=>(
+                        <option value={ser.name} onClick={(e)=>{
+                            setService(e.target.value)
+                        }}>{ser.name}</option>
+                    ))}
+                </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                <Form.Label>Recommendations:</Form.Label>
-                <Form.Control as="textarea" rows={3} />
-            </Form.Group>
-            <Row className="mb-3">
-                <Col md>
-                    <Form.Label>Referrals:</Form.Label>
-                    <Form.Group>
-                        <Form.Label column="sm">Choose a service: </Form.Label>
-                        <Form.Select aria-label="Floating label select example">
-                            {services.map(function (service) {
-                                return <option key={service.id} value={service.id}>{service.name}</option>
-                            })}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label column="sm">Choose an expiration date: </Form.Label>
-                        <Form.Control type='date' placeholder='Data od:' value={referralExpiryDate} onChange={e => setReferralExpiryDate(e.target.value)}/>
-                    </Form.Group>
-                </Col>
-                <Col md>
+            {/*<Form.Group className="mb-3" controlId="detailsForm.ControlTextArea1">*/}
+            {/*    <Form.Label>Visit's description:</Form.Label>*/}
+            {/*    <Form.Control as="textarea" rows={3} />*/}
+            {/*</Form.Group>*/}
+            {/*<Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">*/}
+            {/*    <Form.Label>Recommendations:</Form.Label>*/}
+            {/*    <Form.Control as="textarea" rows={3} />*/}
+            {/*</Form.Group>*/}
+            {/*<Row className="mb-3">*/}
+            {/*    <Form.Label>Referrals:</Form.Label>*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Group>*/}
+            {/*            <Form.Label column="sm">Choose a service: </Form.Label>*/}
+            {/*            <Form.Select aria-label="Floating label select example">*/}
+            {/*                {services.map((ser)=>(*/}
+            {/*                    <option value={ser.name} onClick={(e)=>{*/}
+            {/*                        setService(ser);*/}
+            {/*                    }}>{ser.name}</option>*/}
+            {/*                ))}*/}
+            {/*            </Form.Select>*/}
+            {/*        </Form.Group>*/}
+            {/*        <Form.Group>*/}
+            {/*            <Form.Label column="sm">Choose an expiration date: </Form.Label>*/}
+            {/*            <Form.Control type='date' placeholder='Data od:' value={referralExpiryDate} onChange={e => setReferralExpiryDate(e.target.value)}/>*/}
+            {/*        </Form.Group>*/}
+            {/*    </Col>*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Label column="sm">Referrals list: </Form.Label>*/}
+            {/*        <div style={{overflow: "scroll", height: "100px"}}>*/}
+            {/*            {referrals.map(referral => {*/}
+            {/*                return <div>{referral}</div>*/}
+            {/*            })}*/}
+            {/*        </div>*/}
+            {/*    </Col>*/}
+            {/*</Row>*/}
+            {/*<hr />*/}
+            {/*<div style={{display: 'flex' ,justifyContent: 'space-between'}}>*/}
+            {/*    <button className="addButton">ADD REFERRAL</button>*/}
+            {/*    <button className="deleteButton">DELETE REFERRAL</button>*/}
+            {/*</div>*/}
+            {/*<Row className="mb-3 topBuffer">*/}
+            {/*    <Col md>*/}
+            {/*        <Form.Label>Medications:</Form.Label>*/}
+            {/*        <Form.Group>*/}
+            {/*            <Form.Label column="sm">Choose a medication: </Form.Label>*/}
+            {/*            <Form.Select aria-label="Floating label select example">*/}
+            {/*                {medications.map(function (medication) {*/}
+            {/*                    return <option key={medication.id} value={medication.id}>{medication.name}</option>*/}
+            {/*                })}*/}
+            {/*            </Form.Select>*/}
+            {/*        </Form.Group>*/}
+            {/*        <Form.Group className="mb-3" controlId="formBasicPassword">*/}
+            {/*            <Form.Label column="sm">Dosage: </Form.Label>*/}
+            {/*            <Form.Control type="text" placeholder="Dosage" />*/}
+            {/*        </Form.Group>*/}
+            {/*        <Form.Group>*/}
+            {/*            <Form.Label column="sm">Choose the number of packages: </Form.Label>*/}
+            {/*            <RangeSlider*/}
+            {/*                value={medicationQuantity}*/}
+            {/*                onChange={e => setMedicationQuantity(e.target.value)}*/}
+            {/*            />*/}
+            {/*        </Form.Group>*/}
+            {/*    </Col>*/}
+            {/*    <Col md>*/}
 
-                </Col>
-            </Row>
-            <hr />
-            <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                <button className="addButton">ADD REFERRAL</button>
-                <button className="deleteButton">DELETE REFERRAL</button>
-            </div>
-            <Row className="mb-3 topBuffer">
-                <Col md>
-                    <Form.Label>Medications:</Form.Label>
-                    <Form.Group>
-                        <Form.Label column="sm">Choose a medication: </Form.Label>
-                        <Form.Select aria-label="Floating label select example">
-                            {medications.map(function (medication) {
-                                return <option key={medication.id} value={medication.id}>{medication.name}</option>
-                            })}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label column="sm">Dosage: </Form.Label>
-                        <Form.Control type="text" placeholder="Dosage" />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label column="sm">Choose the number of packages: </Form.Label>
-                        <RangeSlider
-                            value={medicationQuantity}
-                            onChange={e => setMedicationQuantity(e.target.value)}
-                        />
-                    </Form.Group>
-                </Col>
-                <Col md>
+            {/*    </Col>*/}
+            {/*</Row>*/}
+            {/*<hr />*/}
+            {/*<div style={{display: 'flex' ,justifyContent: 'space-between'}}>*/}
+            {/*    <button className="addButton">ADD MEDICATION</button>*/}
+            {/*    <button className="deleteButton">DELETE MEDICATION</button>*/}
+            {/*</div>*/}
+            {/*<Row>*/}
 
-                </Col>
-            </Row>
-            <hr />
-            <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                <button className="addButton">ADD MEDICATION</button>
-                <button className="deleteButton">DELETE MEDICATION</button>
-            </div>
-            <Row>
-
-            </Row>
-            <div className="topBuffer">
-                <Form.Label>Check-ups:</Form.Label>
-                <Row className="mb-3">
-                    <Col md>
-                        <Form.Group>
-                            <Form.Label column="sm">Choose a check-up: </Form.Label>
-                            <Form.Select aria-label="Floating label select example">
-                                {checkUps.map(function (checkUp) {
-                                    return <option key={checkUp.id} value={checkUp.id}>{checkUp.name}</option>
-                                })}
-                            </Form.Select>
-                        </Form.Group>
-                    </Col>
-                    <Col md />
-                </Row>
-                <Row className="mb-3">
-                    <Col md>
-                        <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                            <Form.Label column="sm">Recommendations:</Form.Label>
-                            <Form.Control as="textarea" rows={3} />
-                        </Form.Group>
-                    </Col>
-                    <Col md>
-                        <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                            <Form.Label column="sm">Result:</Form.Label>
-                            <Form.Control as="textarea" rows={3} />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row className="mb-3">
-                    <Col md>
-                        <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label column="sm">Add file:</Form.Label>
-                            <Form.Control type="file" size="sm" />
-                        </Form.Group>
-                    </Col>
-                    <Col md/>
-                </Row>
-            </div>
+            {/*</Row>*/}
+            {/*<div className="topBuffer">*/}
+            {/*    <Form.Label>Check-ups:</Form.Label>*/}
+            {/*    <Row className="mb-3">*/}
+            {/*        <Col md>*/}
+            {/*            <Form.Group>*/}
+            {/*                <Form.Label column="sm">Choose a check-up: </Form.Label>*/}
+            {/*                <Form.Select aria-label="Floating label select example">*/}
+            {/*                    {checkUps.map(function (checkUp) {*/}
+            {/*                        return <option key={checkUp.id} value={checkUp.id}>{checkUp.name}</option>*/}
+            {/*                    })}*/}
+            {/*                </Form.Select>*/}
+            {/*            </Form.Group>*/}
+            {/*        </Col>*/}
+            {/*        <Col md />*/}
+            {/*    </Row>*/}
+            {/*    <Row className="mb-3">*/}
+            {/*        <Col md>*/}
+            {/*            <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">*/}
+            {/*                <Form.Label column="sm">Recommendations:</Form.Label>*/}
+            {/*                <Form.Control as="textarea" rows={3} />*/}
+            {/*            </Form.Group>*/}
+            {/*        </Col>*/}
+            {/*        <Col md>*/}
+            {/*            <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">*/}
+            {/*                <Form.Label column="sm">Result:</Form.Label>*/}
+            {/*                <Form.Control as="textarea" rows={3} />*/}
+            {/*            </Form.Group>*/}
+            {/*        </Col>*/}
+            {/*    </Row>*/}
+            {/*    <Row className="mb-3">*/}
+            {/*        <Col md>*/}
+            {/*            <Form.Group controlId="formFile" className="mb-3">*/}
+            {/*                <Form.Label column="sm">Add file:</Form.Label>*/}
+            {/*                <Form.Control type="file" size="sm" />*/}
+            {/*            </Form.Group>*/}
+            {/*        </Col>*/}
+            {/*        <Col md/>*/}
+            {/*    </Row>*/}
+            {/*</div>*/}
         </Form>
     )
 }

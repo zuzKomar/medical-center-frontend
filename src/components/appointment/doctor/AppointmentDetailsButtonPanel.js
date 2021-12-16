@@ -1,7 +1,7 @@
 import React from "react";
 import {useHistory} from "react-router-dom";
 
-const AppointmentDetailsButtonPanel = ({appointment, active}) => {
+const AppointmentDetailsButtonPanel = ({appointment}) => {
 
     let history = useHistory();
 
