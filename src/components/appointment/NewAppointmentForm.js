@@ -205,99 +205,95 @@ const NewAppointmentForm = ({getAppointments}) =>{
         }
     }
 
-
     return(
-                    <Form className="newAppointmentForm">
-                        <Form.Group className="mb-3">
-                            <Form.Label >Typ wizyty:</Form.Label>
-                            <Form.Check type="radio" name="type" id="facility" label="W placówce" onClick={(e)=>{
-                                setAppointmentType('facility');
-                                if(!!errors['appType'])
-                                    setErrors({
-                                        ...errors,
-                                        ['appType']:null
-                                    })
-                            }} isInvalid={!!errors.appType}/>
-                            <Form.Check type="radio" name="type" id="phone" label="Teleporada" onClick={(e)=>{
-                                setAppointmentType('phone');
-                                if(!!errors['appType'])
-                                    setErrors({
-                                        ...errors,
-                                        ['appType']:null
-                                    })
-                            }} isInvalid={!!errors.appType}/>
-                            <Form.Control.Feedback type='invalid'>{errors.appType}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Row className="align-items-center mb-3">
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Język:</Form.Label>
-                                    <Form.Select id='selectedLanguage'>
-                                        {languages.map((lang)=>(
-                                            <option value={lang} onClick={(e)=>setLanguage(lang)}>{lang}</option>
-                                        ))}
-                                    </Form.Select>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Skierowanie:</Form.Label>
-                                    <Form.Select id='selectedReferral'>
-                                        <option>{ selectedReferral ? selectedReferral.issueDate : 'Wykorzystaj skierowanie'}</option>
-                                        {selectedReferral &&
-                                        <option onClick={e=>{clearReferralFields(e)}}>Wykorzystaj skierowanie</option>
-                                        }
-                                        {referrals.map((ref) => (
-                                            <option value={ref} onClick={(e)=>setSelectedReferral(ref)}>{ref.issueDate}</option>
-                                        ))}
-                                    </Form.Select>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Usługa:</Form.Label>
-                            <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                                <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
-                                {services.map((ser)=>(
-                                    <option value={ser.name} onClick={(e)=>{
-                                        setService(ser);
-                                        if(!!errors['serviceMess'])
-                                            setErrors({
-                                                ...errors,
-                                                ['serviceMess']:null
-                                            })
-                                    }}>{ser.name}</option>
-                                ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Lekarz:</Form.Label>
-                            <Form.Select id='doctorr'>
-                                <option value="0">Wybierz lekarza</option>
-                                {doctors.map((doc) =>(
-                                    <option value={doc.firstName + ' ' + doc.lastName} onClick={(e)=>setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
-                        <Row className="align-items-center mb-3">
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Data od:</Form.Label>
-                                    <Form.Control type='date' placeholder='Data od:' value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)}/>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Data do:</Form.Label>
-                                    <Form.Control type='date' placeholder='Data do:' value={dateTo} onChange={(e)=>setDateTo(e.target.value)}/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <div style={{display:"flex", justifyContent: 'center'}}>
-                            <Button variant='primary' onClick={e=>handleSubmit(e)}>Szukaj wizyty</Button>
-                        </div>
-                    </Form>
+        <Form className="newAppointmentForm">
+            <Form.Group className="mb-3">
+                <Form.Label >Typ wizyty:</Form.Label>
+                <Form.Check type="radio" name="type" id="facility" label="W placówce" onClick={(e)=>{
+                    setAppointmentType('facility');
+                    if(!!errors['appType'])
+                        setErrors({
+                            ...errors,
+                            ['appType']:null
+                        })
+                }} isInvalid={!!errors.appType}/>
+                <Form.Check type="radio" name="type" id="phone" label="Teleporada" onClick={(e)=>{
+                    setAppointmentType('phone');
+                    if(!!errors['appType'])
+                        setErrors({
+                            ...errors,
+                            ['appType']:null
+                        })
+                }} isInvalid={!!errors.appType}/>
+                <Form.Control.Feedback type='invalid'>{errors.appType}</Form.Control.Feedback>
+            </Form.Group>
+            <Row className="align-items-center mb-3">
+                <Col>
+                    <Form.Group>
+                        <Form.Label>Język:</Form.Label>
+                        <Form.Select id='selectedLanguage'>
+                            {languages.map((lang)=>(
+                                <option value={lang} onClick={(e)=>setLanguage(lang)}>{lang}</option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group>
+                        <Form.Label>Skierowanie:</Form.Label>
+                        <Form.Select id='selectedReferral'>
+                            <option onClick={e=>{clearReferralFields(e)}}>{'Wykorzystaj skierowanie'}</option>
+                            {referrals.map((ref) => (
+                                <option value={ref} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? ('Ważne do: ' + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Form.Group className="mb-3">
+                <Form.Label>Usługa:</Form.Label>
+                <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
+                    <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
+                    {services.map((ser)=>(
+                        <option value={ser.name} onClick={(e)=>{
+                            setService(ser);
+                            if(!!errors['serviceMess'])
+                                setErrors({
+                                    ...errors,
+                                    ['serviceMess']:null
+                                })
+                        }}>{ser.name}</option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Lekarz:</Form.Label>
+                <Form.Select id='doctorr'>
+                    <option value="0">Wybierz lekarza</option>
+                    {doctors.map((doc) =>(
+                        <option value={doc.firstName + ' ' + doc.lastName} onClick={(e)=>setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
+                    ))}
+                </Form.Select>
+            </Form.Group>
+            <Row className="align-items-center mb-3">
+                <Col>
+                    <Form.Group>
+                        <Form.Label>Data od:</Form.Label>
+                        <Form.Control type='date' placeholder='Data od:' value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)}/>
+                    </Form.Group>
+                </Col>
+                <Col>
+                    <Form.Group>
+                        <Form.Label>Data do:</Form.Label>
+                        <Form.Control type='date' placeholder='Data do:' value={dateTo} onChange={(e)=>setDateTo(e.target.value)}/>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <div style={{display:"flex", justifyContent: 'center'}}>
+                <Button variant='primary' onClick={e=>handleSubmit(e)}>Szukaj wizyty</Button>
+            </div>
+        </Form>
     )
 }
 

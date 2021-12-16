@@ -6,6 +6,8 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import {baseUrl} from "../../config/config";
 
+const  today = new Date();
+
 const schema = yup.object().shape({
     firstName: yup.string().min(2, 'Imię powinno zawierać min. 2 znaki').max(50, 'Imię powinno zawierać maks. 50 znaków').required('Pole wymagane!'),
     lastName: yup.string().min(2, 'Nazwisko powinno zawierać min. 2 znaki').max(50, 'Nazwisko powinno zawierać maks. 50 znaków').required('Pole wymagane!'),
@@ -29,7 +31,7 @@ const schema = yup.object().shape({
                     return (parseInt(digits[10]) === checksum);
                 }
             }).required('Pole jest wymagane'),
-    birthDate: yup.date().required('Pole wymagane!'),
+    birthDate: yup.date().max(today, 'Data nie może być późniejsza niż data dzisiejsza').required('Pole wymagane!'),
     phoneNumber: yup.string().min(9, 'Numer telefonu powinien miec min. 9 cyfr').required('Pole wymagane!'),
     email: yup.string().email('Nieprawidłowy adres email').required('Pole wymagane!'),
     street: yup.string().min(2).required('Pole wymagane!'),

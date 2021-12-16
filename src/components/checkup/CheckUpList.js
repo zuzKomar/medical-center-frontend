@@ -28,7 +28,6 @@ const CheckUpList = () =>{
                 const checkups = await fetchCheckups()
                 setCheckups(checkups.diagnosticTests)
                 setCount(checkups.totalPages)
-            console.log(checkups)
         }
         getCheckups()
     },[page, pageSize])
