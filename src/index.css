@@ -445,9 +445,11 @@ footer{
 }
 
 .availableAppointmentDoctor{
-    display: block;
+    display: flex;
+    align-items: center;
     font-size: 22px;
     width: 50%;
+
 }
 
 .availableAppointmentDoctor p{
