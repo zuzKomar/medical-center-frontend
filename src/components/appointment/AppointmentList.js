@@ -4,9 +4,11 @@ import Appointment from "./Appointment";
 import Form from "react-bootstrap/Form";
 import "react-datepicker/dist/react-datepicker.css"
 import {baseUrl} from "../../config/config";
+import Pagination from "@material-ui/lab/Pagination";
 
 
 const AppointmentList = () =>{
+    const pageSizes = [3, 5, 10];
     const formatYmd = date => date.toISOString().slice(0,10);
     const facility = 'FACILITY';
     const phone = 'TELEPHONE';
@@ -17,7 +19,23 @@ const AppointmentList = () =>{
     const [appDate, setAppDate] = useState(formatYmd(new Date()));
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
     const [canceledAppointment, setCancelledAppointment] = useState(undefined);
+
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
+    const [pageSize, setPageSize] = useState(pageSizes[0]);
     let history = useHistory();
+
+    const getRequestParams = (page, pageSize) =>{
+        let params = {};
+
+        if(page){
+            params["page"] = page - 1;
+        }
+        if(pageSize){
+            params["size"] = pageSize;
+        }
+        return params;
+    }
 
     useEffect(() =>{
         const getAppointments = async () =>{
@@ -27,17 +45,20 @@ const AppointmentList = () =>{
             let pastVisits = [];
             let finalApps=[];
             const appointments = await fetchAppointments()
-                .then(apps=>apps.appointments.map((app) => {
-                    if(((new Date(app.date.slice(0,10))) > new Date(new Date().setDate(new Date().getDate()+1)))&&app.state === reserved){ //z przyszlosci
-                        futureVisits.push(app)
-                    }else if(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.state === reserved){ //do potwierdzenia
-                        visitToConfirm.push(app)
-                    }else if(app.state === confirmed){ //dzisiejsze
-                        todaysVisits.push(app)
-                    }else if(app.state === done){ //z przeszlosci
-                        pastVisits.push(app)
-                    }
-                })).then(()=>{
+                .then(res=>{
+                    setCount(res.totalPages);
+                    res.appointments.map((app) => {
+                        if(((new Date(app.date.slice(0,10))) > new Date(new Date().setDate(new Date().getDate()+1)))&&app.state === reserved){
+                            futureVisits.push(app)
+                        }else if(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.state === reserved){
+                            visitToConfirm.push(app)
+                        }else if(app.state === confirmed){
+                            todaysVisits.push(app)
+                        }else if(app.state === done){
+                            pastVisits.push(app)
+                        }
+                    })
+                }).then(()=>{
                     todaysVisits = todaysVisits.sort((a,b)=>new Date(a.date) - new Date(b.date))
                     finalApps = [...visitToConfirm, ...todaysVisits, ...futureVisits, ...pastVisits];
                 })
@@ -47,13 +68,12 @@ const AppointmentList = () =>{
         }
 
         getAppointments()
-    }, [canceledAppointment])
+    }, [canceledAppointment, page, pageSize])
 
 
     function checkAppId(app){
         return app.patientId !=null;
     }
-
 
     useEffect(()=>{
         if(canceledAppointment!==undefined){
@@ -64,11 +84,31 @@ const AppointmentList = () =>{
 
 
     const fetchAppointments = async () =>{
-        const res2 = await fetch(`${baseUrl}/patients/1/appointments?page=1&size=4`)
-        const data2 = await res2.json();
+        const params = getRequestParams(page, pageSize);
+        let res;
+        if(params.page !== null && params.size !== null){
+            res = await fetch(`${baseUrl}/patients/1/appointments?page=${params.page}&size=${params.size}`)
+        }else if(params.page !== null && params.size === null){
+            res = await fetch(`${baseUrl}/patients/1/appointments?page=${params.page}`)
+        }else if(params.page === null && params.size !== null){
+            res = await fetch(`${baseUrl}/patients/1/appointments?size=${params.size}`)
+        }else{
+            res = await fetch(`${baseUrl}/patients/1/appointments`)
+        }
 
-        return data2;
+        const data = await res.json();
+
+        return data;
     }
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(event.target.value);
+        setPage(1);
+    };
 
     const handleFacilityFilter = () =>{
         let facilityAppointments = appointments.filter(appointment => (appointment.type === facility));
@@ -114,19 +154,33 @@ const AppointmentList = () =>{
                     </div>
                 </div>
             </div>
-            <div className="appDate">
+            <div className="test">
+                <div className="appDate">
                     <Form>
                         <Form.Group>
                             <Form.Label>Data:</Form.Label>
                             <Form.Control type='date' onChange={(e) => setAppDate(e.target.value)} value={appDate}/>
                         </Form.Group>
                     </Form>
+                </div>
+                <div className="itemsNumber" style={{height : '4%'}}>
+                    <p>Ilość elementów na stronie: </p>
+                    <select onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
+
             <div className="appointmentList">
                 {filteredAppointments.map((appointment)=>(
                     <Appointment key={appointment.id} appointment={appointment} setCancelledAppointment={setCancelledAppointment}/>
                 ))}
             </div>
+            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
     )
 }

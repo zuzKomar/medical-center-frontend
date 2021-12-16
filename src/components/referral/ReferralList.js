@@ -4,13 +4,13 @@ import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
 const ReferralList = () =>{
+    const pageSizes = [3, 5, 10];
     const [referrals, setReferrals] = useState([]);
     const [selectedReferral, setSelectedReferral] = useState(undefined);
+
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
-    const [pageSize, setPageSize] = useState(3);
-
-    const pageSizes = [3, 5, 10];
+    const [pageSize, setPageSize] = useState(pageSizes[0]);
 
     const getRequestParams = (page, pageSize) =>{
         let params = {};
@@ -26,19 +26,12 @@ const ReferralList = () =>{
 
     useEffect(() =>{
         const getReferrals = async () =>{
-
                 const referrals = await fetchReferrals()
-                    // .then((res)=>{
-                    //     console.log(res);
-                    //     // const {referrals, totalPages} = res.data;
-                    //     // setReferrals(referrals);
-                    //     // setCount(totalPages);
-                    // })
-                setReferrals(referrals.referrals);
+                setReferrals(referrals.referrals)
+                setCount(referrals.totalPages)
         }
-
         getReferrals()
-    },[])
+    },[page, pageSize])
 
     useEffect(()=>{
         if(selectedReferral!==undefined) {
@@ -87,19 +80,21 @@ const ReferralList = () =>{
             <div className="listHeader">
                 <h2>Twoje skierowania</h2>
             </div>
-            {"Items per Page: "}
-            <select onChange={handlePageSizeChange} value={pageSize}>
-                {pageSizes.map((size) => (
-                    <option key={size} value={size}>
-                        {size}
-                    </option>
-                ))}
-            </select>
+            <div className="itemsNumber">
+                <p>Ilość elementów na stronie: </p>
+                <select onChange={handlePageSizeChange} value={pageSize}>
+                    {pageSizes.map((size) => (
+                        <option key={size} value={size}>
+                            {size}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             {referrals.map((referral) =>(
                 <Referral key={referral.id} referral={referral} setSelectedReferral={setSelectedReferral}/>
                 ))}
-            <Pagination count={10} shape="rounded" className="my-3" onChange={handlePageChange}
-            />
+            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
     )
 }

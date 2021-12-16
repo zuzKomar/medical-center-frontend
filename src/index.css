@@ -2,7 +2,6 @@
 
 body{
     min-width: 360px;
-    /*position: relative;*/
     margin: 0;
     padding: 0;
     min-height: 100%;
@@ -29,7 +28,6 @@ body{
     background-color: #E9E9E9;
     width: 80%;
     border-radius:12px;
-
 }
 
 footer{
@@ -75,7 +73,6 @@ footer{
     display: inline-block;
 }
 
-
 .navItemLanguages{
     font-family: 'Montserrat', sans-serif;
     font-size: 26px;
@@ -101,6 +98,25 @@ footer{
     padding-top: 15px;
 }
 
+.itemsNumber{
+    width: 80%;
+    display: flex;
+    justify-content: right;
+    margin-top: 1%;
+}
+
+.itemsNumber p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin-right: 1%;
+}
+
+.test{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
 .referral{
     background-color: #ffffff;
     display: inline-block;
@@ -110,7 +126,6 @@ footer{
     padding: 15px;
     margin-top: 25px;
     margin-bottom: 15px;
-    /*padding-bottom: 1%;*/
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
 }
@@ -132,7 +147,6 @@ footer{
     border-radius: 15px;
     font-weight: bold;
     height: 20%;
-    /*margin-top: 1%;*/
 }
 
 .referralDiv2{
@@ -140,9 +154,7 @@ footer{
     justify-content: space-between;
     font-size: 20px;
     align-items: center;
-
 }
-
 
 .referralDiv2 .registerReferralButton{
     text-decoration: none;
@@ -196,7 +208,6 @@ footer{
 .todayApp{
     border-left: 10px solid;
     border-color: #18a74b;
-    /*box-shadow: -10px 0 5px -5px #2d74ab;*/
 }
 
 .appToConfirm{
@@ -326,17 +337,7 @@ footer{
     display: flex;
     width: 100%;
     justify-content: flex-start;
-
 }
-
-/*.appointmentButtons{*/
-/*    display: flex;*/
-/*}*/
-
-/*.appointmentButtons Button{*/
-/*    margin: 1%;*/
-/*    width: 120%;*/
-/*}*/
 
 .renewPrescriptionBtn{
     background-color: white;
@@ -393,7 +394,6 @@ footer{
     display: flex;
     border-radius:12px;
     width: 70%;
-    /*padding: 15px;*/
     margin-top: 6px;
     margin-bottom: 6px;
     font-family: 'Montserrat', sans-serif;
