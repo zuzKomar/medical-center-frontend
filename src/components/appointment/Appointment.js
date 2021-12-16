@@ -23,18 +23,15 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
 
     function handleConfirmation(e){
         e.preventDefault();
-        let updatedApp = app;
-        updatedApp.confirmed = true;
-        setAppointment(updatedApp);
+        let confirmedApp = app;
+        confirmedApp.state = 'CONFIRMED';
+        setAppointment(confirmedApp);
 
         fetch(`${baseUrl}/appointments/${appointment.id}/confirm`, {
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                confirmed : true
-            }),
         }).then((res)=>res.json())
             .then(window.alert('wizyta została potwierdzona'))
             .catch((err)=>console.log(err));
@@ -42,19 +39,15 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
 
     function handleCancellation(e){
         e.preventDefault();
-        let updatedApp = app;
-        updatedApp.patientId = null;
-        setCancelledAppointment(updatedApp);
-        //setAppointment(updatedApp);
+        let cancelledApp = app;
+        cancelledApp.state = 'AVAILABLE';
+        setCancelledAppointment(cancelledApp);
 
         fetch(`${baseUrl}/appointments/${appointment.id}/cancel`,{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                patientId : null
-            }),
         }).then((res)=>res.json())
             .then(window.alert('wizyta została odwołana'))
             .catch((err)=>console.log(err));
@@ -63,9 +56,9 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
     var x = (new Date()).getTimezoneOffset() * 60000;
     const formatYmd = date => date.toISOString().slice(0, 10);
         return(
-            <div className={app.date ? (new Date(new Date().setDate(new Date().getDate()+1)) < (new Date(app.date.slice(0,10)))) ? 'appointmentAndCheckup incomingApp'  :
-                (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.confirmed === false) ? 'appointmentAndCheckup appToConfirm' :
-                ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.confirmed === true) ? 'appointmentAndCheckup todayApp' :
+            <div className={app.date ? ((new Date(new Date().setDate(new Date().getDate()+1)) < (new Date(app.date.slice(0,10))))&& app.state === 'RESERVED') ? 'appointmentAndCheckup incomingApp'  :
+                (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.state === 'RESERVED') ? 'appointmentAndCheckup appToConfirm' :
+                ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate() && app.state === 'CONFIRMED')) ? 'appointmentAndCheckup todayApp' :
                 'appointmentAndCheckup archivalApp') : ''} onClick={e=>togglePanel(e)}>
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : app.serviceName)}</p>
@@ -75,19 +68,23 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                         <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                     </div>
                 </div>
-                {app.date? <div style={{display: 'flex', justifyContent:'space-between'}}>
-                    <div>
-                        <FaRegUser size={42}/>
-                        lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
-                    </div>
-                    {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.confirmed === false))&&
-                        <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
-                    }
-                    {((formatYmd(new Date()) < formatYmd(new Date(new Date(app.date)-x)))&&(app.confirmed === false)) &&
-                        <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
-                    }
+                {app.date?
+                    <div style={{display: 'flex', justifyContent:'space-between'}}>
+                        <div>
+                            <FaRegUser size={42}/>
+                            lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                        </div>
+                        <div className="appointmentButtons">
+                            {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === 'RESERVED'))&&
+                            <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
+                            }
+
+                            {(app.state === 'RESERVED') &&
+                            <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
+                            }
+                        </div>
                 </div> : ''}
-                {app.diagnosticTests !== undefined  ?
+                {(app.recommendations !== null || app.diagnosticTests.length > 0 || app.prescriptions.length > 0)  ?
                     <>
                     {open ? (
                         <div>
@@ -112,7 +109,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                                 <GiMedicines size={42}/>
                                 <p className="header">e-Recepty</p>
                             </div>
-                            <p>{app.prescriptions ? 'Wystawiono elektroniczną receptę': 'Brak recept'}</p>
+                            <p>{app.prescriptions.length > 0 ? 'Wystawiono elektroniczną receptę': 'Brak recept'}</p>
 
                         </div>) : null}
                     </> : null}

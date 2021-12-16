@@ -106,14 +106,14 @@ const NewAppointmentForm = ({getAppointments}) =>{
     useEffect(()=>{
         const getReferrals = async () =>{
             const referrals = await fetchReferrals()
-            setReferrals(referrals)
+            setReferrals(referrals.referrals)
         }
         getReferrals()
     }, [])
 
 
     const fetchReferrals = async () =>{
-        const res = await fetch(`${baseUrl}/patients/1/referrals`);
+        const res = await fetch(`${baseUrl}/patients/1/referrals?size=100`);
         const data = await res.json();
 
         return data;

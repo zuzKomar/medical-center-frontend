@@ -1,4 +1,5 @@
 import Navigation from "./components/fragments/Navigation";
+import Footer from "./components/fragments/Footer";
 import HomePage from "./components/patient/HomePage";
 import UploadNewFile from "./components/patientFiles/UploadNewFile";
 import AppointmentList from "./components/appointment/AppointmentList";
@@ -13,8 +14,6 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import PrescriptionRenewal from "./components/prescription/PrescriptionRenewal";
-import Footer from "./components/fragments/Footer";
 
 
 function App() {
@@ -33,7 +32,6 @@ function App() {
                           <Route exact path="/grafik" component={ScheduleForm}/>
                           <Route exact path="/badania" component={CheckUpList}/>
                           <Route exact path="/recepty" component={PrescriptionList}/>
-                          <Route exact path="/nowa-recepta" component={PrescriptionRenewal}/>
                       </Switch>
                   </div>
               </div>
