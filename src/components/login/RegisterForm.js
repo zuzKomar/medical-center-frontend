@@ -37,7 +37,8 @@ const schema = yup.object().shape({
     streetNumber: yup.string().required('Field required!'),
     city: yup.string().required('Field required!'),
     postCode: yup.string().required('Field required!'),
-    country: yup.string().required('Field required!')
+    country: yup.string().required('Field required!'),
+    password: yup.string().min(2, 'Password should have min. 2 characters!').max(50, 'Password should have max. 50 characters!').required('Field required!')
 });
 
 const RegisterForm = () => {
@@ -56,11 +57,7 @@ const RegisterForm = () => {
     return (
         <div className="center loginForm">
             <Formik validationSchema={schema}
-                    enableReinitialize={true}
                     onSubmit={console.log('test')}
-                    initialErrors={{}}
-                    validateOnChange={true}
-                    validateOnMount={true}
                     initialValues={{
                         firstName : '',
                         lastName : '',
@@ -136,6 +133,11 @@ const RegisterForm = () => {
                                 <Form.Label>Country:</Form.Label>
                                 <Form.Control type="text" name="country" placeholder="Country" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} onChange={handleChange} />
                                 <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group as={Col} xs={12} md={6} controlId="password">
+                                <Form.Label>Password:</Form.Label>
+                                <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange} />
+                                <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <div>
