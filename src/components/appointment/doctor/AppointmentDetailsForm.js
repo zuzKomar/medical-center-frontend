@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
+import {useHistory} from 'react-router';
 import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import {baseUrl} from "../../../config/config";
@@ -8,6 +9,8 @@ import Button from "react-bootstrap/Button";
 const AppointmentDetailsForm = ({appointment}) => {
     const formatYmd = date => date.toISOString().slice(0,10);
     const ref = useRef();
+    const history = useHistory();
+    const [errors, setErrors] = useState({});
 
     //dane pobrane
     const [services, setServices] = useState([]);
@@ -15,9 +18,9 @@ const AppointmentDetailsForm = ({appointment}) => {
     const [medications, setMedications] = useState([]);
 
 
-    const [app, setApp] = useState(appointment); //id przekazanej wizyty potrzebne do POSTa
-    const [description, setDescription] = useState(undefined); //opis wizyty <nullable>
-    const [recommendations, setRecommendations] = useState(undefined); //zalecenia <nullable>
+    const [app, setApp] = useState(appointment);
+    const [description, setDescription] = useState(undefined);
+    const [recommendations, setRecommendations] = useState(undefined);
 
     //lista skierowań
     const [service, setService] = useState(undefined);
@@ -205,44 +208,72 @@ const AppointmentDetailsForm = ({appointment}) => {
 
     const seeResult = (e) =>{
         e.preventDefault();
-        let prescriptions = [];
 
-        if(medicationsToAdd.length > 0){
-            let prescription = {};
-            let expiryDate = formatYmd(new Date(new Date().setDate(new Date().getDate()+31)));
-            let accessCode = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-            let medications = medicationsToAdd;
+        const errors = findFormErrors();
 
-            prescription["expiryDate"] = expiryDate;
-            prescription["accessCode"] = accessCode;
-            prescription["medications"] = medications;
-            prescriptions = [prescription]; //do patcha
+        if(Object.keys(errors).length > 0){
+            setErrors(errors);
+        }else{
+            let prescriptions = [];
+
+            if(medicationsToAdd.length > 0){
+                let prescription = {};
+                let expiryDate = formatYmd(new Date(new Date().setDate(new Date().getDate()+31)));
+                let accessCode = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+                let medications = medicationsToAdd;
+
+                prescription["expiryDate"] = expiryDate;
+                prescription["accessCode"] = accessCode;
+                prescription["medications"] = medications;
+                prescriptions = [prescription];
+            }
+
+            let fetchBody = {};
+            fetchBody["description"] = description;
+            fetchBody["recommendations"] = recommendations;
+            fetchBody["referrals"] = referrals;
+            fetchBody["prescriptions"] = prescriptions;
+            fetchBody["checkUps"] = checkUpsToAdd;
+
+
+            fetch(`${baseUrl}/appointments/${app.id}/done`,{
+                method : 'PATCH',
+                headers :{
+                    'Content-Type': 'application/json',
+                },
+                body : JSON.stringify(fetchBody)
+            }).then((res)=>res.json())
+                .then(window.alert('Szczegóły wizyty zostały dodane'))
+                .then(history.push({
+                    pathname : '/today-visits'
+                }))
+                .catch((err)=>console.log(err));
+        }
+    }
+
+    const findFormErrors = () =>{
+        const newErrors = {};
+
+        if(description === undefined || description === ''){
+            newErrors.description = "Visit's description is required!";
         }
 
-        let fetchBody = {};
-        fetchBody["description"] = description;
-        fetchBody["recommendations"] = recommendations;
-        fetchBody["referrals"] = referrals;
-        fetchBody["prescriptions"] = prescriptions;
-        fetchBody["checkUps"] = checkUpsToAdd;
-
-
-        fetch(`${baseUrl}/appointments/${app.id}/done`,{
-            method : 'PATCH',
-            headers :{
-                'Content-Type': 'application/json',
-            },
-            body : JSON.stringify(fetchBody)
-        }).then((res)=>res.json())
-            .then(window.alert('Szczegóły wizyty zostały dodane'))
-            .catch((err)=>console.log(err));
+        return newErrors;
     }
 
     return (
         <Form className="newAppointmentForm">
             <Form.Group className="mb-3" controlId="detailsForm.ControlTextArea1">
                 <Form.Label>Visit's description:</Form.Label>
-                <Form.Control as="textarea" rows={3} value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                <Form.Control as="textarea" rows={3} value={description} isInvalid={!!errors.description} onChange={(e)=>{
+                    setDescription(e.target.value);
+                    if(!!errors['description'])
+                        setErrors({
+                            ...errors,
+                            ['description']:null
+                        })
+                }}/>
+                <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
                 <Form.Label>Recommendations:</Form.Label>
@@ -327,6 +358,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             </Row>
             <div className="topBuffer">
                 <Form.Label>Check-ups:</Form.Label>
+                <h6 style={{color: '#e60000'}}>Checkup description, result and file can be added later</h6>
                 <Row className="mb-3">
                     <Col md>
                         <Form.Group>
@@ -380,7 +412,11 @@ const AppointmentDetailsForm = ({appointment}) => {
             </div>
             <div style={{display:"flex", justifyContent: 'center'}}>
                 <div style={{display:"flex", justifyContent: 'space-between'}}>
-                    <Button variant='danger'>Cancel</Button>
+                    <Button variant='danger' onClick={()=>{
+                        history.push({
+                            pathname : '/today-visits'
+                        })
+                    }}>Cancel</Button>
                     <Button variant='primary' onClick={(e)=>seeResult(e)}>Save changes</Button>
                 </div>
             </div>

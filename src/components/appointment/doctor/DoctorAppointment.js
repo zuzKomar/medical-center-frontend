@@ -34,10 +34,14 @@ const DoctorAppointment = ({appointment}) => {
                 <p>Age: {a.diff(b, 'year')}</p>
                 {appointment.type==='TELEPHONE' ? 'Phone number: ' + appointment.patient.phoneNumber : ''}
             </div>
-            <hr />
-            <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
-                <button className="actionButton" onClick={e => handleClick(e)}>VISIT'S DETAILS</button>
-            </div>
+            {appointment.state !== 'DONE' &&
+                <>
+                    <hr />
+                    <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
+                        <button className="actionButton" onClick={e => handleClick(e)}>ADD VISIT'S DETAILS</button>
+                    </div>
+                </>
+            }
         </div>
     )
 }
