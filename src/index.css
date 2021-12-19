@@ -325,6 +325,23 @@ footer{
     color: white;
 }
 
+.appointmentFormSubsectionItem{
+    font-size: 80%;
+    cursor: pointer;
+}
+
+.appointmentFormSubsectionItem:hover{
+    background-color: #f5f5f5;
+}
+
+.appointmentFormSubsectionItem:active{
+    background-color: #ebecec;
+}
+
+.appointmentFormSubsectionItem:focus{
+    background-color: #ebecec;
+}
+
 .deleteButton{
     background-color: white;
     padding: 10px 24px;
@@ -503,16 +520,7 @@ footer{
     padding: 10px;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
-}
-
-.smallerModal {
-    margin-top: 2%;
-    height: 56%;
-}
-
-.biggerModal {
     margin-top : 8%;
-    height : 64%;
 }
 
 .modalContainer .modalTitle {

@@ -13,7 +13,7 @@ const VisitsHistoryList = () => {
     useEffect(() => {
         const getAppointments = async () => {
             const appointments = await fetchAppointments()
-            setPatientsAppointments(appointments)
+            setPatientsAppointments(appointments.appointments)
         }
         getAppointments();
     }, [])

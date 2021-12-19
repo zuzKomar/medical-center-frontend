@@ -15,7 +15,7 @@ const AppointmentDetails = () => {
             </div>
             <br/>
             <AppointmentDetailsButtonPanel appointment={appointment} />
-            <AppointmentDetailsForm />
+            <AppointmentDetailsForm appointment={appointment}/>
         </div>
     )
 }
