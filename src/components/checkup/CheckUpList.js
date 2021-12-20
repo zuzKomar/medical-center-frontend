@@ -1,15 +1,21 @@
 import React, {useState, useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import CheckUp from "./CheckUp";
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
+import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
 const CheckUpList = () =>{
+    const location = useLocation();
     const pageSizes = [3, 5, 10];
     const [checkups, setCheckups] = useState([]);
 
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
+
+    const [appointment, setAppointment] = useState(undefined);
+    const [patientId, setPatientId] = useState(undefined);
 
     const getRequestParams = (page, pageSize) =>{
         let params = {};
@@ -22,6 +28,13 @@ const CheckUpList = () =>{
         }
         return params;
     }
+
+    useEffect(()=>{
+        if(location.state !== undefined){
+            setAppointment(location.state.detail);
+            setPatientId(location.state.patientId)
+        }
+    },[location])
 
     useEffect(()=>{
         const getCheckups = async () =>{
@@ -65,6 +78,10 @@ const CheckUpList = () =>{
             <div className="listHeader">
                 <h2>Twoje badania</h2>
             </div>
+            <br/>
+            {(appointment !== undefined) &&
+                <AppointmentDetailsButtonPanel appointment={appointment} />
+            }
             <div className="itemsNumber">
                 <p>Ilość elementów na stronie: </p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
