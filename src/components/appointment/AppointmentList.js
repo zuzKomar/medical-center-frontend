@@ -16,7 +16,7 @@ const AppointmentList = () =>{
     const confirmed = 'CONFIRMED';
     const done = 'DONE';
     const [appointments, setAppointments] = useState([]);
-    const [appDate, setAppDate] = useState(formatYmd(new Date()));
+    const [appDate, setAppDate] = useState(undefined);
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
     const [canceledAppointment, setCancelledAppointment] = useState(undefined);
 
@@ -124,6 +124,19 @@ const AppointmentList = () =>{
         setFilteredAppointments(appointments);
     }
 
+    const handleDateFilter = (e) =>{
+        e.preventDefault();
+        if(e.target.value){
+            let x = (new Date()).getTimezoneOffset() * 60000;
+            let appointmentsFilteredByDate = appointments.filter(appointment => (appointment.date.slice(0,10) === e.target.value))
+            console.log(new Date(new Date(e.target.value)-x).toISOString().slice(0,10));
+            setFilteredAppointments(appointmentsFilteredByDate);
+        }else{
+            setAppDate(formatYmd(new Date()));
+        }
+
+    }
+
     const handleClick = () =>{
         history.push("/nowa-wizyta");
     }
@@ -159,7 +172,10 @@ const AppointmentList = () =>{
                     <Form>
                         <Form.Group>
                             <Form.Label>Data:</Form.Label>
-                            <Form.Control type='date' onChange={(e) => setAppDate(e.target.value)} value={appDate}/>
+                            <Form.Control type='date' onChange={(e) => {
+                                setAppDate(e.target.value)
+                                handleDateFilter(e)
+                            }} value={appDate}/>
                         </Form.Group>
                     </Form>
                 </div>

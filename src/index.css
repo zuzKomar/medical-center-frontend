@@ -504,22 +504,21 @@ footer{
     margin-right: 1%;
 }
 
+
+
 .modalBackground {
     width: 100%;
     height: 150%;
     background-color: rgba(200, 200, 200, 1);
     position: fixed;
-    display: block;
-    justify-content: center;
 }
 
 
 .modalContainer {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
+    position: fixed;
+    left: 50%;
+    top : 36%;
+    transform: translate(-50%, -50%);
     width: 30%;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -530,7 +529,16 @@ footer{
     padding: 10px;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
+}
+
+.smallerModal {
+    margin-top: 2%;
+    height: 56%;
+}
+
+.biggerModal {
     margin-top : 8%;
+    height : 64%;
 }
 
 .modalContainer .modalTitle {
