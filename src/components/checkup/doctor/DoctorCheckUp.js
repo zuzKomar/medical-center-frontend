@@ -3,16 +3,19 @@ import {FaRegUser} from "react-icons/fa";
 import moment from "moment";
 import {Button, Form} from "react-bootstrap";
 import {baseUrl} from "../../../config/config";
+import {useHistory} from 'react-router';
 
-const DoctorCheckUp = ({checkup}) => {
+const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
     const [state, setState] = useState(false);
     const [checkUp, setCheckUp] = useState(checkup);
     const [result, setResult] = useState(undefined);
     const [file, setFile] = useState(undefined);
     const [doctorsDescription, setDoctorsDescription] = useState(undefined);
+    const [errors, setErrors] = useState({});
 
     let a = moment(Date.now());
     let b = moment(checkUp.patient.birthDate)
+    const history = useHistory();
     const ref = useRef();
 
     function showForm(e) {
@@ -20,22 +23,48 @@ const DoctorCheckUp = ({checkup}) => {
         setState(!state);
     }
 
+    const findFormErrors = () => {
+        const newErrors = {};
+
+        if(result === undefined || result === ''){
+            newErrors.result = 'Result must be added!';
+        }
+
+        if (file === undefined) {
+            newErrors.file = 'File must be added!';
+        }
+
+        return newErrors;
+    }
+
     function handleRealization(e){
         e.preventDefault();
 
-        let fetchBody = {};
-        fetchBody['result'] = result;
-        fetchBody['doctorsDescription'] = doctorsDescription
-        fetchBody['file'] = file;
+        const errors = findFormErrors();
 
-        fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(fetchBody)
-        }).then(res => res.json())
-            .then(window.alert("Check-up have been realized"))
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
+        } else {
+            setSelectedCheckUp(checkUp);
+
+            let fetchBody = {};
+            fetchBody['result'] = result;
+            fetchBody['doctorsDescription'] = doctorsDescription
+            fetchBody['file'] = file;
+
+            fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fetchBody)
+            }).then((res) => res.json())
+                .then(window.alert("Check-up have been realized"))
+                .then(history.push({
+                    pathname: '/check-ups'
+                }))
+                .catch((err) => console.log(err));
+        }
     }
 
     const convertToBase64 = (file) => {
@@ -95,13 +124,28 @@ const DoctorCheckUp = ({checkup}) => {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="result">
                         <Form.Label>Result:</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={result} onChange={e => {
+                        <Form.Control as="textarea" rows={3} isInvalid={!!errors.result} value={result} onChange={e => {
                             setResult(e.target.value);
+                            if(!!errors['result'])
+                                setErrors({
+                                    ...errors,
+                                    ['result']:null
+                                })
                         }} />
+                        <Form.Control.Feedback type='invalid'>{errors.result}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="file" className="mb-2">
                         <Form.Label>File:</Form.Label>
-                        <Form.Control as="input" ref={ref} type="file" onChange={e => handleFileUpload(e)}/>
+                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.result} onChange={e => {
+                            handleFileUpload(e);
+                            if(!!errors['file'])
+                                setErrors({
+                                    ...errors,
+                                    ['file']:null
+                                })
+                        }}
+                        />
+                        <Form.Control.Feedback type='invalid'>{errors.file}</Form.Control.Feedback>
                     </Form.Group>
                     {state &&
                     <div className="topBuffer" style={{display: 'flex', justifyContent: 'space-between'}}>

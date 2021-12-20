@@ -16,6 +16,9 @@ function DoctorNavigation(){
                         <LinkContainer to="/today-visits" activeHref="active">
                             <Nav.Link exact className="navItemLink">Today's Visits</Nav.Link>
                         </LinkContainer>
+                        <LinkContainer to="/check-ups" activeHref="active">
+                            <Nav.Link exact className="navItemLink">Check-ups</Nav.Link>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

@@ -10,6 +10,7 @@ const DoctorCheckUpList = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
+    const [selectedCheckUp, setSelectedCheckUp] = useState(undefined);
 
     const getRequestParams = (page, pageSize) => {
         let params = {};
@@ -22,6 +23,12 @@ const DoctorCheckUpList = () => {
         }
         return params;
     }
+
+    useEffect(()=>{
+        if(selectedCheckUp!==undefined) {
+            setCheckUps(checkUps.filter(filterCheckUps));
+        }
+    },[selectedCheckUp])
 
     useEffect(() => {
         const getCheckUps = async () => {
@@ -59,6 +66,12 @@ const DoctorCheckUpList = () => {
         setPage(1);
     };
 
+    function filterCheckUps(checkUp){
+        if(checkUp === selectedCheckUp){
+            return checkUp;
+        }
+    }
+
     return(
         <div className="itemsList">
             <div className="listHeader">
@@ -75,7 +88,7 @@ const DoctorCheckUpList = () => {
                 </select>
             </div>
             {checkUps.map(checkUp => (
-                <DoctorCheckUp checkup={checkUp}/>
+                <DoctorCheckUp setSelectedCheckUp={setSelectedCheckUp} checkup={checkUp}/>
             ))}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
