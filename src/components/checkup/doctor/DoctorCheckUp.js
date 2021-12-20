@@ -149,7 +149,7 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
                     </Form.Group>
                     {state &&
                     <div className="topBuffer" style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <Button className="deleteButton" onClick={showForm}>CANCEL</Button>
+                        <button className="deleteButton" onClick={showForm}>CANCEL</button>
                         <button className="addButton" onClick={e => handleRealization(e)}>ACCEPT</button>
                     </div>
                     }
