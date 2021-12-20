@@ -63,7 +63,7 @@ const TodayAppointmentList = () => {
                 <h2>Today's Visits</h2>
             </div>
             <div className="itemsNumber">
-                <p>Ilość elementów na stronie: </p>
+                <p>Number of elements on site: </p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
                     {pageSizes.map((size) => (
                         <option key={size} value={size}>

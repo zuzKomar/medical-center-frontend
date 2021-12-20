@@ -15,18 +15,20 @@ import DoctorCheckUpList from "./components/checkup/doctor/DoctorCheckUpList";
 function DoctorApp() {
     return (
         <Router>
-            <div style={{position: 'relative', paddingBottom:'50px'}}>
+            <div>
                 <DoctorNavigation/>
-                <div className="content">
-                    <Switch>
-                        <Route exact path="/today-visits" component={TodayAppointmentList}/>
-                        <Route exact path="/today-visits/:id/details" component={AppointmentDetails} />
-                        <Route exact path="/today-visits/:id/details/visits-history" component={VisitsHistoryList} />
-                        <Route exact path="/today-visits/:id/details/check-ups" component={CheckUpList} />
-                        <Route exact path="/today-visits/:id/details/files" component={FilesTable} />
-                        <Route exact path="/check-ups" component={DoctorCheckUpList} />
-                    </Switch>
-                </div>
+                    <div className="wholePage">
+                        <div className="content">
+                            <Switch>
+                                <Route exact path="/today-visits" component={TodayAppointmentList}/>
+                                <Route exact path="/today-visits/:id/details" component={AppointmentDetails} />
+                                <Route exact path="/today-visits/:id/details/visits-history" component={VisitsHistoryList} />
+                                <Route exact path="/today-visits/:id/details/check-ups" component={CheckUpList} />
+                                <Route exact path="/today-visits/:id/details/files" component={FilesTable} />
+                                <Route exact path="/check-ups" component={DoctorCheckUpList} />
+                            </Switch>
+                        </div>
+                    </div>
                 <Footer/>
             </div>
         </Router>

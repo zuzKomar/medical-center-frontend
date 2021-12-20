@@ -24,6 +24,15 @@ const DoctorCheckUpList = () => {
         return params;
     }
 
+    useEffect(() => {
+        const getCheckUps = async () => {
+            const checkUps = await fetchCheckUps()
+            setCheckUps(checkUps.checkUps)
+            setCount(checkUps.totalPages)
+        }
+        getCheckUps()
+    }, [page, pageSize])
+
     useEffect(()=>{
         if(selectedCheckUp!==undefined) {
             setCheckUps(checkUps.filter(filterCheckUps));
@@ -34,10 +43,10 @@ const DoctorCheckUpList = () => {
         const getCheckUps = async () => {
             const checkUps = await fetchCheckUps()
             setCheckUps(checkUps.checkUps)
-            setCount(checkUps.totalPages)
         }
         getCheckUps()
-    }, [page, pageSize])
+    }, [selectedCheckUp])
+
 
     const fetchCheckUps = async () => {
         const params = getRequestParams(page, pageSize);
@@ -57,6 +66,13 @@ const DoctorCheckUpList = () => {
         return data;
     }
 
+    function filterCheckUps(checkUp){
+        console.log(selectedCheckUp);
+        if(checkUp.appointmentId !== selectedCheckUp.appointmentId && checkUp.checkUpId !== selectedCheckUp.checkUpId){
+            return checkUp;
+        }
+    }
+
     const handlePageChange = (event, value) => {
         setPage(value);
     }
@@ -66,11 +82,6 @@ const DoctorCheckUpList = () => {
         setPage(1);
     };
 
-    function filterCheckUps(checkUp){
-        if(checkUp === selectedCheckUp){
-            return checkUp;
-        }
-    }
 
     return(
         <div className="itemsList">

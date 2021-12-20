@@ -37,36 +37,6 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
         return newErrors;
     }
 
-    function handleRealization(e){
-        e.preventDefault();
-
-        const errors = findFormErrors();
-
-        if (Object.keys(errors).length > 0) {
-            setErrors(errors);
-        } else {
-            setSelectedCheckUp(checkUp);
-
-            let fetchBody = {};
-            fetchBody['result'] = result;
-            fetchBody['doctorsDescription'] = doctorsDescription
-            fetchBody['file'] = file;
-
-            fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(fetchBody)
-            }).then((res) => res.json())
-                .then(window.alert("Check-up have been realized"))
-                .then(history.push({
-                    pathname: '/check-ups'
-                }))
-                .catch((err) => console.log(err));
-        }
-    }
-
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -93,6 +63,33 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
         let test = new Uint8Array(byteNumbers);
         let array = Array.from(test);
         setFile(array);
+    }
+
+    function handleRealization(e){
+        e.preventDefault();
+
+        const errors = findFormErrors();
+
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
+        } else {
+            setSelectedCheckUp(checkUp)
+            let fetchBody = {};
+            fetchBody['result'] = result;
+            fetchBody['doctorsDescription'] = doctorsDescription
+            fetchBody['file'] = file;
+
+            fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fetchBody)
+            }).then((res) => res.json())
+                .then(()=>  setState(!state))
+                .then(window.alert("Check-up have been realized"))
+                .catch((err) => console.log(err));
+        }
     }
 
     return(
@@ -136,7 +133,7 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
                     </Form.Group>
                     <Form.Group controlId="file" className="mb-2">
                         <Form.Label>File:</Form.Label>
-                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.result} onChange={e => {
+                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={e => {
                             handleFileUpload(e);
                             if(!!errors['file'])
                                 setErrors({
