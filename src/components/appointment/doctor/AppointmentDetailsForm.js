@@ -116,17 +116,21 @@ const AppointmentDetailsForm = ({appointment}) => {
         let medicine = {};
 
         if(medication !== undefined && medicationDosage !== undefined){
-            medicine["numberOfPackages"] = medicationQuantity;
-            medicine["dosing"] = medicationDosage;
-            medicine["medicationId"] = medication.id;
-            medicine["name"] = medication.name;
+            if(medicationsToAdd.filter(e=>e.medicationId === medication.id).length === 0){
+                medicine["numberOfPackages"] = medicationQuantity;
+                medicine["dosing"] = medicationDosage;
+                medicine["medicationId"] = medication.id;
+                medicine["name"] = medication.name;
 
-            medicationsToAdd.push(medicine);
-            setMedication(undefined);
-            let element = document.getElementById('medicationSelect');
-            element.value = 'Choose a medication';
-            setMedicationDosage('');
-            setMedicationQuantity(1);
+                medicationsToAdd.push(medicine);
+                setMedication(undefined);
+                let element = document.getElementById('medicationSelect');
+                element.value = 'Choose a medication';
+                setMedicationDosage('');
+                setMedicationQuantity(1);
+            }else{
+                window.alert('This medication has been already added to prescription. In case of changing dosage or number of packages, delete this position and add it corrected again.');
+            }
         }
     }
 
