@@ -1,21 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { useLocation } from "react-router-dom";
-import CheckUp from "./CheckUp";
-import {baseUrl} from "../../config/config";
+import {baseUrl} from "../../../config/config";
+import DoctorAppointment from "./DoctorAppointment";
 import Pagination from "@material-ui/lab/Pagination";
-import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
-const CheckUpList = () =>{
-    const location = useLocation();
+const TodayAppointmentList = () => {
     const pageSizes = [3, 5, 10];
-    const [checkups, setCheckups] = useState([]);
-
+    const [appointments, setAppointments] = useState([]);
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
-
-    const [appointment, setAppointment] = useState(undefined);
-    const [patientId, setPatientId] = useState(undefined);
 
     const getRequestParams = (page, pageSize) =>{
         let params = {};
@@ -29,34 +22,25 @@ const CheckUpList = () =>{
         return params;
     }
 
-    useEffect(()=>{
-        if(location.state !== undefined){
-            setAppointment(location.state.detail);
-            setPatientId(location.state.patientId)
+    useEffect(() => {
+        const getAppointments = async () => {
+            const appointments = await fetchAppointments()
+            setAppointments(appointments.appointments)
         }
-    },[location])
+        getAppointments();
+    }, [])
 
-    useEffect(()=>{
-        const getCheckups = async () =>{
-                const checkups = await fetchCheckups()
-                setCheckups(checkups.diagnosticTests)
-                setCount(checkups.totalPages)
-        }
-        getCheckups()
-    },[page, pageSize])
-
-
-    const fetchCheckups = async () =>{
+    const fetchAppointments = async () =>{
         const params = getRequestParams(page, pageSize);
         let res;
         if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?page=${params.page}&size=${params.size}`)
+            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?page=${params.page}&size=${params.size}`);
         }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?page=${params.page}`)
+            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?page=${params.page}`);
         }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?size=${params.size}`)
+            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?size=${params.size}`);
         }else{
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests`)
+            res = await fetch(`${baseUrl}/doctors/7/todaysVisits`);
         }
 
         const data = await res.json();
@@ -76,12 +60,8 @@ const CheckUpList = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Twoje badania</h2>
+                <h2>Today's Visits</h2>
             </div>
-            <br/>
-            {(appointment !== undefined) &&
-                <AppointmentDetailsButtonPanel appointment={appointment} />
-            }
             <div className="itemsNumber">
                 <p>Ilość elementów na stronie: </p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
@@ -92,12 +72,12 @@ const CheckUpList = () =>{
                     ))}
                 </select>
             </div>
-            {checkups.map((checkup) =>(
-                <CheckUp key={checkup.id} checkup={checkup}/>
-            ))}
+            <div className="appointmentList">
+                {appointments.map(appointment => <DoctorAppointment key={appointment.id} appointment={appointment} />)}
+            </div>
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
     )
 }
 
-export default CheckUpList;
+export default TodayAppointmentList;

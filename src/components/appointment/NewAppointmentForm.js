@@ -71,6 +71,8 @@ const NewAppointmentForm = ({getAppointments}) =>{
     useEffect(()=>{
         if(receivedReferral !== undefined){
             setSelectedReferral(receivedReferral);
+            let element = document.getElementById('selectedReferral');
+            element.value = receivedReferral;
             if(receivedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
@@ -87,6 +89,8 @@ const NewAppointmentForm = ({getAppointments}) =>{
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
+            let element = document.getElementById('selectedReferral');
+            element.value = selectedReferral;
             if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
@@ -96,6 +100,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
+
             setService(selectedReferral.medicalService);
         }
 
@@ -242,9 +247,9 @@ const NewAppointmentForm = ({getAppointments}) =>{
                     <Form.Group>
                         <Form.Label>Skierowanie:</Form.Label>
                         <Form.Select id='selectedReferral'>
-                            <option onClick={e=>{clearReferralFields(e)}}>{'Wykorzystaj skierowanie'}</option>
+                            <option onClick={e=>{clearReferralFields(e)}}>{selectedReferral ? ('Ważne do: '+ selectedReferral.expiryDate + ' - ' + selectedReferral.medicalService.name) : 'Wykorzystaj skierowanie'}</option>
                             {referrals.map((ref) => (
-                                <option value={ref} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? ('Ważne do: ' + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                <option value={ref} key={ref.id} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? ('Ważne do: ' + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
@@ -253,7 +258,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
             <Form.Group className="mb-3">
                 <Form.Label>Usługa:</Form.Label>
                 <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                    <option onClick={e=>clearService(e)}>{selectedReferral? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
+                    <option onClick={e=>clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
                     {services.map((ser)=>(
                         <option value={ser.name} onClick={(e)=>{
                             setService(ser);
