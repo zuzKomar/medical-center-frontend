@@ -6,11 +6,11 @@ import Pagination from "@material-ui/lab/Pagination";
 const DoctorCheckUpList = () => {
     const pageSizes = [3, 5, 10];
     const [checkUps, setCheckUps] = useState([]);
+    const [selectedCheckup, setSelectedCheckup] = useState(undefined);
 
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
-    const [selectedCheckUp, setSelectedCheckUp] = useState(undefined);
 
     const getRequestParams = (page, pageSize) => {
         let params = {};
@@ -27,25 +27,17 @@ const DoctorCheckUpList = () => {
     useEffect(() => {
         const getCheckUps = async () => {
             const checkUps = await fetchCheckUps()
-            setCheckUps(checkUps.checkUps)
-            setCount(checkUps.totalPages)
+            setCheckUps(checkUps.checkUps);
+            setCount(checkUps.totalPages);
         }
         getCheckUps()
-    }, [page, pageSize])
+    }, [page, pageSize, selectedCheckup])
 
     useEffect(()=>{
-        if(selectedCheckUp!==undefined) {
-            setCheckUps(checkUps.filter(filterCheckUps));
+        if(selectedCheckup !== undefined){
+            setCheckUps(checkUps.filter(filterCheckups));
         }
-    },[selectedCheckUp])
-
-    useEffect(() => {
-        const getCheckUps = async () => {
-            const checkUps = await fetchCheckUps()
-            setCheckUps(checkUps.checkUps)
-        }
-        getCheckUps()
-    }, [selectedCheckUp])
+    }, [selectedCheckup])
 
 
     const fetchCheckUps = async () => {
@@ -66,10 +58,9 @@ const DoctorCheckUpList = () => {
         return data;
     }
 
-    function filterCheckUps(checkUp){
-        console.log(selectedCheckUp);
-        if(checkUp.appointmentId !== selectedCheckUp.appointmentId && checkUp.checkUpId !== selectedCheckUp.checkUpId){
-            return checkUp;
+    function filterCheckups(checkup){
+        if(checkup.appointmentId !== selectedCheckup.appointmentId && checkup.checkUpId !== selectedCheckup.checkUpId){
+            return checkup;
         }
     }
 
@@ -81,7 +72,6 @@ const DoctorCheckUpList = () => {
         setPageSize(event.target.value);
         setPage(1);
     };
-
 
     return(
         <div className="itemsList">
@@ -99,7 +89,7 @@ const DoctorCheckUpList = () => {
                 </select>
             </div>
             {checkUps.map(checkUp => (
-                <DoctorCheckUp setSelectedCheckUp={setSelectedCheckUp} checkup={checkUp}/>
+                <DoctorCheckUp checkup={checkUp} setSelectedCheckup={setSelectedCheckup}/>
             ))}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
