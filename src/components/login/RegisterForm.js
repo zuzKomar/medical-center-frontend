@@ -38,7 +38,8 @@ const schema = yup.object().shape({
     city: yup.string().required('Field required!'),
     postCode: yup.string().required('Field required!'),
     country: yup.string().required('Field required!'),
-    password: yup.string().min(2, 'Password should have min. 2 characters!').max(50, 'Password should have max. 50 characters!').required('Field required!')
+    password: yup.string().min(2, 'Password should have min. 2 characters!').max(50, 'Password should have max. 50 characters!').required('Field required!'),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), ''], 'Password must match!').required('Field required!')
 });
 
 const RegisterForm = () => {
@@ -46,7 +47,7 @@ const RegisterForm = () => {
     const [lastName, setLastName] = useState(undefined);
     const [pesel, setPesel] = useState(undefined);
     const [birthDate, setBirthDate] = useState(undefined);
-    const [phoneNumber, setPhone] = useState(undefined);
+    const [phoneNumber, setPhoneNumber] = useState(undefined);
     const [email, setEmail] = useState(undefined);
     const [street, setStreet] = useState(undefined);
     const [streetNumber, setStreetNumber] = useState(undefined);
@@ -57,7 +58,9 @@ const RegisterForm = () => {
     return (
         <div className="center loginForm">
             <Formik validationSchema={schema}
+                    enableReinitialize={true}
                     onSubmit={console.log('test')}
+                    initialErrors={{}}
                     initialValues={{
                         firstName : '',
                         lastName : '',
@@ -69,15 +72,18 @@ const RegisterForm = () => {
                         streetNumber : '',
                         city: '',
                         postCode : '',
-                        country : ''
-                    }} >
+                        country : '',
+                        password: '',
+                        confirmPassword: ''
+                    }}
+            >
                 {({
-                      handleChange,
                       handleSubmit,
+                      handleChange,
                       values,
                       touched,
                       isValid,
-                      errors
+                      errors,
                   })=>(
                     <Form noValidate onSubmit={handleSubmit}>
                         <Row className="mb-3">
@@ -124,20 +130,27 @@ const RegisterForm = () => {
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} controlId="postCode">
                                 <Form.Label>Postcode:</Form.Label>
-                                <Form.Control type="text" name="postCode" placeholder="Postcode" defaultValue={values.postCode} isInvalid={!!errors.postCode} isValid={touched.postCode && !errors.postCode} onChange={handleChange} />
+                                <Form.Control type="text" name="postCode" placeholder="Postcode" defaultValue={values.postCode} isInvalid={!!errors.postCode} isValid={touched.postCode && !errors.postCode} />
                                 <Form.Control.Feedback type="invalid">{errors.postCode}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <Row className="mb-3">
                             <Form.Group as={Col} xs={12} md={6} controlId="country">
                                 <Form.Label>Country:</Form.Label>
-                                <Form.Control type="text" name="country" placeholder="Country" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} onChange={handleChange} />
+                                <Form.Control type="text" name="country" placeholder="Country" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} />
                                 <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} controlId="password">
                                 <Form.Label>Password:</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange} />
+                                <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} />
                                 <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-3">
+                            <Form.Group as={Col} xs={12} md={6} controlId="confirmPassword">
+                                <Form.Label>Confirm Password:</Form.Label>
+                                <Form.Control type="password" name="confirmPassword" placeholder="Confirm Password" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} />
+                                <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <div>
