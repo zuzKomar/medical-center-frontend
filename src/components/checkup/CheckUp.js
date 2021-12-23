@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useState} from "react";
 import {FaRegUser, FaCheck, FaFile, FaRegListAlt} from 'react-icons/fa'
 import {Button} from "react-bootstrap";
@@ -7,6 +7,12 @@ import {baseUrl} from "../../config/config";
 const CheckUp = ({checkup}) =>{
     const [state, setState] = useState(false);
     const [checkUp, setChekup] = useState(checkup);
+
+    useEffect(()=>{
+        if(checkup !== undefined){
+            setChekup(checkup);
+        }
+    }, [checkup])
 
     function togglePanel(e){
         e.preventDefault();

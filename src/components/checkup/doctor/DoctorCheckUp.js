@@ -1,27 +1,31 @@
-import React, {useRef, useState} from "react";
+import React, {useRef, useState, useEffect} from "react";
 import {FaRegUser} from "react-icons/fa";
 import moment from "moment";
-import {Button, Form} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import {baseUrl} from "../../../config/config";
-import {useHistory} from 'react-router';
 
-const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
+const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
     const [state, setState] = useState(false);
+    const [showAll, setShowAll] = useState(true);
     const [checkUp, setCheckUp] = useState(checkup);
     const [result, setResult] = useState(undefined);
     const [file, setFile] = useState(undefined);
     const [doctorsDescription, setDoctorsDescription] = useState(undefined);
     const [errors, setErrors] = useState({});
-
+    const ref = useRef();
     let a = moment(Date.now());
     let b = moment(checkUp.patient.birthDate)
-    const history = useHistory();
-    const ref = useRef();
 
     function showForm(e) {
         e.preventDefault();
         setState(!state);
     }
+
+    useEffect(()=>{
+        if(checkup !== undefined){
+            setCheckUp(checkup);
+        }
+    },[checkup])
 
     const findFormErrors = () => {
         const newErrors = {};
@@ -35,36 +39,6 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
         }
 
         return newErrors;
-    }
-
-    function handleRealization(e){
-        e.preventDefault();
-
-        const errors = findFormErrors();
-
-        if (Object.keys(errors).length > 0) {
-            setErrors(errors);
-        } else {
-            setSelectedCheckUp(checkUp);
-
-            let fetchBody = {};
-            fetchBody['result'] = result;
-            fetchBody['doctorsDescription'] = doctorsDescription
-            fetchBody['file'] = file;
-
-            fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(fetchBody)
-            }).then((res) => res.json())
-                .then(window.alert("Check-up have been realized"))
-                .then(history.push({
-                    pathname: '/check-ups'
-                }))
-                .catch((err) => console.log(err));
-        }
     }
 
     const convertToBase64 = (file) => {
@@ -95,7 +69,39 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
         setFile(array);
     }
 
+    const handleRealization = (e) =>{
+        e.preventDefault();
+
+        const errors = findFormErrors();
+
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
+        } else {
+
+            let fetchBody = {};
+            fetchBody['result'] = result;
+            fetchBody['doctorsDescription'] = doctorsDescription;
+            fetchBody['file'] = file;
+
+            fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(fetchBody)
+            })
+            .then((res) => res.json())
+                .then(()=>new Promise(resolve => setTimeout(resolve, 2000)))
+            .then(window.alert("Check-up have been realized"))
+            .catch((err) => console.log(err));
+            setSelectedCheckup(checkUp);
+            setShowAll(false);
+        }
+    }
+
     return(
+    // <>
+    //     {showAll === true ?
         <div className="appointmentAndCheckup">
             <div className="top">
                 <p className="appointmentAndCheckupHeader">{checkUp.diagnosticTestName}</p>
@@ -110,9 +116,9 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
                 <p>Age: {a.diff(b, 'year')}</p>
             </div>
             {!state &&
-                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <button className="actionButton" onClick={showForm}>REALIZE CHECKUP</button>
-                </div>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <button className="actionButton" onClick={showForm}>REALIZE CHECKUP</button>
+            </div>
             }
             {state ? (
                 <Form>
@@ -136,7 +142,7 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
                     </Form.Group>
                     <Form.Group controlId="file" className="mb-2">
                         <Form.Label>File:</Form.Label>
-                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.result} onChange={e => {
+                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={e => {
                             handleFileUpload(e);
                             if(!!errors['file'])
                                 setErrors({
@@ -149,13 +155,14 @@ const DoctorCheckUp = ({checkup, setSelectedCheckUp}) => {
                     </Form.Group>
                     {state &&
                     <div className="topBuffer" style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <button className="deleteButton" onClick={showForm}>CANCEL</button>
+                        <button className="deleteButton" onClick={(e)=>showForm(e)}>CANCEL</button>
                         <button className="addButton" onClick={e => handleRealization(e)}>ACCEPT</button>
                     </div>
                     }
-                </Form>
-             ) : null}
+                </Form>) : null}
         </div>
+
+
     )
 }
 

@@ -18,26 +18,45 @@ const AppointmentDetailsForm = ({appointment}) => {
     const [medications, setMedications] = useState([]);
 
     const [app, setApp] = useState(appointment);
-    const [description, setDescription] = useState(undefined);
-    const [recommendations, setRecommendations] = useState(undefined);
+    const [description, setDescription] = useState(()=>{
+        const saved = sessionStorage.getItem('description');
+        return saved || undefined;
+    });
+
+    const [recommendations, setRecommendations] = useState(()=>{
+        const saved = sessionStorage.getItem('recommendations');
+        return saved || undefined;
+    });
 
     const [service, setService] = useState(undefined);
     const [referralExpiryDate, setReferralExpiryDate] = useState(formatYmd(new Date(new Date().setDate(new Date().getDate()+31))));
     const [referralToDelete, setReferralToDelete] = useState(undefined);
-    const [referrals, setReferrals] = useState([]);
+    const [referrals, setReferrals] = useState(()=>{
+        const saved = sessionStorage.getItem('referrals');
+        const savedReferrals = JSON.parse(saved);
+        return savedReferrals || [];
+    });
 
     const [medication, setMedication] = useState(undefined);
     const [medicationDosage, setMedicationDosage] = useState(undefined);
     const [medicationQuantity, setMedicationQuantity] = useState(1);
     const [medicationToDelete, setMedicationToDelete] = useState(undefined);
-    const [medicationsToAdd, setMedicationsToAdd] = useState([]);
+    const [medicationsToAdd, setMedicationsToAdd] = useState(()=>{
+        const saved = sessionStorage.getItem('medications');
+        const savedMedications = JSON.parse(saved);
+        return savedMedications || [];
+    });
 
     const [selectedCheckup, setSelectedCheckup] = useState(undefined);
-    const [checkUpsToAdd, setCheckUpsToAdd] = useState([]);
-    const [checkupToDelete, setCheckupToDelete] = useState(undefined);
     const [checkupDescription, setCheckupDescription] = useState(undefined);
     const [checkupResult, setCheckupResult] = useState(undefined);
     const [checkupResultFile, setCheckupResultFile] = useState(undefined);
+    const [checkupToDelete, setCheckupToDelete] = useState(undefined);
+    const [checkUpsToAdd, setCheckUpsToAdd] = useState(()=>{
+        const saved = sessionStorage.getItem('checkups');
+        const savedCheckups = JSON.parse(saved);
+        return savedCheckups || [];
+    });
 
     const reset = () =>{
         ref.current.value = "";
@@ -91,7 +110,8 @@ const AppointmentDetailsForm = ({appointment}) => {
             referral["medicalServiceName"] = service.name;
             referral["expiryDate"] = referralExpiryDate;
 
-            referrals.push(referral)
+            referrals.push(referral);
+            sessionStorage.setItem('referrals', JSON.stringify(referrals));
             setService(undefined);
             let element = document.getElementById('serviceSelect');
             element.value = 'Choose a service';
@@ -106,6 +126,7 @@ const AppointmentDetailsForm = ({appointment}) => {
            if(refIndex > -1){
                referrals.splice(refIndex, 1);
                setReferrals(referrals);
+               sessionStorage.setItem('referrals', JSON.stringify(referrals));
                setReferralToDelete(undefined);
            }
         }
@@ -123,6 +144,7 @@ const AppointmentDetailsForm = ({appointment}) => {
                 medicine["name"] = medication.name;
 
                 medicationsToAdd.push(medicine);
+                sessionStorage.setItem('medications', JSON.stringify(medicationsToAdd));
                 setMedication(undefined);
                 let element = document.getElementById('medicationSelect');
                 element.value = 'Choose a medication';
@@ -141,6 +163,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             if(medIndex > -1){
                 medicationsToAdd.splice(medIndex, 1);
                 setMedicationsToAdd(medicationsToAdd);
+                sessionStorage.setItem('medications', JSON.stringify(medicationsToAdd));
                 setMedicationToDelete(undefined);
             }
         }
@@ -165,6 +188,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             }
 
             checkUpsToAdd.push(addedCheckup);
+            sessionStorage.setItem('checkups', JSON.stringify(checkUpsToAdd));
             setSelectedCheckup(undefined);
             let element = document.getElementById('checkupSelect');
             element.value = 'Choose a checkup';
@@ -182,6 +206,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             if(checkupIndex > -1){
                 checkUpsToAdd.splice(checkupIndex, 1);
                 setCheckUpsToAdd(checkUpsToAdd);
+                sessionStorage.setItem('checkups', JSON.stringify(checkUpsToAdd));
                 setCheckupToDelete(undefined);
             }
         }
@@ -215,7 +240,7 @@ const AppointmentDetailsForm = ({appointment}) => {
         setCheckupResultFile(array);
     }
 
-    const seeResult = (e) =>{
+    const handleSubmit = (e) =>{
         e.preventDefault();
 
         const errors = findFormErrors();
@@ -257,6 +282,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                     pathname : '/today-visits'
                 }))
                 .catch((err)=>console.log(err));
+
+            sessionStorage.clear();
         }
     }
 
@@ -270,16 +297,13 @@ const AppointmentDetailsForm = ({appointment}) => {
         return newErrors;
     }
 
-    const changeClassName = () =>{
-        let element = document.getElementById('selectedFormSubsectionItem');
-        element.classList.toggle("selectedFormSubsectionItem");
-    }
     return (
         <Form className="newAppointmentForm">
             <Form.Group className="mb-3" controlId="detailsForm.ControlTextArea1">
                 <Form.Label>Visit's description:</Form.Label>
                 <Form.Control as="textarea" rows={3} value={description} isInvalid={!!errors.description} onChange={(e)=>{
                     setDescription(e.target.value);
+                    sessionStorage.setItem('description', e.target.value);
                     if(!!errors['description'])
                         setErrors({
                             ...errors,
@@ -290,7 +314,10 @@ const AppointmentDetailsForm = ({appointment}) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
                 <Form.Label>Recommendations:</Form.Label>
-                <Form.Control as="textarea" rows={3} value={recommendations} onChange={(e)=>setRecommendations(e.target.value)}/>
+                <Form.Control as="textarea" rows={3} value={recommendations} onChange={(e)=>{
+                    setRecommendations(e.target.value)
+                    sessionStorage.setItem('recommendations', e.target.value);
+                }}/>
             </Form.Group>
             <Row className="mb-3">
                 <Form.Label>Referrals:</Form.Label>
@@ -315,9 +342,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                     <Form.Label column="sm">Referrals list: </Form.Label>
                     <div style={{overflow: "scroll", height: "100px"}}>
                         {referrals.map((referral) => {
-                            return <div className="appointmentFormSubsectionItem" id="selectedFormSubsectionItem" key={referral.id} onClick={()=>{
+                            return <div className="appointmentFormSubsectionItem" key={referral.id} onClick={()=>{
                                 setReferralToDelete(referral);
-                                changeClassName();
                             }}>{referral.medicalServiceName + ' do: ' +referral.expiryDate}</div>
                         })}
                     </div>
@@ -359,9 +385,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                     <Form.Label column="sm">Medications list:</Form.Label>
                     <div style={{overflow: "scroll", height: "216px"}}>
                         {medicationsToAdd.map((medication)=>{
-                            return <div className="appointmentFormSubsectionItem" id="selectedFormSubsectionItem" key={medication.id} onClick={()=>{
+                            return <div className="appointmentFormSubsectionItem" key={medication.id} onClick={()=>{
                                 setMedicationToDelete(medication);
-                                changeClassName();
                             }}>{medication.name + ', '+medication.numberOfPackages + ' op.'}</div>
                         })}
                     </div>
@@ -418,9 +443,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                         <Form.Label column="sm">Check-ups list:</Form.Label>
                         <div style={{overflow: "scroll", height: "150px"}}>
                             {checkUpsToAdd.map((checkup)=>{
-                                return <div className="appointmentFormSubsectionItem" id="selectedFormSubsectionItem" key={checkup.id} onClick={()=>{
+                                return <div className="appointmentFormSubsectionItem" key={checkup.id} onClick={()=>{
                                     setCheckupToDelete(checkup);
-                                    changeClassName();
                                 }}>{checkup.name}</div>
                             })}
                         </div>
@@ -434,11 +458,12 @@ const AppointmentDetailsForm = ({appointment}) => {
             </div>
             <div style={{display:"flex", justifyContent: 'center'}}>
                 <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='danger' onClick={()=>{
+                    sessionStorage.clear();
                     history.push({
                         pathname : '/today-visits'
                     })
                 }}>Cancel</Button>
-                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>seeResult(e)}>Save changes</Button>
+                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>handleSubmit(e)}>Save changes</Button>
             </div>
         </Form>
     )

@@ -344,14 +344,6 @@ footer{
     background-color: #ebecec;
 }
 
-.appointmentFormSubsectionItem:focus{
-    background-color: #dddddd;
-}
-
-.selectedFormSubsectionItem{
-    background-color: #dddddd !important;
-}
-
 .deleteButton{
     background-color: white;
     padding: 10px 24px;

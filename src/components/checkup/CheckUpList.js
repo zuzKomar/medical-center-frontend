@@ -30,21 +30,21 @@ const CheckUpList = () =>{
     }
 
     useEffect(()=>{
+        const getCheckups = async () =>{
+            const checkUps = await fetchCheckups()
+            setCheckups(checkUps.diagnosticTests)
+            setCount(checkUps.totalPages)
+            console.log(checkups);
+        }
+        getCheckups()
+    },[page, pageSize])
+
+    useEffect(()=>{
         if(location.state !== undefined){
             setAppointment(location.state.detail);
             setPatientId(location.state.patientId)
         }
     },[location])
-
-    useEffect(()=>{
-        const getCheckups = async () =>{
-                const checkups = await fetchCheckups()
-                setCheckups(checkups.diagnosticTests)
-                setCount(checkups.totalPages)
-        }
-        getCheckups()
-    },[page, pageSize])
-
 
     const fetchCheckups = async () =>{
         const params = getRequestParams(page, pageSize);
@@ -60,7 +60,7 @@ const CheckUpList = () =>{
         }
 
         const data = await res.json();
-
+        console.log(data);
         return data;
     }
 
