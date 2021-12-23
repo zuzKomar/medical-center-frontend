@@ -14,18 +14,25 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 
 function App() {
+    const {t, i18n} = useTranslation()
+
+    const changeLanguage = (language) => {
+        i18n.changeLanguage(language);
+    }
+
   return (
       <Router>
           <div>
-              <Navigation/>
+              <Navigation changeLanguage={changeLanguage} t={t}/>
               <div className="wholePage">
                   <div className="content">
                       <Switch>
-                          <Route exact path="/moje-konto" component={HomePage}/>
-                          <Route exact path="/moje-pliki"  component={UploadNewFile}/>
+                          <Route exact path="/moje-konto" component={() => <HomePage t={t} />} />
+                          <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
                           <Route exact path="/wizyty" component={AppointmentList}/>
                           <Route exact path="/nowa-wizyta" component={NewAppointment}/>
                           <Route exact path="/skierowania" component={ReferralList}/>
@@ -35,7 +42,7 @@ function App() {
                       </Switch>
                   </div>
               </div>
-              <Footer/>
+              <Footer t={t}/>
           </div>
       </Router>
   );

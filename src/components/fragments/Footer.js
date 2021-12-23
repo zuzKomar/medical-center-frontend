@@ -1,9 +1,9 @@
 import React from "react";
 
-function Footer(){
+function Footer({t}){
     return(
         <footer>
-            Wszelkie prawa zastrzeżone przez Portal Pacjenta
+            {t("footer")}
         </footer>
     )
 }

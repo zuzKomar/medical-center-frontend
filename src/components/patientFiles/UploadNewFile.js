@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
 
-function UploadNewFile() {
+function UploadNewFile({t}) {
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(undefined);
     const [deletedFile, setDeletedFile] = useState(undefined);
@@ -141,15 +141,15 @@ function UploadNewFile() {
         const fileTypes = ["image/png", "image/jpeg", "application/pdf", "application/msword"]
 
         if(selectedFile === undefined){
-            newErrors.file = 'Należy wybrać plik';
+            newErrors.file = t("selectFileError");
         }
 
         if(fileDescription === undefined || fileDescription === ''){
-            newErrors.description = 'Należy dodać opis';
+            newErrors.description = t("fileDescriptionError");
         }
 
         if(selectedFile !== undefined && !fileTypes.includes(selectedFile.type)){
-            newErrors.file = 'Akcpeptowane rozszerzenia plików do png, jpeg, pdf, doc';
+            newErrors.file = t("uploadFileFormatsError");
         }
 
         return newErrors;
@@ -158,11 +158,11 @@ function UploadNewFile() {
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Dodaj nowy plik</h2>
+                <h2>{t("addNewFile")}</h2>
             </div>
             <Form className="newAppointmentForm" >
                 <Form.Group controlId="file" className="mb-2">
-                    <Form.Label>Plik</Form.Label>
+                    <Form.Label>{t("file")}</Form.Label>
                     <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={(e)=>{
                         handleFileUpload(e);
                         if(!!errors['file'])
@@ -174,7 +174,7 @@ function UploadNewFile() {
                     <Form.Control.Feedback type='invalid'>{errors.file}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="description" className="mb-2">
-                    <Form.Label>Opis pliku</Form.Label>
+                    <Form.Label>{t("fileDescription")}</Form.Label>
                     <Form.Control as="textarea" value={fileDescription} isInvalid={!!errors.description} onChange={(e)=>{
                         setFileDescription(e.target.value);
                         if(!!errors['description'])
@@ -186,17 +186,17 @@ function UploadNewFile() {
                     <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
                 </Form.Group>
                 <div style={{display:"flex", justifyContent: 'center'}}>
-                    <Button variant='primary' onClick={(e)=>handleSubmit(e)}>Dodaj plik</Button>
+                    <Button variant='primary' onClick={(e)=>handleSubmit(e)}>{t("addFile")}</Button>
                 </div>
             </Form>
             {files.length > 0 ?
                 <Table className="table table-hover table-bordered fileTable" style={{width : '80%'}}>
                     <thead style={{backgroundColor : '#e6eeff'}}>
                     <tr>
-                        <th>Nazwa i format pliku</th>
-                        <th>Opis pliku</th>
-                        <th>Data dodania</th>
-                        <th>Akcja</th>
+                        <th>{t("fileNameFormat")}</th>
+                        <th>{t("fileDescription")}</th>
+                        <th>{t("createDate")}</th>
+                        <th>{t("action")}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -208,13 +208,13 @@ function UploadNewFile() {
                             <td>
                                 <ul className="listActions">
                                     <li>
-                                        <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>Pobierz</Button>
+                                        <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>{t("download")}</Button>
                                     </li>
                                     <li>
                                         <Button variant='danger' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>{
                                             setDeletedFile(file);
                                             handleFileDeletion(e, file)
-                                        }}>Usuń</Button>
+                                        }}>{t("delete")}</Button>
                                     </li>
                                 </ul>
                             </td>
