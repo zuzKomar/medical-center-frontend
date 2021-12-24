@@ -6,7 +6,7 @@ import {Button} from "react-bootstrap";
 import {baseUrl} from "../../config/config";
 
 
-const Appointment = ({appointment, setCancelledAppointment}) =>{
+const Appointment = ({appointment, setCancelledAppointment, t}) =>{
     const [app, setAppointment] = useState(appointment);
     const [open, setOpen] = useState(false);
 
@@ -34,7 +34,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                 'Content-Type': 'application/json',
             },
         }).then((res)=>res.json())
-            .then(window.alert('wizyta została potwierdzona'))
+            .then(window.alert(t("confirmedAppointmentInfo")))
             .catch((err)=>console.log(err));
     }
 
@@ -50,7 +50,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                 'Content-Type': 'application/json',
             },
         }).then((res)=>res.json())
-            .then(window.alert('wizyta została odwołana'))
+            .then(window.alert(t("canceledAppointmentInfo")))
             .catch((err)=>console.log(err));
     }
 
@@ -64,7 +64,7 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                 <div className="top">
                     <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : app.serviceName)}</p>
                     <div className="data">
-                        <p>Data:</p>
+                        <p>{t("date")}</p>
                         <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
                         <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                     </div>
@@ -73,15 +73,15 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                     <div style={{display: 'flex', justifyContent:'space-between'}}>
                         <div>
                             <FaRegUser size={42}/>
-                            lek.med. {(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                            {t("doctor")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                         </div>
                         <div className="appointmentButtons">
                             {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === 'RESERVED'))&&
-                            <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>Potwierdź wizytę</Button>
+                            <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
                             }
 
                             {(app.state === 'RESERVED') &&
-                            <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>Odwołaj wizytę</Button>
+                            <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
                             }
                         </div>
                 </div> : ''}
@@ -92,26 +92,25 @@ const Appointment = ({appointment, setCancelledAppointment}) =>{
                             <hr/>
                             <div className="subsections">
                                 <FaCheck size={42}/>
-                                <p className="header">Zalecenia</p>
+                                <p className="header">{t("recommendations")}</p>
                             </div>
                             <ol>
-                                <li>{app.recommendations ? app.recommendations : 'Brak zaleceń'}</li>
+                                <li>{app.recommendations ? app.recommendations : t("noRecommendations")}</li>
                             </ol>
                             <hr/>
 
                             <div className="subsections">
                                 <FaFile size={42}/>
-                                <p className="header">Wykonane badania</p>
+                                <p className="header">{t("madeCheckUps")}</p>
                             </div>
-                            <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test)=>test.diagnosticTestName)) : 'Brak wykonanych badań'}</p>
+                            <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test)=>test.diagnosticTestName)) : t("noCheckUps")}</p>
                             <hr/>
 
                             <div className="subsections">
                                 <GiMedicines size={42}/>
-                                <p className="header">e-Recepty</p>
+                                <p className="header">{t("eReceipt")}</p>
                             </div>
-                            <p>{app.prescriptions.length > 0 ? 'Wystawiono elektroniczną receptę': 'Brak recept'}</p>
-
+                            <p>{app.prescriptions.length > 0 ? t("eReceiptIssued"): t("noReceipts")}</p>
                         </div>) : null}
                     </> : null}
             </div>);

@@ -33,7 +33,7 @@ function App() {
                       <Switch>
                           <Route exact path="/moje-konto" component={() => <HomePage t={t} />} />
                           <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
-                          <Route exact path="/wizyty" component={AppointmentList}/>
+                          <Route exact path="/wizyty" component={() => <AppointmentList t={t} />}/>
                           <Route exact path="/nowa-wizyta" component={NewAppointment}/>
                           <Route exact path="/skierowania" component={ReferralList}/>
                           <Route exact path="/grafik" component={ScheduleForm}/>

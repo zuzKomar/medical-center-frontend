@@ -7,7 +7,7 @@ import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
 
-const AppointmentList = () =>{
+const AppointmentList = ({t}) =>{
     const pageSizes = [3, 5, 10];
     const formatYmd = date => date.toISOString().slice(0,10);
     const facility = 'FACILITY';
@@ -144,26 +144,26 @@ const AppointmentList = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Twoje wizyty</h2>
+                <h2>{t("yourAppointments")}</h2>
             </div>
             <div className="appointmentListHeader">
                 <div className="checkBoxesAndButton">
                     <div className="checkboxes">
                         <div className="checkbox">
                             <input type="radio" id="all" name="box" value="all" onChange={handleShowAll}/>
-                            <label htmlFor="all">Wszystkie</label>
+                            <label htmlFor="all">{t("all")}</label>
                         </div>
                         <div className="checkbox">
                             <input type="radio" id="normal" name="box" value="normal" onChange={handleFacilityFilter}/>
-                            <label htmlFor="normal">Wizyta w placówce</label>
+                            <label htmlFor="normal">{t("facilityAppointment")}</label>
                         </div>
                         <div className="checkbox">
                             <input type="radio" id="tele" name="box" value="tele" onChange={handlePhoneFilter}/>
-                            <label htmlFor="tele">Teleporada</label>
+                            <label htmlFor="tele">{t("teleconsultation")}</label>
                         </div>
                     </div>
                     <div >
-                        <button className="actionButton" onClick={handleClick}>UMÓW WIZYTĘ</button>
+                        <button className="actionButton" onClick={handleClick}>{t("makeAppointment")}</button>
                     </div>
                 </div>
             </div>
@@ -171,7 +171,7 @@ const AppointmentList = () =>{
                 <div className="appDate">
                     <Form>
                         <Form.Group>
-                            <Form.Label>Data:</Form.Label>
+                            <Form.Label>{t("date")}</Form.Label>
                             <Form.Control type='date' onChange={(e) => {
                                 setAppDate(e.target.value)
                                 handleDateFilter(e)
@@ -180,7 +180,7 @@ const AppointmentList = () =>{
                     </Form>
                 </div>
                 <div className="itemsNumber" style={{height : '4%'}}>
-                    <p>Ilość elementów na stronie: </p>
+                    <p>{t("elementsNumber")}&nbsp;</p>
                     <select onChange={handlePageSizeChange} value={pageSize}>
                         {pageSizes.map((size) => (
                             <option key={size} value={size}>
@@ -193,7 +193,7 @@ const AppointmentList = () =>{
 
             <div className="appointmentList">
                 {filteredAppointments.map((appointment)=>(
-                    <Appointment key={appointment.id} appointment={appointment} setCancelledAppointment={setCancelledAppointment}/>
+                    <Appointment key={appointment.id} appointment={appointment} setCancelledAppointment={setCancelledAppointment} t={t}/>
                 ))}
             </div>
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>

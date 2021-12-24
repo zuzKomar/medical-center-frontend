@@ -221,7 +221,7 @@ function UploadNewFile({t}) {
                         </tr>
                     )}
                     </tbody>
-                </Table> : 'Brak plików pacjenta'
+                </Table> : t("noFiles")
             }
         </div>
         );
