@@ -3,7 +3,7 @@ import Referral from "./Referral";
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
-const ReferralList = () =>{
+const ReferralList = ({t}) =>{
     const pageSizes = [3, 5, 10];
     const [referrals, setReferrals] = useState([]);
     const [selectedReferral, setSelectedReferral] = useState(undefined);
@@ -78,10 +78,10 @@ const ReferralList = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Twoje skierowania</h2>
+                <h2>{t("yourReferrals")}</h2>
             </div>
             <div className="itemsNumber">
-                <p>Ilość elementów na stronie: </p>
+                <p>{t("elementsNumber")}&nbsp;</p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
                     {pageSizes.map((size) => (
                         <option key={size} value={size}>
@@ -92,7 +92,7 @@ const ReferralList = () =>{
             </div>
 
             {referrals.map((referral) =>(
-                <Referral key={referral.id} referral={referral} setSelectedReferral={setSelectedReferral}/>
+                <Referral key={referral.id} referral={referral} setSelectedReferral={setSelectedReferral} t={t}/>
                 ))}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>

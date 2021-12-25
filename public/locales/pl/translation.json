@@ -48,7 +48,7 @@
   "makeAppointment": "UMÓW WIZYTĘ",
   "teleconsultation": "Teleporada",
   "date": "Data:",
-  "elementsNumber": "Liczba elementów: ",
+  "elementsNumber": "Liczba elementów na stronie:",
   "confirmedAppointmentInfo": "Wizyta została potwierdzona",
   "canceledAppointmentInfo": "Wizyta została anulowana",
   "confirmAppointmentMessage": "Potwierdź wizytę",
@@ -86,5 +86,9 @@
   "usedReferral": "Wykorzystane Skierowanie:",
   "appointmentAutoConfirm": "Wizyta zostanie automatycznie potwierdzona",
   "confirm": "Potwierdź",
-  "cancel": "Anuluj"
+  "cancel": "Anuluj",
+  "yourReferrals": "Twoje skierowania",
+  "issueDate": "Data wystawienia:",
+  "referralValidUntil": "Skierowanie ważne do:",
+  "referralInvalid": "To skierowanie nie jest już ważne!"
 }

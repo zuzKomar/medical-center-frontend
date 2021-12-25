@@ -3,7 +3,7 @@ import {useHistory} from 'react-router';
 import {useState, useEffect} from "react";
 
 
-const Referral = ({referral, setSelectedReferral}) =>{
+const Referral = ({referral, setSelectedReferral, t}) =>{
     const history = useHistory();
     const [ref, setRef] = useState(referral);
 
@@ -29,14 +29,14 @@ return(
             <p className="referralHeader">{ref.medicalService.name}</p>
         </div>
         <div className="referralDiv2">
-            <p>Data wystawienia: {ref.issueDate}</p>
-            <p>Skierowanie ważne do: {ref.expiryDate}</p>
+            <p>{t("issueDate")}&nbsp;{ref.issueDate}</p>
+            <p>{t("referralValidUntil")}&nbsp;{ref.expiryDate}</p>
         </div>
         <hr/>
         <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
             {((new Date(ref.expiryDate).getDate()) >= (new Date().getDate())) ?
             <button className="actionButton" onClick={(e) => handleClick(e)}>UMÓW WIZYTĘ</button>
-           : <p style={{color : 'red'}}>To skierowanie jest już nieważne</p> }
+           : <p style={{color : 'red'}}>{t("referralInvalid")}</p> }
         </div>
     </div>
 )}

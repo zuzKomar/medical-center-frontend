@@ -35,7 +35,7 @@ function App() {
                           <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
                           <Route exact path="/wizyty" component={() => <AppointmentList t={t} />}/>
                           <Route exact path="/nowa-wizyta" component={() => <NewAppointment t={t} />}/>
-                          <Route exact path="/skierowania" component={ReferralList}/>
+                          <Route exact path="/skierowania" component={() => <ReferralList t={t} />}/>
                           <Route exact path="/grafik" component={ScheduleForm}/>
                           <Route exact path="/badania" component={CheckUpList}/>
                           <Route exact path="/recepty" component={PrescriptionList}/>
