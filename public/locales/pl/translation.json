@@ -60,5 +60,13 @@
   "eReceipt": "E-recepta",
   "eReceiptIssued": "Elektroniczna recepta została wystawiona",
   "noReceipts": "Brak recept",
-  "noRecommendations": "Brak zaleceń"
+  "noRecommendations": "Brak zaleceń",
+  "newAppointment": "Nowa Wizyta",
+  "availableAppointments": "Dostępna Wizyta",
+  "noAppointments": "Brak dostępnych wizyt spełniających wybrane kryteria",
+  "appointmentTypeError": "Należy określić typ wizyty",
+  "serviceError": "Należy określić usługę",
+  "appointmentType": "Typ Wizyty:",
+  "facility": "W placówce",
+  "referral": "Skierowanie"
 }

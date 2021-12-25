@@ -7,7 +7,7 @@ import AvailableAppointment from "./AvailableAppointment";
 import AppointmentModal from "./AppointmentModal";
 import {baseUrl} from "../../config/config";
 
-const NewAppointment = () =>{
+const NewAppointment = ({t}) =>{
     const [appointments, setAppointments] = useState([]);
     const [receivedService, setReceivedService] = useState(undefined);
     const [selectedAppointment, setSelectedAppointment] = useState(undefined);
@@ -65,14 +65,14 @@ const NewAppointment = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Nowa wizyta</h2>
+                <h2>{t("newAppointment")}</h2>
             </div>
-                <NewAppointmentForm getAppointments={handleAppointmentSearch}/>
-            {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>Dostępne wizyty</h3> : ''}
+                <NewAppointmentForm getAppointments={handleAppointmentSearch} t={t}/>
+            {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3> : ''}
             {appointments.length > 0 ?
                 appointments.map((app)=>(
                 <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
-            )) : (receivedService!== undefined ? 'Brak dostępnych wizyt spełniających wybrane kryteria' : '')}
+            )) : (receivedService!== undefined ? t("noAppointments") : '')}
 
             {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral}/> : ''}
         </div>

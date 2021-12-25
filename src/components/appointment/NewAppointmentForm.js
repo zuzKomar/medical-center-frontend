@@ -8,12 +8,12 @@ import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
 
-const NewAppointmentForm = ({getAppointments}) =>{
+const NewAppointmentForm = ({getAppointments, t}) =>{
 
     let history = useHistory();
     const formatYmd = date => date.toISOString().slice(0,10);
 
-    const languages = ["polski", "angielski"];
+    const languages = ["polski", "english"];
 
     const referral = history.location.state;
 
@@ -154,11 +154,11 @@ const NewAppointmentForm = ({getAppointments}) =>{
     const findFormErrors = () =>{
         const newErrors = {};
         if(appointmentType === undefined){
-            newErrors.appType = 'Należy określić typ wizyty';
+            newErrors.appType = t("appointmentTypeError");
         }
 
         if(service === undefined){
-            newErrors.serviceMess = 'Należy określić usługę';
+            newErrors.serviceMess = t("serviceError");
         }
 
         return newErrors;
@@ -213,8 +213,8 @@ const NewAppointmentForm = ({getAppointments}) =>{
     return(
         <Form className="newAppointmentForm">
             <Form.Group className="mb-3">
-                <Form.Label >Typ wizyty:</Form.Label>
-                <Form.Check type="radio" name="type" id="facility" label="W placówce" onClick={(e)=>{
+                <Form.Label >{t("appointmentType")}</Form.Label>
+                <Form.Check type="radio" name="type" id="facility" label={t("facility")} onClick={(e)=>{
                     setAppointmentType('facility');
                     if(!!errors['appType'])
                         setErrors({
@@ -222,7 +222,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                             ['appType']:null
                         })
                 }} isInvalid={!!errors.appType}/>
-                <Form.Check type="radio" name="type" id="phone" label="Teleporada" onClick={(e)=>{
+                <Form.Check type="radio" name="type" id="phone" label={t("teleconsultation")} onClick={(e)=>{
                     setAppointmentType('phone');
                     if(!!errors['appType'])
                         setErrors({
@@ -235,7 +235,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
             <Row className="align-items-center mb-3">
                 <Col>
                     <Form.Group>
-                        <Form.Label>Język:</Form.Label>
+                        <Form.Label>{t("language")}:</Form.Label>
                         <Form.Select id='selectedLanguage'>
                             {languages.map((lang)=>(
                                 <option value={lang} onClick={(e)=>setLanguage(lang)}>{lang}</option>
@@ -245,7 +245,7 @@ const NewAppointmentForm = ({getAppointments}) =>{
                 </Col>
                 <Col>
                     <Form.Group>
-                        <Form.Label>Skierowanie:</Form.Label>
+                        <Form.Label>{t("referral")}:</Form.Label>
                         <Form.Select id='selectedReferral'>
                             <option onClick={e=>{clearReferralFields(e)}}>{selectedReferral ? ('Ważne do: '+ selectedReferral.expiryDate + ' - ' + selectedReferral.medicalService.name) : 'Wykorzystaj skierowanie'}</option>
                             {referrals.map((ref) => (

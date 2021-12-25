@@ -61,5 +61,13 @@
   "eReceipt": "E-receipt",
   "eReceiptIssued": "E-receipt was issued",
   "noReceipts": "No receipts",
-  "noRecommendations": "No recommendations"
+  "noRecommendations": "No recommendations",
+  "newAppointment": "New Appointment",
+  "availableAppointments": "Available Appointments",
+  "noAppointments": "There are no available visits that meet the selected criteria",
+  "appointmentTypeError": "Appointment type must be specified",
+  "serviceError": "Service must be specified",
+  "appointmentType": "Type of Appointment:",
+  "facility": "In facility",
+  "referral": "Referral"
 }
