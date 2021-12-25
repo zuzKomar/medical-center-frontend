@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
-const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral}) => {
+const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t}) => {
     const history = useHistory();
     const [appointment, setAppointment] = useState(selectedAppointment);
     const [referral, setReferral] = useState(selectedReferral);
@@ -68,40 +68,40 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral})
                     <button onClick={()=>setOpenModal(false)}> X </button>
                 </div>
                 <div className="modalTitle">
-                    <h2>Potwierdź umówienie wizyty</h2>
+                    <h2>{t("confirmAppointment")}</h2>
                     <hr/>
                 </div>
                 <div className="modalBody">
                     <div className="modalSection">
-                        <p>Data:</p>
+                        <p>{t("date")}</p>
                         <p>{new Date(new Date(appointment.date)-x).toISOString().slice(0,10)}</p>
                     </div>
                     <div className="modalSection">
-                        <p>Godzina:</p>
+                        <p>{t("hour")}</p>
                         <p>{new Date(new Date(appointment.date)-x).toISOString().slice(11,16)}</p>
                     </div>
                     <div className="modalSection">
-                        <p>Typ wizyty:</p>
-                        <p>{appointment.type === 'FACILITY' ? 'Wizyta w placówce' : 'Teleporada'}</p>
+                        <p>{t("appointmentType")}</p>
+                        <p>{appointment.type === 'FACILITY' ? t("facility") : t("teleconsultation")}</p>
                     </div>
                     <div className="modalSection">
-                        <p>Usługa:</p>
+                        <p>{t("service")}</p>
                         <p>{appointment.service.name}</p>
                     </div>
                     {appointment.doctor &&  <div className="modalSection">
-                        <p>Doktor:</p>
+                        <p>{t("doctor")}</p>
                         <p>{appointment.doctor.firstName + ' ' + appointment.doctor.lastName}</p>
                     </div>}
                     {referral !== null && <div className="modalSection">
-                        <p>Wykorzystane skierowanie:</p>
+                        <p>{t("usedReferral")}</p>
                         <p>{referral ? 'tak' : 'nie'}</p>
                     </div>}
                     {(new Date(new Date(appointment.date)-x).toISOString().slice(0,10) === (formatYmd(new Date()))) && <div className="warning">
-                        <p>Wizyta zostanie automatycznie potwierdzona</p>
+                        <p>{t("appointmentAutoConfirm")}</p>
                     </div>}
                 <div className="modalFooter">
-                    <button onClick={()=>setOpenModal(false)} className="cancelButton">Anuluj</button>
-                    <button onClick={(e)=>bookAnAppointment(e)}>Potwierdź</button>
+                    <button onClick={()=>setOpenModal(false)} className="cancelButton">{t("cancel")}</button>
+                    <button onClick={(e)=>bookAnAppointment(e)}>{t("confirm")}</button>
                 </div>
             </div>
         </div>

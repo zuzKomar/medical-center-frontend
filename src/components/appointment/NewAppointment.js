@@ -71,10 +71,10 @@ const NewAppointment = ({t}) =>{
             {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3> : ''}
             {appointments.length > 0 ?
                 appointments.map((app)=>(
-                <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
+                <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment} t={t}/>
             )) : (receivedService!== undefined ? t("noAppointments") : '')}
 
-            {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral}/> : ''}
+            {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral} t={t}/> : ''}
         </div>
     )
 }

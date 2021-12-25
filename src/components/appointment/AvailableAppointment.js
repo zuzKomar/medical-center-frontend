@@ -1,6 +1,6 @@
 import React from "react";
 
-const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment}) =>{
+const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment, t}) =>{
 
     function handleClick(e){
         e.preventDefault();
@@ -10,16 +10,16 @@ const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment
 
     var x = (new Date()).getTimezoneOffset() * 60000;
     return(
-        <div className='availableAppointment' title={'Wybierz wizytę'}>
+        <div className='availableAppointment' title={t("chooseAppointment")}>
             <div className="availableAppointmentDate">
                 <p>{new Date(new Date(appointment.date)-x).toISOString().slice(0,10)}</p>
                 <p>{new Date(new Date(appointment.date)-x).toISOString().slice(11,16)}</p>
             </div>
             <div className="availableAppointmentDoctor">
-                <p>{appointment.doctor ? 'dr '+appointment.doctor.firstName + ' '+ appointment.doctor.lastName : 'Personel medyczny'}</p>
+                <p>{appointment.doctor ? t("doctorTitle")+ ' ' + appointment.doctor.firstName + ' '+ appointment.doctor.lastName : t("medicalStaff")}</p>
             </div>
             <div className="availableAppointmentBtn">
-                <button className="actionButton" onClick={(e)=>handleClick(e)}>Umów</button>
+                <button className="actionButton" onClick={(e)=>handleClick(e)}>{t("reserve")}</button>
             </div>
         </div>
     )

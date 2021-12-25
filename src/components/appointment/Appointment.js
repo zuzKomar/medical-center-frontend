@@ -73,7 +73,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                     <div style={{display: 'flex', justifyContent:'space-between'}}>
                         <div>
                             <FaRegUser size={42}/>
-                            {t("doctor")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
+                            {t("doctorTitle")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                         </div>
                         <div className="appointmentButtons">
                             {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === 'RESERVED'))&&

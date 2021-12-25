@@ -247,18 +247,18 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
                     <Form.Group>
                         <Form.Label>{t("referral")}:</Form.Label>
                         <Form.Select id='selectedReferral'>
-                            <option onClick={e=>{clearReferralFields(e)}}>{selectedReferral ? ('Ważne do: '+ selectedReferral.expiryDate + ' - ' + selectedReferral.medicalService.name) : 'Wykorzystaj skierowanie'}</option>
+                            <option onClick={e=>{clearReferralFields(e)}}>{selectedReferral ? (t("dueTo") + " " + selectedReferral.expiryDate + ' - ' + selectedReferral.medicalService.name) : t("useReferral")}</option>
                             {referrals.map((ref) => (
-                                <option value={ref} key={ref.id} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? ('Ważne do: ' + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                <option value={ref} key={ref.id} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
                 </Col>
             </Row>
             <Form.Group className="mb-3">
-                <Form.Label>Usługa:</Form.Label>
+                <Form.Label>{t("service")}</Form.Label>
                 <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                    <option onClick={e=>clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : "Wybierz usługę"}</option>
+                    <option onClick={e=>clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : t("chooseService")}</option>
                     {services.map((ser)=>(
                         <option value={ser.name} onClick={(e)=>{
                             setService(ser);
@@ -273,9 +273,9 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
                 <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label>Lekarz:</Form.Label>
+                <Form.Label>{t("doctor")}</Form.Label>
                 <Form.Select id='doctorr'>
-                    <option value="0">Wybierz lekarza</option>
+                    <option value="0">{t("chooseDoctor")}</option>
                     {doctors.map((doc) =>(
                         <option value={doc.firstName + ' ' + doc.lastName} onClick={(e)=>setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
                     ))}
@@ -284,19 +284,19 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             <Row className="align-items-center mb-3">
                 <Col>
                     <Form.Group>
-                        <Form.Label>Data od:</Form.Label>
-                        <Form.Control type='date' placeholder='Data od:' value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)}/>
+                        <Form.Label>{t("dateFrom")}</Form.Label>
+                        <Form.Control type='date' placeholder={t("dateFrom")} value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)}/>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group>
-                        <Form.Label>Data do:</Form.Label>
-                        <Form.Control type='date' placeholder='Data do:' value={dateTo} onChange={(e)=>setDateTo(e.target.value)}/>
+                        <Form.Label>{t("dateTo")}</Form.Label>
+                        <Form.Control type='date' placeholder={t("dateTo")} value={dateTo} onChange={(e)=>setDateTo(e.target.value)}/>
                     </Form.Group>
                 </Col>
             </Row>
             <div style={{display:"flex", justifyContent: 'center'}}>
-                <Button variant='primary' onClick={e=>handleSubmit(e)}>Szukaj wizyty</Button>
+                <Button variant='primary' onClick={e=>handleSubmit(e)}>{t("searchAppointment")}</Button>
             </div>
         </Form>
     )
