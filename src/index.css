@@ -117,6 +117,10 @@ footer{
     margin-right: 1%;
 }
 
+.availableAppsPagination{
+    margin-right: 10%;
+}
+
 .test{
     width: 80%;
     display: flex;
@@ -390,42 +394,6 @@ footer{
     justify-content: flex-start;
 }
 
-.renewPrescriptionBtn{
-    background-color: white;
-    padding: 10px 24px;
-    color: #008CBA;
-    border: 2px solid #008CBA;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 18px;
-    margin-top: 13%;
-    margin-right: 6%;
-    margin-left: -6%;
-    height: 60%;
-}
-
-.prescriptionListHeader{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    flex-direction: row;
-    padding-top: 15px;
-}
-
-.prescriptionListHeader p{
-    margin-left: 6%;
-    margin-right: 8%;
-}
-
-.prescriptionRenewal{
-    width: 90%;
-    background-color: white;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    border-radius:12px;
-    padding: 1%;
-}
-
 .newAppointmentForm{
     background-color: white;
     border-radius: 12px;
@@ -500,7 +468,7 @@ footer{
 
 .modalBackground {
     width: 100vw;
-    height: 110vh;
+    height: 150vh;
     background-color: rgba(200, 200, 200, 1);
     position: fixed;
 }
@@ -509,7 +477,7 @@ footer{
 .modalContainer {
     position: relative;
     left: 50%;
-    top : 50%;
+    top : 40%;
     transform: translate(-50%, -60%);
     width: 30%;
     border-radius: 12px;

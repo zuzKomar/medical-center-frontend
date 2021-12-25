@@ -26,9 +26,10 @@ const TodayAppointmentList = () => {
         const getAppointments = async () => {
             const appointments = await fetchAppointments()
             setAppointments(appointments.appointments)
+            setCount(appointments.totalPages)
         }
         getAppointments();
-    }, [])
+    }, [page, pageSize])
 
     const fetchAppointments = async () =>{
         const params = getRequestParams(page, pageSize);
@@ -73,7 +74,7 @@ const TodayAppointmentList = () => {
                 </select>
             </div>
             <div className="appointmentList">
-                {appointments.map(appointment => <DoctorAppointment key={appointment.id} appointment={appointment} />)}
+                {appointments.map(appointment => <DoctorAppointment key={appointment.id} app={appointment} />)}
             </div>
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>

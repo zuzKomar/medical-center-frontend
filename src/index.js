@@ -7,8 +7,8 @@ import DoctorApp from "./DoctorApp";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/*<App />*/}
-    <DoctorApp/>
+    <App />
+    {/*<DoctorApp/>*/}
   </React.StrictMode>,
   document.getElementById('root')
 );

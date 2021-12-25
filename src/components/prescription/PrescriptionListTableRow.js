@@ -21,7 +21,7 @@ const PrescriptionListTableRow = ({prescription}) =>{
                     ))}
                     </ul> : '')}
             </td>
-            <td>Status</td>
+            <td>Wystawiona</td>
             <td>{prescription.accessCode}</td>
         </tr>
     )
