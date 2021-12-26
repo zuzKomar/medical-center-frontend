@@ -1,18 +1,18 @@
 import React from "react";
 import PrescriptionListTableRow from "./PrescriptionListTableRow";
 
-function PrescriptionListTable({prescriptionData}){
+function PrescriptionListTable({prescriptionData, t}){
 
 
     return(
         <table className="table table-hover" style={{backgroundColor:"white", width : '90%'}}>
             <thead>
                 <tr>
-                    <th>Data złożenia</th>
-                    <th>Leki</th>
-                    <th>Ilość opakowań</th>
-                    <th>Status recepty</th>
-                    <th>Kod e-Recepty</th>
+                    <th>{t("issueDate")}</th>
+                    <th>{t("medications")}</th>
+                    <th>{t("numberOfPackages")}</th>
+                    <th>{t("status")}</th>
+                    <th>{t("eReceiptCode")}</th>
                 </tr>
             </thead>
             <tbody>

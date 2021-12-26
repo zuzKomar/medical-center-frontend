@@ -103,5 +103,9 @@
   "result": "Result",
   "resultNotAvailable": "The result is not yet available!",
   "downloadResultPDF": "Download result in PDF",
-  "yourPrescriptions": "Your Prescriptions"
+  "yourPrescriptions": "Your Prescriptions",
+  "medications": "Medications:",
+  "numberOfPackages": "Number of packages:",
+  "status": "Status:",
+  "eReceiptCode": "E-receipt's code:"
 }

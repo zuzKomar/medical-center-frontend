@@ -103,5 +103,9 @@
   "result": "Wynik",
   "resultNotAvailable": "Wynik nie jest jeszcze dostępny!",
   "downloadResultPDF": "Pobierz wynik PDF",
-  "yourPrescriptions": "Twoje Recepty"
+  "yourPrescriptions": "Twoje Recepty",
+  "medications": "Leki:",
+  "numberOfPackages": "Ilość opakowań:",
+  "status": "Status:",
+  "eReceiptCode": "Kod e-Recepty:"
 }
