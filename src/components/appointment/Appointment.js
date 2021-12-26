@@ -85,7 +85,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                             }
                         </div>
                 </div> : ''}
-                {(app.recommendations !== null || app.diagnosticTests.length > 0 || app.prescriptions.length > 0)  ?
+                {(app.state === 'DONE')  ?
                     <>
                     {open ? (
                         <div>
