@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import PrescriptionListTable from "./PrescriptionListTable";
 import {baseUrl} from "../../config/config";
 
-const PrescriptionList = () =>{
+const PrescriptionList = ({t}) =>{
 
     const [prescriptions, setPrescriptions] = useState([]);
     let history = useHistory();
@@ -32,10 +32,10 @@ const PrescriptionList = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Twoje recepty</h2>
+                <h2>{t("yourPrescriptions")}</h2>
             </div>
             <div className="appointmentList">
-                <PrescriptionListTable prescriptionData={prescriptions}/>
+                <PrescriptionListTable prescriptionData={prescriptions} t={t}/>
             </div>
         </div>
     )

@@ -26,7 +26,8 @@
   "lastNameMinCharacter": "Nazwisko powinno zawierać min. 2 znaki!",
   "lastNameMaxCharacter": "Nazwisko powinno zawierać max. 50 znaków!",
   "peselCharacterError": "Pesel powinnien zawierać 11 znaków!",
-  "dateFromFuture": "Data nie może być późniejsza niż data dzisiejsza!",
+  "invalidPeselError": "Nieprawidłowy numer PESEL!",
+  "dateFromFutureError": "Data nie może być późniejsza niż data dzisiejsza!",
   "phoneNumberError": "Numer telefonu powinien miec min. 9 cyfr!",
   "emailError": "Nieprawidłowy adres email!",
   "selectFileError": "Należy wybrać plik!",
@@ -90,5 +91,17 @@
   "yourReferrals": "Twoje skierowania",
   "issueDate": "Data wystawienia:",
   "referralValidUntil": "Skierowanie ważne do:",
-  "referralInvalid": "To skierowanie nie jest już ważne!"
+  "referralInvalid": "To skierowanie nie jest już ważne!",
+  "specializationError": "Należy określić specjalizację!",
+  "doctorError": "Należy określić doktora!",
+  "doctorSchedule": "Grafik lekarzy",
+  "chooseSpecialization": "Wybierz Specjalizację",
+  "yourCheckUps": "Twoje Badania",
+  "showSchedule": "Pokaż Grafik",
+  "checkUpDescription": "Opis Badania",
+  "checkUpFileName": "Wynik_badania_wizyta_",
+  "result": "Wynik",
+  "resultNotAvailable": "Wynik nie jest jeszcze dostępny!",
+  "downloadResultPDF": "Pobierz wynik PDF",
+  "yourPrescriptions": "Twoje Recepty"
 }

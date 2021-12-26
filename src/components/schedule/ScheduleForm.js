@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Schedule from "./Schedule";
 import {baseUrl} from "../../config/config";
 
-const ScheduleForm = () =>{
+const ScheduleForm = ({t}) =>{
     const [specializations, setSpecializations] = useState([]);
     const [doctors, setDoctors] = useState([]);
     const [selectedSpecialization, setSelectedSpecialization] = useState(undefined);
@@ -16,7 +16,7 @@ const ScheduleForm = () =>{
     const ref = useRef();
 
     const reset = () =>{
-        ref.current.value = "Wybierz lekarza";
+        ref.current.value = t("chooseDoctor");
     };
 
     useEffect(()=>{
@@ -69,11 +69,11 @@ const ScheduleForm = () =>{
     const findFormErrors = () =>{
         const newErrors = {};
         if(selectedSpecialization === undefined){
-            newErrors.specialization = 'Należy określić specjalizację';
+            newErrors.specialization = t("specializationError");
         }
 
         if(selectedDoctor === undefined){
-            newErrors.doctor = 'Należy określić lekarza';
+            newErrors.doctor = t("doctorError");
         }
 
         return newErrors;
@@ -98,15 +98,15 @@ const ScheduleForm = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Grafik lekarzy</h2>
+                <h2>{t("doctorSchedule")}</h2>
             </div>
             <Form className="newAppointmentForm">
                 <Row className="align-items-center mb-3">
                     <Col>
                         <Form.Group>
-                            <Form.Label>Wybierz specjalizację:</Form.Label>
+                            <Form.Label>{t("chooseSpecialization")}:</Form.Label>
                             <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}>
-                                <option onClick={clearSpecialization}>{'Wybierz specjalizację'}</option>
+                                <option onClick={clearSpecialization}>{t("chooseSpecialization")}</option>
                                 {specializations.map((spec)=>(
                                     <option value={spec} onClick={(e)=>{
                                         setSelectedDoctor(undefined);
@@ -129,9 +129,9 @@ const ScheduleForm = () =>{
                 <Row className="align-items-center mb-3">
                     <Col>
                         <Form.Group>
-                            <Form.Label>Wybierz lekarza:</Form.Label>
+                            <Form.Label>{t("chooseDoctor")}:</Form.Label>
                             <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}>
-                                <option onClick={clearDoctor}>{'Wybierz lekarza'}</option>
+                                <option onClick={clearDoctor}>{t("chooseDoctor")}</option>
                                 {doctors.map((doc)=>(
                                     <option value={doc} onClick={(e)=>{
                                         setSelectedDoctor(doc);
@@ -149,7 +149,7 @@ const ScheduleForm = () =>{
                     </Col>
                 </Row>
                 <div style={{display:"flex", justifyContent: 'center'}}>
-                    <Button variant='primary' onClick={e=>handleSubmit(e)}>Pokaż grafik</Button>
+                    <Button variant='primary' onClick={e=>handleSubmit(e)}>{t("showSchedule")}</Button>
                 </div>
             </Form>
             {(schedule !== undefined && selectedDoctor !== undefined && selectedSpecialization !== undefined) &&

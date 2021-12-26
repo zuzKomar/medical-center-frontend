@@ -91,5 +91,17 @@
   "yourReferrals": "Your Referrals",
   "issueDate": "Issue date:",
   "referralValidUntil": "Referral valid until:",
-  "referralInvalid": "Referral has already expired!"
+  "referralInvalid": "Referral has already expired!",
+  "specializationError": "Specialization must be specified!",
+  "doctorError": "Doctor must be specified!",
+  "doctorSchedule": "Doctors Schedule",
+  "chooseSpecialization": "Choose Specialization",
+  "yourCheckUps": "Your Check-ups",
+  "showSchedule": "Show Schedule",
+  "checkUpDescription": "Check-up description",
+  "checkUpFileName": "Result_checkup_appointment_",
+  "result": "Result",
+  "resultNotAvailable": "The result is not yet available!",
+  "downloadResultPDF": "Download result in PDF",
+  "yourPrescriptions": "Your Prescriptions"
 }

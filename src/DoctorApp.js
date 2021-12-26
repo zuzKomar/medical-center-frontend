@@ -11,8 +11,15 @@ import VisitsHistoryList from "./components/appointment/doctor/visitsHistory/Vis
 import CheckUpList from "./components/checkup/CheckUpList";
 import FilesTable from "./components/appointment/doctor/files/FilesTable";
 import DoctorCheckUpList from "./components/checkup/doctor/DoctorCheckUpList";
+import {useTranslation} from "react-i18next";
 
 function DoctorApp() {
+    const {t, i18n} = useTranslation()
+
+    const changeLanguage = (language) => {
+        i18n.changeLanguage(language);
+    }
+
     return (
         <Router>
             <div>
@@ -29,7 +36,7 @@ function DoctorApp() {
                             </Switch>
                         </div>
                     </div>
-                <Footer/>
+                <Footer t={t}/>
             </div>
         </Router>
     );

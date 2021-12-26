@@ -5,7 +5,7 @@ import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
-const CheckUpList = () =>{
+const CheckUpList = ({t}) =>{
     const location = useLocation();
     const pageSizes = [3, 5, 10];
     const [checkups, setCheckups] = useState([]);
@@ -76,14 +76,14 @@ const CheckUpList = () =>{
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Twoje badania</h2>
+                <h2>{t("yourCheckUps")}</h2>
             </div>
             <br/>
             {(appointment !== undefined) &&
                 <AppointmentDetailsButtonPanel appointment={appointment} />
             }
             <div className="itemsNumber">
-                <p>Ilość elementów na stronie: </p>
+                <p>{t("elementsNumber")}&nbsp;</p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
                     {pageSizes.map((size) => (
                         <option key={size} value={size}>
@@ -93,7 +93,7 @@ const CheckUpList = () =>{
                 </select>
             </div>
             {checkups.map((checkup) =>(
-                <CheckUp key={checkup.id} checkup={checkup}/>
+                <CheckUp key={checkup.id} checkup={checkup} t={t}/>
             ))}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
