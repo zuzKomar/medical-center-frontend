@@ -4,7 +4,7 @@ import {baseUrl} from "../../../../config/config";
 import ArchivalVisit from "./ArchivalVisit";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
-const VisitsHistoryList = () => {
+const VisitsHistoryList = ({t}) => {
 
     let history = useHistory();
     const appointment = history.location.state;
@@ -26,7 +26,7 @@ const VisitsHistoryList = () => {
     return (
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Visits History</h2>
+                <h2>{t("appointmentsHistory")}</h2>
             </div>
             <AppointmentDetailsButtonPanel appointment={appointment} />
             {patientsAppointments.length > 0 ?
