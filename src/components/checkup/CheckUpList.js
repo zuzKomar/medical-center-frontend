@@ -34,7 +34,6 @@ const CheckUpList = ({t}) =>{
             const checkUps = await fetchCheckups()
             setCheckups(checkUps.diagnosticTests)
             setCount(checkUps.totalPages)
-            console.log(checkups);
         }
         getCheckups()
     },[page, pageSize])
@@ -60,7 +59,7 @@ const CheckUpList = ({t}) =>{
         }
 
         const data = await res.json();
-        console.log(data);
+
         return data;
     }
 

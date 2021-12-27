@@ -26,7 +26,7 @@ const ArchivalVisit = ({appointment}) => {
             <div style={{display: 'flex', justifyContent:'space-between'}}>
                 <div>
                     <FaRegUser size={42}/>
-                    doctor {(appointment.doctor? (appointment.doctor.firstName + ' ' + appointment.doctor.lastName) : '')}
+                    dr {(appointment.doctor? (appointment.doctor.firstName + ' ' + appointment.doctor.lastName) : '')}
                 </div>
             </div>
             {appointment.recommendations  ? <>

@@ -4,6 +4,7 @@ import {FaRegUser, FaCheck, FaFile} from 'react-icons/fa'
 import {GiMedicines} from 'react-icons/gi'
 import {Button} from "react-bootstrap";
 import {baseUrl} from "../../config/config";
+import {GiConfirmed} from "react-icons/all";
 
 
 const Appointment = ({appointment, setCancelledAppointment, t}) =>{
@@ -13,7 +14,6 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
     useEffect(()=>{
         if(appointment!==undefined){
             setAppointment(appointment);
-            console.log(appointment.date);
         }
     }, [appointment])
 
@@ -67,6 +67,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                         <p>{t("date")}</p>
                         <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
                         <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
+                        {(appointment.state === 'DONE' && (formatYmd(new Date()) === app.date.slice(0,10))) && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
                     </div>
                 </div>
                 {app.date?

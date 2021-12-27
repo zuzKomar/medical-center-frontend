@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {FaRegUser} from "react-icons/fa";
 import moment from "moment";
 import {useHistory} from 'react-router';
 import {GiConfirmed} from "react-icons/all";
 
-const DoctorAppointment = ({appointment, t}) => {
+const DoctorAppointment = ({app, t}) => {
+    const [appointment, setAppointment] = useState(app);
+
+    useEffect(()=>{
+        if(app !== undefined){
+            setAppointment(app);
+        }
+    },[app])
 
     const history = useHistory();
     let x = (new Date()).getTimezoneOffset() * 60000;

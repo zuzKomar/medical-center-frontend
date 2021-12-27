@@ -5,7 +5,7 @@ function PrescriptionListTable({prescriptionData, t}){
 
 
     return(
-        <table className="table table-hover" style={{backgroundColor:"white", width : '90%'}}>
+        <table className="table table-hover fileTable" style={{backgroundColor:"white", width : '90%'}}>
             <thead>
                 <tr>
                     <th>{t("issueDate")}</th>

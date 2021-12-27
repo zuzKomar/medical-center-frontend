@@ -129,7 +129,6 @@ const AppointmentList = ({t}) =>{
         if(e.target.value){
             let x = (new Date()).getTimezoneOffset() * 60000;
             let appointmentsFilteredByDate = appointments.filter(appointment => (appointment.date.slice(0,10) === e.target.value))
-            console.log(new Date(new Date(e.target.value)-x).toISOString().slice(0,10));
             setFilteredAppointments(appointmentsFilteredByDate);
         }else{
             setAppDate(formatYmd(new Date()));
