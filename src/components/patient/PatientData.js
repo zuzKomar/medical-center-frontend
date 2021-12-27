@@ -43,6 +43,8 @@ const HomePage = ({t}) => {
     country: yup.string().required(t("required"))
 });
 
+const PatientData = () => {
+
     const [data, setPatient] = useState([]);
     const [firstName, setFirstName] = useState(undefined);
     const [lastName, setLastName] = useState(undefined);
@@ -135,17 +137,17 @@ const HomePage = ({t}) => {
                             validateOnChange={true}
                             validateOnMount={true}
                             initialValues={{
-                        firstName : firstName,
-                        lastName : lastName,
-                        pesel : pesel,
-                        birthDate : birthDate,
-                        phoneNumber : phoneNumber,
-                        email : email,
-                        street : street,
-                        streetNumber : streetNumber,
-                        city: city,
-                        postCode : postCode,
-                        country : country
+                                firstName : firstName,
+                                lastName : lastName,
+                                pesel : pesel,
+                                birthDate : birthDate,
+                                phoneNumber : phoneNumber,
+                                email : email,
+                                street : street,
+                                streetNumber : streetNumber,
+                                city: city,
+                                postCode : postCode,
+                                country : country
                     }} >
                         {({
                             handleChange,
@@ -160,14 +162,14 @@ const HomePage = ({t}) => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>{t("firstName")}</Form.Label>
-                                            <Form.Control type="text" name="firstName" placeholder={t("firstName")} size="lg" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
+                                            <Form.Control type="text" name="firstName" placeholder={t("firstName")} size="lg" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>setFirstName(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>{t("lastName")}</Form.Label>
-                                            <Form.Control type="text" name="lastName" placeholder={t("lastName")} size="lg" defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
+                                            <Form.Control type="text" name="lastName" placeholder={t("lastName")} size="lg"  defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>setLastName(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -175,7 +177,7 @@ const HomePage = ({t}) => {
                                 <Row className="align-items-center mb-3">
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>Pesel:</Form.Label>
+                                            <Form.Label>PESEL:</Form.Label>
                                             <Form.Control type="text" name="pesel" placeholder="PESEL" size="lg" defaultValue={values.pesel} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={(e)=>setPesel(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
                                         </Form.Group>
@@ -224,8 +226,8 @@ const HomePage = ({t}) => {
                                 <Row className="align-items-center mb-3">
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>{t("city")}</Form.Label>
-                                            <Form.Control type="text" name="city" placeholder={t("city")} size="lg" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={handleChange}/>
+                                            <Form.Label>Miasto:</Form.Label>
+                                            <Form.Control type="text" name="city" placeholder="Miasto" size="lg" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={(e)=>setCity(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -260,4 +262,4 @@ const HomePage = ({t}) => {
     }
 }
 
-export default HomePage;
+export default PatientData;
