@@ -22,13 +22,6 @@ function DoctorNavigation({changeLanguage, t}){
                         </LinkContainer>
                     </Nav>
                     <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
-                        <LinkContainer exact to="/moje-konto">
-                            <Nav.Link as={Link} className="navItemLink2">{t("myAccount")}</Nav.Link>
-                        </LinkContainer>
-                        <LinkContainer exact to="/moje-pliki">
-                            <Nav.Link as={Link} className="navItemLink2">{t("myFiles")}</Nav.Link>
-                        </LinkContainer>
-
                         <NavDropdown title={t("language")} id="basic-nav-dropdown">
                             <NavDropdown.Item onClick={() => {changeLanguage('en')}}>English</NavDropdown.Item>
                             <NavDropdown.Item onClick={() => {changeLanguage('pl')}}>Polski</NavDropdown.Item>
