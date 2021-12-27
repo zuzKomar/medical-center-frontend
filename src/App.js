@@ -26,10 +26,9 @@ function App() {
   return (
       <Router>
           <div>
-              {logged &&
-              <Navigation/>}
+              <Navigation/>
               <div className="wholePage">
-                  <div className="content" style = {!logged && {width: '100%', backgroundImage : `url(${background})`}}>
+                  <div className="content" style={logged ? {width: '100%', backgroundImage : `url(${background})`}: {width: '80%', backgroundImage: null}}>
                       <Switch>
                           <Route exact path="/moje-konto" component={PatientData}/>
                           <Route exact path="/moje-pliki"  component={UploadNewFile}/>
