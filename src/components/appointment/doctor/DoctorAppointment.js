@@ -4,7 +4,7 @@ import moment from "moment";
 import {useHistory} from 'react-router';
 import {GiConfirmed} from "react-icons/all";
 
-const DoctorAppointment = ({appointment}) => {
+const DoctorAppointment = ({appointment, t}) => {
 
     const history = useHistory();
     let x = (new Date()).getTimezoneOffset() * 60000;
@@ -26,19 +26,19 @@ const DoctorAppointment = ({appointment}) => {
                 <p className="appointmentAndCheckupHeader">{appointment.medicalServiceName}</p>
                 <div className="data">
                     {appointment.state === 'DONE' && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
-                    <p>Hour: {appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
+                    <p>{t("hour")}&nbsp;{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                 </div>
             </div>
             <div>
                 <p><FaRegUser size={42}/>{(appointment.patient ? (appointment.patient.firstName + ' ' + appointment.patient.lastName) : '')}</p>
-                <p>Age: {a.diff(b, 'year')}</p>
-                {appointment.type==='TELEPHONE' ? 'Phone number: ' + appointment.patient.phoneNumber : ''}
+                <p>{t("age")}&nbsp;{a.diff(b, 'year')}</p>
+                {appointment.type==='TELEPHONE' ? t("phoneNumber") + ' ' + appointment.patient.phoneNumber : ''}
             </div>
             {appointment.state !== 'DONE' &&
                 <>
                     <hr />
                     <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
-                        <button className="actionButton" onClick={e => handleClick(e)}>ADD VISIT'S DETAILS</button>
+                        <button className="actionButton" onClick={e => handleClick(e)}>{t("addVisitDetails")}</button>
                     </div>
                 </>
             }

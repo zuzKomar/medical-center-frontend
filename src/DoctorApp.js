@@ -23,12 +23,12 @@ function DoctorApp() {
     return (
         <Router>
             <div>
-                <DoctorNavigation/>
+                <DoctorNavigation changeLanguage={changeLanguage} t={t}/>
                     <div className="wholePage">
                         <div className="content">
                             <Switch>
-                                <Route exact path="/today-visits" component={TodayAppointmentList}/>
-                                <Route exact path="/today-visits/:id/details" component={AppointmentDetails} />
+                                <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} />}/>
+                                <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} />} />
                                 <Route exact path="/today-visits/:id/details/visits-history" component={VisitsHistoryList} />
                                 <Route exact path="/today-visits/:id/details/check-ups" component={CheckUpList} />
                                 <Route exact path="/today-visits/:id/details/files" component={FilesTable} />

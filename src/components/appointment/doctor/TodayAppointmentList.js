@@ -3,7 +3,7 @@ import {baseUrl} from "../../../config/config";
 import DoctorAppointment from "./DoctorAppointment";
 import Pagination from "@material-ui/lab/Pagination";
 
-const TodayAppointmentList = () => {
+const TodayAppointmentList = ({t}) => {
     const pageSizes = [3, 5, 10];
     const [appointments, setAppointments] = useState([]);
     const [page, setPage] = useState(1);
@@ -60,10 +60,10 @@ const TodayAppointmentList = () => {
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Today's Visits</h2>
+                <h2>{t("todayAppointments")}</h2>
             </div>
             <div className="itemsNumber">
-                <p>Number of elements on site: </p>
+                <p>{t("elementsNumber")}&nbsp;</p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
                     {pageSizes.map((size) => (
                         <option key={size} value={size}>
@@ -73,7 +73,7 @@ const TodayAppointmentList = () => {
                 </select>
             </div>
             <div className="appointmentList">
-                {appointments.map(appointment => <DoctorAppointment key={appointment.id} appointment={appointment} />)}
+                {appointments.map(appointment => <DoctorAppointment key={appointment.id} appointment={appointment} t={t} />)}
             </div>
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>

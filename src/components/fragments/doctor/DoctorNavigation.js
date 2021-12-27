@@ -3,8 +3,9 @@ import logo from '../../../logo.png';
 import {Navbar, Nav, NavDropdown, Container} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'
+import {Link} from "react-router-dom";
 
-function DoctorNavigation(){
+function DoctorNavigation({changeLanguage, t}){
     const profileTitle = (<BsPerson size={42}/>);
     return(
         <Navbar bg="light" variant="light" expand="lg" collapseOnSelect="true" sticky="top" className="navContainer">
@@ -14,12 +15,27 @@ function DoctorNavigation(){
                 <Navbar.Collapse id="navbarToggleExternalContent" className="navCollapse">
                     <Nav className="navNav">
                         <LinkContainer to="/today-visits" activeHref="active">
-                            <Nav.Link exact className="navItemLink">Today's Visits</Nav.Link>
+                            <Nav.Link exact className="navItemLink">{t("todayAppointments")}</Nav.Link>
                         </LinkContainer>
                         <LinkContainer to="/check-ups" activeHref="active">
-                            <Nav.Link exact className="navItemLink">Check-ups</Nav.Link>
+                            <Nav.Link exact className="navItemLink">{t("checkups")}</Nav.Link>
                         </LinkContainer>
                     </Nav>
+                    <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
+                        <LinkContainer exact to="/moje-konto">
+                            <Nav.Link as={Link} className="navItemLink2">{t("myAccount")}</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer exact to="/moje-pliki">
+                            <Nav.Link as={Link} className="navItemLink2">{t("myFiles")}</Nav.Link>
+                        </LinkContainer>
+
+                        <NavDropdown title={t("language")} id="basic-nav-dropdown">
+                            <NavDropdown.Item onClick={() => {changeLanguage('en')}}>English</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => {changeLanguage('pl')}}>Polski</NavDropdown.Item>
+                        </NavDropdown>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="#wyloguj">{t("logout")}</NavDropdown.Item>
+                    </NavDropdown>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

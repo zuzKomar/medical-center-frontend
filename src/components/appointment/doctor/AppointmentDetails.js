@@ -3,19 +3,19 @@ import {useHistory} from "react-router-dom";
 import AppointmentDetailsForm from "./AppointmentDetailsForm";
 import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
 
-const AppointmentDetails = () => {
+const AppointmentDetails = ({t}) => {
 
     let history = useHistory();
-    const appointment = history.location.state;
+    const appointment = history.location.state.appointment;
 
     return (
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Visit's Details</h2>
+                <h2>{t("appointmentDetails")}</h2>
             </div>
             <br/>
-            <AppointmentDetailsButtonPanel appointment={appointment} />
-            <AppointmentDetailsForm appointment={appointment}/>
+            <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
+            <AppointmentDetailsForm appointment={appointment} t={t}/>
         </div>
     )
 }

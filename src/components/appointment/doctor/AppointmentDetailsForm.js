@@ -6,7 +6,7 @@ import {baseUrl} from "../../../config/config";
 import RangeSlider from "react-bootstrap-range-slider";
 import Button from "react-bootstrap/Button";
 
-const AppointmentDetailsForm = ({appointment}) => {
+const AppointmentDetailsForm = ({appointment, t}) => {
 
     const formatYmd = date => date.toISOString().slice(0,10);
     const ref = useRef();
@@ -114,7 +114,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             sessionStorage.setItem('referrals', JSON.stringify(referrals));
             setService(undefined);
             let element = document.getElementById('serviceSelect');
-            element.value = 'Choose a service';
+            element.value = t("chooseService");
             setReferralExpiryDate(formatYmd(new Date(new Date().setDate(new Date().getDate()+31))));
         }
     }
@@ -147,11 +147,11 @@ const AppointmentDetailsForm = ({appointment}) => {
                 sessionStorage.setItem('medications', JSON.stringify(medicationsToAdd));
                 setMedication(undefined);
                 let element = document.getElementById('medicationSelect');
-                element.value = 'Choose a medication';
+                element.value = t("chooseMedication");
                 setMedicationDosage('');
                 setMedicationQuantity(1);
             }else{
-                window.alert('This medication has been already added to prescription. In case of changing dosage or number of packages, delete this position and add it corrected again.');
+                window.alert(t("referralAddMedicationError"));
             }
         }
     }
@@ -191,7 +191,7 @@ const AppointmentDetailsForm = ({appointment}) => {
             sessionStorage.setItem('checkups', JSON.stringify(checkUpsToAdd));
             setSelectedCheckup(undefined);
             let element = document.getElementById('checkupSelect');
-            element.value = 'Choose a checkup';
+            element.value = t("chooseCheckUp");
             setCheckupDescription('');
             setCheckupResult('');
             setCheckupResultFile(undefined);
@@ -277,7 +277,7 @@ const AppointmentDetailsForm = ({appointment}) => {
                 },
                 body : JSON.stringify(fetchBody)
             }).then((res)=>res.json())
-                .then(window.alert("Visit's details have been added"))
+                .then(window.alert(t("appointmentDetailsMessage")))
                 .then(history.push({
                     pathname : '/today-visits'
                 }))
@@ -291,7 +291,7 @@ const AppointmentDetailsForm = ({appointment}) => {
         const newErrors = {};
 
         if(description === undefined || description === ''){
-            newErrors.description = "Visit's description is required!";
+            newErrors.description = t("appointmentDescriptionRequired");
         }
 
         return newErrors;
@@ -300,7 +300,7 @@ const AppointmentDetailsForm = ({appointment}) => {
     return (
         <Form className="newAppointmentForm">
             <Form.Group className="mb-3" controlId="detailsForm.ControlTextArea1">
-                <Form.Label>Visit's description:</Form.Label>
+                <Form.Label>{t("appointmentDescription")}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={description} isInvalid={!!errors.description} onChange={(e)=>{
                     setDescription(e.target.value);
                     sessionStorage.setItem('description', e.target.value);
@@ -313,19 +313,19 @@ const AppointmentDetailsForm = ({appointment}) => {
                 <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                <Form.Label>Recommendations:</Form.Label>
+                <Form.Label>{t("recommendations")}:</Form.Label>
                 <Form.Control as="textarea" rows={3} value={recommendations} onChange={(e)=>{
                     setRecommendations(e.target.value)
                     sessionStorage.setItem('recommendations', e.target.value);
                 }}/>
             </Form.Group>
             <Row className="mb-3">
-                <Form.Label>Referrals:</Form.Label>
+                <Form.Label>{t("referrals")}:</Form.Label>
                 <Col md>
                     <Form.Group>
-                        <Form.Label column="sm">Choose a service: </Form.Label>
+                        <Form.Label column="sm">{t("chooseService")}:</Form.Label>
                         <Form.Select aria-label="Floating label select example" id="serviceSelect">
-                            <option onClick={() => setService(undefined)}>Choose a service</option>
+                            <option onClick={() => setService(undefined)}>{t("chooseService")}</option>
                             {services.map((ser)=>(
                                 <option value={ser} onClick={()=>{
                                     setService(ser);
@@ -334,12 +334,12 @@ const AppointmentDetailsForm = ({appointment}) => {
                         </Form.Select>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label column="sm">Choose an expiration date: </Form.Label>
-                        <Form.Control type='date' placeholder='Data od:' value={referralExpiryDate} onChange={(e) => setReferralExpiryDate(e.target.value)}/>
+                        <Form.Label column="sm">{t("chooseExpirationDate")}</Form.Label>
+                        <Form.Control type='date' value={referralExpiryDate} onChange={(e) => setReferralExpiryDate(e.target.value)}/>
                     </Form.Group>
                 </Col>
                 <Col md>
-                    <Form.Label column="sm">Referrals list: </Form.Label>
+                    <Form.Label column="sm">{t("referralsList")}</Form.Label>
                     <div style={{overflow: "scroll", height: "100px"}}>
                         {referrals.map((referral) => {
                             return <div className="appointmentFormSubsectionItem" key={referral.id} onClick={()=>{
@@ -351,18 +351,18 @@ const AppointmentDetailsForm = ({appointment}) => {
             </Row>
 
             <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                <button className="addButton" onClick={e=>handleReferralAddition(e)}>ADD REFERRAL</button>
-                <button className="deleteButton" onClick={e=>handleReferralDeletion(e)}>DELETE REFERRAL</button>
+                <button className="addButton" onClick={e=>handleReferralAddition(e)}>{t("addReferral")}</button>
+                <button className="deleteButton" onClick={e=>handleReferralDeletion(e)}>{t("deleteReferral")}</button>
             </div>
             <hr />
 
             <Row className="mb-3 topBuffer">
                 <Col md>
-                    <Form.Label>Medications:</Form.Label>
+                    <Form.Label>{t("medications")}</Form.Label>
                     <Form.Group>
-                        <Form.Label column="sm">Choose a medication: </Form.Label>
+                        <Form.Label column="sm">{t("chooseMedication")}:</Form.Label>
                         <Form.Select aria-label="Floating label select example"  id="medicationSelect">
-                            <option onClick={() => setMedication(undefined)}>Choose a medication</option>
+                            <option onClick={() => setMedication(undefined)}>{t("chooseMedication")}</option>
                             {medications.map((medication) =>(
                                 <option value={medication} key={medication.id}
                                         onClick={()=>setMedication(medication)}>{medication.name}</option>
@@ -370,11 +370,11 @@ const AppointmentDetailsForm = ({appointment}) => {
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label column="sm">Dosage: </Form.Label>
-                        <Form.Control type="text" placeholder="Dosage" value={medicationDosage} onChange={(e)=>setMedicationDosage(e.target.value)}/>
+                        <Form.Label column="sm">{t("dosage")}:</Form.Label>
+                        <Form.Control type="text" placeholder={t("dosage")} value={medicationDosage} onChange={(e)=>setMedicationDosage(e.target.value)}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label column="sm">Choose the number of packages: </Form.Label>
+                        <Form.Label column="sm">{t("choosePackagesNumber")}</Form.Label>
                         <RangeSlider
                             value={medicationQuantity}
                             onChange={(e) => setMedicationQuantity(parseInt(e.target.value))}
@@ -382,7 +382,7 @@ const AppointmentDetailsForm = ({appointment}) => {
                     </Form.Group>
                 </Col>
                 <Col md>
-                    <Form.Label column="sm">Medications list:</Form.Label>
+                    <Form.Label column="sm">{t("medicationsList")}</Form.Label>
                     <div style={{overflow: "scroll", height: "216px"}}>
                         {medicationsToAdd.map((medication)=>{
                             return <div className="appointmentFormSubsectionItem" key={medication.id} onClick={()=>{
@@ -393,22 +393,22 @@ const AppointmentDetailsForm = ({appointment}) => {
                 </Col>
             </Row>
             <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                <button className="addButton" onClick={(e)=>handleMedicationAddition(e)}>ADD MEDICATION</button>
-                <button className="deleteButton" onClick={(e)=>handleMedicationDeletion(e)}>DELETE MEDICATION</button>
+                <button className="addButton" onClick={(e)=>handleMedicationAddition(e)}>{t("addMedication")}</button>
+                <button className="deleteButton" onClick={(e)=>handleMedicationDeletion(e)}>{t("deleteMedication")}</button>
             </div>
             <hr />
             <Row>
 
             </Row>
             <div className="topBuffer">
-                <Form.Label>Check-ups:</Form.Label>
-                <h6 style={{color: '#e60000'}}>Checkup description, result and file can be added later</h6>
+                <Form.Label>{t("checkups")}:</Form.Label>
+                <h6 style={{color: '#e60000'}}>{t("checkUpsInfo")}</h6>
                 <Row className="mb-3">
                     <Col md>
                         <Form.Group>
-                            <Form.Label column="sm">Choose a check-up: </Form.Label>
+                            <Form.Label column="sm">{t("chooseCheckUp")}:</Form.Label>
                             <Form.Select aria-label="Floating label select example" id="checkupSelect">
-                                <option onClick={() => setSelectedCheckup(undefined)}>Choose a checkup</option>
+                                <option onClick={() => setSelectedCheckup(undefined)}>{t("chooseCheckUp")}</option>
                                 {checkUps.map((checkUp)=>(
                                    <option value={checkUp} key={checkUp.id}
                                     onClick={()=>setSelectedCheckup(checkUp)}>{checkUp.name}</option>
@@ -421,13 +421,13 @@ const AppointmentDetailsForm = ({appointment}) => {
                 <Row className="mb-3">
                     <Col md>
                         <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                            <Form.Label column="sm">Description:</Form.Label>
+                            <Form.Label column="sm">{t("description")}:</Form.Label>
                             <Form.Control as="textarea" rows={3} value={checkupDescription} onChange={(e)=>setCheckupDescription(e.target.value)}/>
                         </Form.Group>
                     </Col>
                     <Col md>
                         <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
-                            <Form.Label column="sm">Result:</Form.Label>
+                            <Form.Label column="sm">{t("result")}:</Form.Label>
                             <Form.Control as="textarea" rows={3} value={checkupResult} onChange={(e)=>setCheckupResult(e.target.value)}/>
                         </Form.Group>
                     </Col>
@@ -435,12 +435,12 @@ const AppointmentDetailsForm = ({appointment}) => {
                 <Row className="mb-3">
                     <Col md>
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label column="sm">Add file:</Form.Label>
+                            <Form.Label column="sm">{t("addFile")}:</Form.Label>
                             <Form.Control as="input" type="file" ref={ref} size="sm" onChange={(e)=>handleFileUpload(e)}/>
                         </Form.Group>
                     </Col>
                     <Col md>
-                        <Form.Label column="sm">Check-ups list:</Form.Label>
+                        <Form.Label column="sm">{t("checkUpsList")}:</Form.Label>
                         <div style={{overflow: "scroll", height: "150px"}}>
                             {checkUpsToAdd.map((checkup)=>{
                                 return <div className="appointmentFormSubsectionItem" key={checkup.id} onClick={()=>{
@@ -451,8 +451,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                     </Col>
                 </Row>
                 <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                    <button className="addButton" onClick={(e)=>handleCheckupAddition(e)}>ADD CHECK-UP</button>
-                    <button className="deleteButton" onClick={(e)=>handleCheckupDeletion(e)}>DELETE CHECK-UP</button>
+                    <button className="addButton" onClick={(e)=>handleCheckupAddition(e)}>{t("addCheckUp")}</button>
+                    <button className="deleteButton" onClick={(e)=>handleCheckupDeletion(e)}>{t("deleteCheckUp")}</button>
                 </div>
                 <hr />
             </div>
@@ -462,8 +462,8 @@ const AppointmentDetailsForm = ({appointment}) => {
                     history.push({
                         pathname : '/today-visits'
                     })
-                }}>Cancel</Button>
-                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>handleSubmit(e)}>Save changes</Button>
+                }}>{t("cancel")}</Button>
+                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>handleSubmit(e)}>{t("saveChanges")}</Button>
             </div>
         </Form>
     )
