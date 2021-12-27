@@ -62,12 +62,12 @@ const FilesTable = ({t}) => {
                             <td>{file.description}</td>
                             <td>{file.uploadDate}</td>
                             <td>
-                                <Button variant='primary' onClick={e => handleFileDownload(e, file)}>Download</Button>
+                                <Button variant='primary' onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
                             </td>
                         </tr>
                     )}
                     </tbody>
-                </Table> : <span className="topBuffer">No files to show</span>
+                </Table> : <span className="topBuffer">{t("noFiles")}</span>
             }
         </div>
     )

@@ -32,7 +32,7 @@ function DoctorApp() {
                                 <Route exact path="/today-visits/:id/details/visits-history" component={() => <VisitsHistoryList t={t} />} />
                                 <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} />} />
                                 <Route exact path="/today-visits/:id/details/files" component={() => <FilesTable t={t} />} />
-                                <Route exact path="/check-ups" component={DoctorCheckUpList} />
+                                <Route exact path="/check-ups" component={() => <DoctorCheckUpList t={t} />} />
                             </Switch>
                         </div>
                     </div>

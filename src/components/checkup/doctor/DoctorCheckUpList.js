@@ -76,10 +76,10 @@ const DoctorCheckUpList = ({t}) => {
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Check-ups to realize</h2>
+                <h2>{t("checkUpsToRealize")}</h2>
             </div>
             <div className="itemsNumber">
-                <p>Number of elements on site: </p>
+                <p>{t("elementsNumber")}&nbsp;</p>
                 <select onChange={handlePageSizeChange} value={pageSize}>
                     {pageSizes.map((size) => (
                         <option key={size} value={size}>
@@ -89,7 +89,7 @@ const DoctorCheckUpList = ({t}) => {
                 </select>
             </div>
             {checkUps.map(checkUp => (
-                <DoctorCheckUp checkup={checkUp} setSelectedCheckup={setSelectedCheckup}/>
+                <DoctorCheckUp checkup={checkUp} setSelectedCheckup={setSelectedCheckup} t={t}/>
             ))}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>

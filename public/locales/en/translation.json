@@ -144,5 +144,9 @@
   "ePrescriptionsIssued": "E-prescriptions issued",
   "noPrescriptions": "No prescriptions",
   "patientFiles": "Patient's files",
-  "name": "Name"
+  "name": "Name",
+  "checkUpsToRealize": "Check-ups to realize",
+  "realizeCheckUp": "REALIZE CHECK-UP",
+  "accept": "Accept",
+  "checkUpRealized": "Check-up has been realized!"
 }

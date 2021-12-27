@@ -144,5 +144,9 @@
   "ePrescriptionsIssued": "Wystawiono e-Recepty",
   "noPrescriptions": "Brak recept",
   "patientFiles": "Pliki Pacjenta",
-  "name": "Nazwa"
+  "name": "Nazwa",
+  "checkUpsToRealize": "Badania do realizacji",
+  "realizeCheckUp": "ZREALIZUJ BADANIE",
+  "accept": "Akceptuj",
+  "checkUpRealized": "Badanie zostało zrealizowane!"
 }

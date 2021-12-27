@@ -4,7 +4,7 @@ import moment from "moment";
 import {Form} from "react-bootstrap";
 import {baseUrl} from "../../../config/config";
 
-const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
+const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
     const [state, setState] = useState(false);
     const [showAll, setShowAll] = useState(true);
     const [checkUp, setCheckUp] = useState(checkup);
@@ -92,7 +92,7 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
             })
             .then((res) => res.json())
                 .then(()=>new Promise(resolve => setTimeout(resolve, 2000)))
-            .then(window.alert("Check-up have been realized"))
+            .then(window.alert(t("checkUpRealized")))
             .catch((err) => console.log(err));
             setSelectedCheckup(checkUp);
             setShowAll(false);
@@ -100,36 +100,34 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
     }
 
     return(
-    // <>
-    //     {showAll === true ?
         <div className="appointmentAndCheckup">
             <div className="top">
                 <p className="appointmentAndCheckupHeader">{checkUp.diagnosticTestName}</p>
                 <div className="data">
-                    <p>Data:</p>
+                    <p>{t("date")}</p>
                     <p>{new Date(checkUp.appointmentDate).toISOString().slice(0,10)}</p>
                     <p>{new Date(checkUp.appointmentDate).toISOString().slice(11,16)}</p>
                 </div>
             </div>
             <div>
                 <p><FaRegUser size={42}/>{(checkUp.patient ? (checkUp.patient.firstName + ' ' + checkUp.patient.lastName) : '')}</p>
-                <p>Age: {a.diff(b, 'year')}</p>
+                <p>{t("age")}&nbsp;{a.diff(b, 'year')}</p>
             </div>
             {!state &&
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <button className="actionButton" onClick={showForm}>REALIZE CHECKUP</button>
+                <button className="actionButton" onClick={showForm}>{t("realizeCheckUp")}</button>
             </div>
             }
             {state ? (
                 <Form>
                     <Form.Group className="mb-3" controlId="doctorDescription">
-                        <Form.Label>Doctor's description:</Form.Label>
+                        <Form.Label>{t("description")}:</Form.Label>
                         <Form.Control as="textarea" rows={3} value={doctorsDescription} onChange={e => {
                             setDoctorsDescription(e.target.value)
                         }} />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="result">
-                        <Form.Label>Result:</Form.Label>
+                        <Form.Label>{t("result")}:</Form.Label>
                         <Form.Control as="textarea" rows={3} isInvalid={!!errors.result} value={result} onChange={e => {
                             setResult(e.target.value);
                             if(!!errors['result'])
@@ -141,7 +139,7 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
                         <Form.Control.Feedback type='invalid'>{errors.result}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="file" className="mb-2">
-                        <Form.Label>File:</Form.Label>
+                        <Form.Label>{t("file")}</Form.Label>
                         <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={e => {
                             handleFileUpload(e);
                             if(!!errors['file'])
@@ -155,8 +153,8 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup}) => {
                     </Form.Group>
                     {state &&
                     <div className="topBuffer" style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <button className="deleteButton" onClick={(e)=>showForm(e)}>CANCEL</button>
-                        <button className="addButton" onClick={e => handleRealization(e)}>ACCEPT</button>
+                        <button className="deleteButton" onClick={(e)=>showForm(e)}>{t("cancel").toUpperCase()}</button>
+                        <button className="addButton" onClick={e => handleRealization(e)}>{t("accept").toUpperCase()}</button>
                     </div>
                     }
                 </Form>) : null}
