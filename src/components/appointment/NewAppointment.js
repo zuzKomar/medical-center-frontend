@@ -110,12 +110,12 @@ const NewAppointment = ({t}) =>{
             <div className="listHeader">
                 <h2>{t("newAppointment")}</h2>
             </div>
-                <NewAppointmentForm getAppointments={handleAppointmentSearch}/>
+                <NewAppointmentForm getAppointments={handleAppointmentSearch} t={t}/>
                 <>
                     {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3> : ''}
                     {appointments.length > 0 &&
                         <div className="itemsNumber availableAppsPagination">
-                            <p>Ilość elementów na stronie: </p>
+                            <p>{t("elementsNumber")}&nbsp;</p>
                             <select onChange={handlePageSizeChange} value={pageSize}>
                                 {pageSizes.map((size) => (
                                     <option key={size} value={size}>
@@ -128,11 +128,11 @@ const NewAppointment = ({t}) =>{
                     {appointments.length > 0 ?
                         appointments.map((app)=>(
                             <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
-                        )) : (receivedService!== undefined ? 'Brak dostępnych wizyt spełniających wybrane kryteria' : '')}
+                        )) : (receivedService!== undefined ? t("noAppointments") : '')}
                     {appointments.length > 0 &&
                     <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
                     }
-                    {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral}/> : ''}
+                    {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral} t={t}/> : ''}
                 </>
         </div>
     )
