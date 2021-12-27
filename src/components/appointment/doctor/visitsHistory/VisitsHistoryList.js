@@ -28,11 +28,11 @@ const VisitsHistoryList = ({t}) => {
             <div className="listHeader">
                 <h2>{t("appointmentsHistory")}</h2>
             </div>
-            <AppointmentDetailsButtonPanel appointment={appointment} />
+            <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
             {patientsAppointments.length > 0 ?
                 <div className="appointmentList">
-                    {patientsAppointments.map(patientAppointment => <ArchivalVisit key={patientAppointment.id} appointment={patientAppointment} />)}
-                </div> : <span style={{marginTop : '1%'}}>No visits to show</span>
+                    {patientsAppointments.map(patientAppointment => <ArchivalVisit key={patientAppointment.id} appointment={patientAppointment} t={t} />)}
+                </div> : <span style={{marginTop : '1%'}}>{t("noAppointmentsToShow")}</span>
             }
 
         </div>

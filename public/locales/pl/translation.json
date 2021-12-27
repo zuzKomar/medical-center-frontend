@@ -111,7 +111,7 @@
   "todayAppointments": "Dzisiejsze wizyty",
   "age": "Wiek:",
   "addVisitDetails": "DODAJ SZCZEGÓŁY WIZYTY",
-  "appointmentDetailsButton": "Szczegóły Wizyty",
+  "appointmentDetails": "Szczegóły Wizyty",
   "backToDetailsButton": "POWRÓT DO SZCZEGÓŁÓW",
   "visitsHistoryButton": "HISTORIA WIZYT",
   "checkUpsButton": "BADANIA",
@@ -137,5 +137,12 @@
   "addCheckUp": "DODAJ BADANIE",
   "deleteCheckUp": "USUŃ BADANIE",
   "saveChanges": "Zapisz zmiany",
-  "appointmentsHistory": "Appointments History"
+  "appointmentsHistory": "Historia Wizyt",
+  "noAppointmentsToShow": "Brak Wizyt do wyświetlenia",
+  "realizedCheckUps": "Zrealizowanie Badania",
+  "ePrescriptions": "E-Recepty",
+  "ePrescriptionsIssued": "Wystawiono e-Recepty",
+  "noPrescriptions": "Brak recept",
+  "patientFiles": "Pliki Pacjenta",
+  "name": "Nazwa"
 }

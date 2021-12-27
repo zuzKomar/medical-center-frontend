@@ -3,7 +3,7 @@ import {useState} from "react";
 import {FaCheck, FaFile, FaRegUser} from "react-icons/fa";
 import {GiMedicines} from "react-icons/gi";
 
-const ArchivalVisit = ({appointment}) => {
+const ArchivalVisit = ({appointment, t}) => {
 
     const [open, setOpen] = useState(false);
 
@@ -18,7 +18,7 @@ const ArchivalVisit = ({appointment}) => {
             <div className="top">
                 <p className="appointmentAndCheckupHeader">{appointment.serviceName}</p>
                 <div className="data">
-                    <p>Data:</p>
+                    <p>{t("date")}</p>
                     <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
                     <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                 </div>
@@ -26,7 +26,7 @@ const ArchivalVisit = ({appointment}) => {
             <div style={{display: 'flex', justifyContent:'space-between'}}>
                 <div>
                     <FaRegUser size={42}/>
-                    dr {(appointment.doctor? (appointment.doctor.firstName + ' ' + appointment.doctor.lastName) : '')}
+                    {t("doctorTitle")}&nbsp;{(appointment.doctor? (appointment.doctor.firstName + ' ' + appointment.doctor.lastName) : '')}
                 </div>
             </div>
             {appointment.recommendations  ? <>
@@ -35,7 +35,7 @@ const ArchivalVisit = ({appointment}) => {
                         <hr/>
                         <div className="subsections">
                             <FaCheck size={42}/>
-                            <p className="header">Recommendations</p>
+                            <p className="header">{t("recommendations")}</p>
                         </div>
                         <ol>
                             <li>{appointment.recommendations}</li>
@@ -44,15 +44,15 @@ const ArchivalVisit = ({appointment}) => {
 
                         <div className="subsections">
                             <FaFile size={42}/>
-                            <p className="header">Realized Check-ups</p>
+                            <p className="header">{t("realizedCheckUps")}</p>
                         </div>
                         <p>{appointment.serviceName}</p>
                         <hr/>
                         <div className="subsections">
                             <GiMedicines size={42}/>
-                            <p className="header">e-Prescriptions</p>
+                            <p className="header">{t("ePrescriptions")}</p>
                         </div>
-                        <p>{appointment.prescriptions ? 'Electronic prescription issued': 'No prescription'}</p>
+                        <p>{appointment.prescriptions ? t("ePrescriptionsIssued") : t("noPrescriptions")}</p>
                 </div>) : null}
             </> : null}
         </div>

@@ -137,5 +137,12 @@
   "addCheckUp": "ADD CHECK-UP",
   "deleteCheckUp": "DELETE CHECK-UP",
   "saveChanges": "Save changes",
-  "appointmentsHistory": "Appointments History"
+  "appointmentsHistory": "Appointments History",
+  "noAppointmentsToShow": "No Appointments to show",
+  "realizedCheckUps": "Realized Check-ups",
+  "ePrescriptions": "E-prescriptions",
+  "ePrescriptionsIssued": "E-prescriptions issued",
+  "noPrescriptions": "No prescriptions",
+  "patientFiles": "Patient's files",
+  "name": "Name"
 }

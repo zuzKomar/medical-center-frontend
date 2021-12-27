@@ -5,7 +5,7 @@ import {Table} from "@material-ui/core";
 import Button from "react-bootstrap/Button";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
-const FilesTable = () => {
+const FilesTable = ({t}) => {
 
     const [files, setFiles] = useState([]);
     let history = useHistory();
@@ -42,17 +42,17 @@ const FilesTable = () => {
     return(
         <div className="itemsList">
             <div className="listHeader">
-                <h2>Patient's files</h2>
+                <h2>{t("patientFiles")}</h2>
             </div>
-            <AppointmentDetailsButtonPanel appointment={appointment} />
+            <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
             {files.length > 0 ?
                 <Table className="table table-hover table-bordered fileTable topBuffer" style={{width : '80%'}}>
                     <thead style={{backgroundColor : '#e6eeff'}}>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Date added</th>
-                        <th>Action</th>
+                        <th>{t("name")}:</th>
+                        <th>{t("description")}:</th>
+                        <th>{t("createDate")}</th>
+                        <th>{t("action")}</th>
                     </tr>
                     </thead>
                     <tbody>

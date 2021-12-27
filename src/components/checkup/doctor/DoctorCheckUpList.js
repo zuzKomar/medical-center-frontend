@@ -3,7 +3,7 @@ import {baseUrl} from "../../../config/config";
 import DoctorCheckUp from "./DoctorCheckUp";
 import Pagination from "@material-ui/lab/Pagination";
 
-const DoctorCheckUpList = () => {
+const DoctorCheckUpList = ({t}) => {
     const pageSizes = [3, 5, 10];
     const [checkUps, setCheckUps] = useState([]);
     const [selectedCheckup, setSelectedCheckup] = useState(undefined);

@@ -79,7 +79,7 @@ const CheckUpList = ({t}) =>{
             </div>
             <br/>
             {(appointment !== undefined) &&
-                <AppointmentDetailsButtonPanel appointment={appointment} />
+                <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
             }
             <div className="itemsNumber">
                 <p>{t("elementsNumber")}&nbsp;</p>

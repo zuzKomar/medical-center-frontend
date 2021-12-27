@@ -6,7 +6,7 @@ import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
 const AppointmentDetails = ({t}) => {
 
     let history = useHistory();
-    const appointment = history.location.state.appointment;
+    const appointment = history.location.state;
 
     return (
         <div className="itemsList">
