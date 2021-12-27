@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {Formik} from "formik";
 import * as yup from "yup";
 import Form from "react-bootstrap/Form";
 import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import {useHistory} from 'react-router';
+import {baseUrl} from "../../config/config";
 
 const  today = new Date();
 
@@ -43,124 +45,189 @@ const schema = yup.object().shape({
 });
 
 const RegisterForm = () => {
-    const [firstName, setFirstName] = useState(undefined);
-    const [lastName, setLastName] = useState(undefined);
-    const [pesel, setPesel] = useState(undefined);
-    const [birthDate, setBirthDate] = useState(undefined);
-    const [phoneNumber, setPhoneNumber] = useState(undefined);
-    const [email, setEmail] = useState(undefined);
-    const [street, setStreet] = useState(undefined);
-    const [streetNumber, setStreetNumber] = useState(undefined);
-    const [city, setCity] = useState(undefined);
-    const [postCode, setPostCode] = useState(undefined);
-    const [country, setCountry] = useState(undefined);
+    const history = useHistory();
 
-    return (
-        <div className="center loginForm">
-            <Formik validationSchema={schema}
-                    enableReinitialize={true}
-                    onSubmit={console.log('test')}
-                    initialErrors={{}}
-                    initialValues={{
-                        firstName : '',
-                        lastName : '',
-                        pesel : '',
-                        birthDate : '',
-                        phoneNumber : '',
-                        email : '',
-                        street : '',
-                        streetNumber : '',
-                        city: '',
-                        postCode : '',
-                        country : '',
-                        password: '',
-                        confirmPassword: ''
-                    }}
-            >
+    const onSubmit = values =>{
+        const newPerson = {
+            address : {
+                city : values.city,
+                country : values.country,
+                postCode : values.postCode,
+                street : values.street,
+                streetNumber : values.streetNumber
+            },
+            birthDate : values.birthDate,
+            email : values.email,
+            firstName : values.firstName,
+            lastName : values.lastName,
+            patientsFiles: [],
+            pesel : values.pesel,
+            phoneNumber : values.phoneNumber
+        };
+
+        fetch(`${baseUrl}/patients`,{
+            method : 'POST',
+            headers : {'Access-Control-Allow-Origin': `${baseUrl}`,
+                'Content-Type': 'application/json;charset=UTF-8'},
+            body : JSON.stringify(newPerson)
+        }).then((res)=>res.json())
+            .catch((err)=>console.log(err))
+    }
+
+    return(
+        <div className="loginForm" style={{marginTop:"1%", marginBottom:"12%"}}>
+            <Formik
+                validationSchema={schema}
+                enableReinitialize={true}
+                onSubmit={onSubmit}
+                initialErrors={{}}
+                validateOnChange={true}
+                validateOnMount={false}
+                initialValues={{
+                    firstName : '',
+                    lastName : '',
+                    pesel : '',
+                    birthDate : '',
+                    phoneNumber : '',
+                    email : '',
+                    street : '',
+                    streetNumber : '',
+                    city: '',
+                    postCode : '',
+                    country : '',
+                    password: '',
+                    confirmPassword: ''
+                }} >
                 {({
-                      handleSubmit,
                       handleChange,
+                      handleSubmit,
                       values,
                       touched,
                       isValid,
-                      errors,
+                      errors
                   })=>(
-                    <Form noValidate onSubmit={handleSubmit}>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="firstName">
-                                <Form.Label>First name:</Form.Label>
-                                <Form.Control type="text" name="firstName" placeholder="First name" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="lastName">
-                                <Form.Label>Last name:</Form.Label>
-                                <Form.Control type="text" name="lastName" placeholder="Enter last name" defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
-                            </Form.Group>
+                    <Form  onSubmit={handleSubmit}>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Imię:</Form.Label>
+                                    <Form.Control type="text" name="firstName" placeholder="Imię" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Nazwisko:</Form.Label>
+                                    <Form.Control type="text" name="lastName" placeholder="Nazwisko" defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="pesel">
-                                <Form.Label>PESEL:</Form.Label>
-                                <Form.Control type="text" name="pesel" placeholder="PESEL" defaultValue={values.pesel} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="birthDate">
-                                <Form.Label>Birth date:</Form.Label>
-                                <Form.Control type="date" name="birthDate" placeholder="Birth date" defaultValue={values.birthDate} isInvalid={!!errors.birthDate} isValid={touched.birthDate && !errors.birthDate} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.birthDate}</Form.Control.Feedback>
-                            </Form.Group>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>PESEL:</Form.Label>
+                                    <Form.Control type="text" name="pesel" placeholder="PESEL" defaultValue={values.pesel} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Data urodzenia:</Form.Label>
+                                    <Form.Control type="date" name="birthDate" placeholder="Data urodzenia" defaultValue={values.birthDate} isInvalid={!!errors.birthDate} isValid={touched.birthDate && !errors.birthDate} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.birthDate}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="phoneNumber">
-                                <Form.Label>Phone number:</Form.Label>
-                                <Form.Control type="text" name="phoneNumber" placeholder="Phone number" defaultValue={values.phoneNumber} isInvalid={!!errors.phoneNumber} isValid={touched.phoneNumber && !errors.phoneNumber} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="email">
-                                <Form.Label>E-mail:</Form.Label>
-                                <Form.Control type="email" name="email" placeholder="E-mail" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-                            </Form.Group>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Telefon:</Form.Label>
+                                    <Form.Control type="text" name="phoneNumber" placeholder="Telefon" defaultValue={values.phoneNumber} isInvalid={!!errors.phoneNumber} isValid={touched.phoneNumber && !errors.phoneNumber} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Email:</Form.Label>
+                                    <Form.Control type="email" name="email" placeholder="Email" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="city">
-                                <Form.Label>City:</Form.Label>
-                                <Form.Control type="text" name="city" placeholder="City" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={handleChange} />
-                                <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="postCode">
-                                <Form.Label>Postcode:</Form.Label>
-                                <Form.Control type="text" name="postCode" placeholder="Postcode" defaultValue={values.postCode} isInvalid={!!errors.postCode} isValid={touched.postCode && !errors.postCode} />
-                                <Form.Control.Feedback type="invalid">{errors.postCode}</Form.Control.Feedback>
-                            </Form.Group>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Password:</Form.Label>
+                                    <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Confirm Password:</Form.Label>
+                                    <Form.Control type="password" name="confirmPassword" placeholder="Confirm Password" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="country">
-                                <Form.Label>Country:</Form.Label>
-                                <Form.Control type="text" name="country" placeholder="Country" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} />
-                                <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} xs={12} md={6} controlId="password">
-                                <Form.Label>Password:</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} />
-                                <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-                            </Form.Group>
+                        <br/>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Ulica:</Form.Label>
+                                    <Form.Control type="text" name="street" placeholder="Ulica" defaultValue={values.street} isInvalid={!!errors.street} isValid={touched.street && !errors.street} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.street}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Numer:</Form.Label>
+                                    <Form.Control type="text" name="streetNumber" placeholder="Numer" defaultValue={values.streetNumber} isInvalid={!!errors.streetNumber} isValid={touched.streetNumber && !errors.streetNumber} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.streetNumber}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} xs={12} md={6} controlId="confirmPassword">
-                                <Form.Label>Confirm Password:</Form.Label>
-                                <Form.Control type="password" name="confirmPassword" placeholder="Confirm Password" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} />
-                                <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
-                            </Form.Group>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Miasto:</Form.Label>
+                                    <Form.Control type="text" name="city" placeholder="Miasto" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Kod pocztowy:</Form.Label>
+                                    <Form.Control type="text" name="postCode" placeholder="Kod pocztowy" defaultValue={values.postCode} isInvalid={!!errors.postCode} isValid={touched.postCode && !errors.postCode} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.postCode}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
                         </Row>
-                        <div>
-                            Already have an account?&nbsp;
-                            <a href="#">
-                                Login
-                            </a>
+                        <Row className="align-items-center mb-3">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>Państwo:</Form.Label>
+                                    <Form.Control type="text" name="country" placeholder="Państwo" defaultValue={values.country} isInvalid={!!errors.country} isValid={touched.country && !errors.country} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group/>
+                            </Col>
+                        </Row>
+                         <div>
+                             Already have an account?&nbsp;
+                             <Button variant="primary" size="sm" onClick={()=>{
+                                 history.push({
+                                     pathname : '/logowanie'
+                                })
+                             }}>Login</Button>
+                         </div>
+                         <hr/>
+                        <div style={{display:"flex", justifyContent: 'center'}}>
+                            <Button variant="primary" size="lg" type="submit" disabled={!isValid}>Register</Button>
                         </div>
-                        <hr/>
-                        <Button style={{fontSize:"20px"}} variant="primary" type="submit">Register</Button>
                     </Form>
                 )}
             </Formik>

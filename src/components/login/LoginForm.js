@@ -2,24 +2,42 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import {Formik} from 'formik';
 import * as yup from "yup";
 import React from "react";
+import {useHistory} from 'react-router';
 
 const schema = yup.object().shape({
     email: yup.string().email('Invalid email address!').required('Field required!'),
+    password: yup.string().required('Field required!')
 });
 
 const LoginForm = () => {
+    const history = useHistory();
+
+    //TODO add login logic
+    const onSubmit = values =>{
+        console.log(values);
+    }
+
     return (
-        <div className="center loginForm">
+        <div className="loginForm" style={{marginTop:"17%", marginBottom:"27%"}}>
             <Formik
                 validationSchema={schema}
-                onSubmit={console.log('test')}
+                onSubmit={onSubmit}
+                initialErrors={{}}
+                validateOnChange={true}
+                validateOnMount={false}
                 initialValues={{
-                    username: "",
-                    password: "",
-                }}
-            >
-                {({ handleSubmit, handleChange, values, touched, errors }) => (
-                    <Form noValidate onSubmit={handleSubmit}>
+                    email: '',
+                    password: '',
+                }}>
+                {({
+                      handleSubmit,
+                      handleChange,
+                      values,
+                      touched,
+                      isValid,
+                      errors
+                  }) => (
+                    <Form onSubmit={handleSubmit}>
                         <Row className="mb-3">
                             <Form.Group as={Col} xs={12} md={6} controlId="email">
                                 <Form.Label>E-mail:</Form.Label>
@@ -28,17 +46,22 @@ const LoginForm = () => {
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} controlId="password">
                                 <Form.Label>Password:</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="Enter password" />
+                                <Form.Control type="password" name="password" placeholder="Enter password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
+                                <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <div>
                             New user?&nbsp;
-                            <a href="#">
-                                Create an account
-                            </a>
+                            <Button variant="primary" size="sm" onClick={()=>{
+                                history.push({
+                                    pathname : '/rejestracja'
+                                })
+                            }}>Create an account</Button>
                         </div>
                         <hr/>
-                        <Button style={{fontSize:"20px"}} variant="primary" type="submit">Login</Button>
+                        <div style={{display: 'flex',justifyContent: 'center'}}>
+                            <Button style={{fontSize:"20px"}} variant="primary" type="submit" disabled={!isValid}>Login</Button>
+                        </div>
                     </Form>
                 )}
             </Formik>
