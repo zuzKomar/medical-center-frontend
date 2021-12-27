@@ -41,7 +41,7 @@ const schema = yup.object().shape({
     country: yup.string().required('Pole wymagane!')
 });
 
-const HomePage = () => {
+const PatientData = () => {
 
     const [data, setPatient] = useState([]);
     const [firstName, setFirstName] = useState(undefined);
@@ -135,17 +135,17 @@ const HomePage = () => {
                             validateOnChange={true}
                             validateOnMount={true}
                             initialValues={{
-                        firstName : firstName,
-                        lastName : lastName,
-                        pesel : pesel,
-                        birthDate : birthDate,
-                        phoneNumber : phoneNumber,
-                        email : email,
-                        street : street,
-                        streetNumber : streetNumber,
-                        city: city,
-                        postCode : postCode,
-                        country : country
+                                firstName : firstName,
+                                lastName : lastName,
+                                pesel : pesel,
+                                birthDate : birthDate,
+                                phoneNumber : phoneNumber,
+                                email : email,
+                                street : street,
+                                streetNumber : streetNumber,
+                                city: city,
+                                postCode : postCode,
+                                country : country
                     }} >
                         {({
                             handleChange,
@@ -160,14 +160,14 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Imię:</Form.Label>
-                                            <Form.Control type="text" name="firstName" placeholder="Imię" size="lg" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>{setFirstName(e.target.value)}}/>
+                                            <Form.Control type="text" name="firstName" placeholder="Imię" size="lg" defaultValue={values.firstName} isInvalid={!!errors.firstName} isValid={touched.firstName && !errors.firstName} onChange={(e)=>setFirstName(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.firstName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Nazwisko:</Form.Label>
-                                            <Form.Control type="text" name="lastName" placeholder="Nazwisko" size="lg"  defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>{setLastName(e.target.value)}}/>
+                                            <Form.Control type="text" name="lastName" placeholder="Nazwisko" size="lg"  defaultValue={values.lastName} isInvalid={!!errors.lastName} isValid={touched.lastName && !errors.lastName} onChange={(e)=>setLastName(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.lastName}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -175,7 +175,7 @@ const HomePage = () => {
                                 <Row className="align-items-center mb-3">
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>Pesel:</Form.Label>
+                                            <Form.Label>PESEL:</Form.Label>
                                             <Form.Control type="text" name="pesel" placeholder="PESEL" size="lg" defaultValue={values.pesel} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={(e)=>setPesel(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
                                         </Form.Group>
@@ -225,7 +225,7 @@ const HomePage = () => {
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Miasto:</Form.Label>
-                                            <Form.Control type="text" name="city" placeholder="Miasto" size="lg" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={handleChange}/>
+                                            <Form.Control type="text" name="city" placeholder="Miasto" size="lg" defaultValue={values.city} isInvalid={!!errors.city} isValid={touched.city && !errors.city} onChange={(e)=>setCity(e.target.value)}/>
                                             <Form.Control.Feedback type="invalid">{errors.city}</Form.Control.Feedback>
                                         </Form.Group>
                                     </Col>
@@ -260,4 +260,4 @@ const HomePage = () => {
     }
 }
 
-export default HomePage;
+export default PatientData;
