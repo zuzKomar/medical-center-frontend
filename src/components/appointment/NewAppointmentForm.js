@@ -83,35 +83,42 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
                 radioBtnPhone.checked = true;
             }
             setService(receivedReferral.medicalService);
+            const serviceSelect = document.querySelector('#selectService');
+            serviceSelect.disabled = true;
         }
 
     },[receivedReferral])
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
-            let element = document.getElementById('selectedReferral');
-            element.value = selectedReferral;
             if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
                 radioBtnFacility.checked = true;
+                radioBtnFacility.disabled = true;
+                const radioBtnPhone = document.querySelector('#phone');
+                radioBtnPhone.disabled = true;
             }else{
                 setAppointmentType('phone');
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
+                radioBtnPhone.disabled = true;
+                const radioBtnFacility = document.querySelector('#facility');
+                radioBtnFacility.disabled = true;
             }
-
             setService(selectedReferral.medicalService);
+            const serviceSelect = document.querySelector('#selectService');
+            serviceSelect.disabled = true;
         }
 
     }, [selectedReferral])
 
-
-
     useEffect(()=>{
         const getReferrals = async () =>{
+            const formatYmd = date => date.toISOString().slice(0, 10);
             const referrals = await fetchReferrals()
-            setReferrals(referrals.referrals)
+            const availableReferrals = referrals.referrals.filter(ref=>(formatYmd(new Date(ref.expiryDate)) >= formatYmd(new Date())));
+            setReferrals(availableReferrals);
         }
         getReferrals()
     }, [])
@@ -167,12 +174,17 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
     function clearReferralFields(e){
         e.preventDefault();
         setSelectedReferral(undefined);
+        setReceivedReferral(undefined);
         setAppointmentType(undefined);
         const radioBtnFacility = document.querySelector('#facility');
         radioBtnFacility.checked = false;
+        radioBtnFacility.disabled = false;
         const radioBtnPhone = document.querySelector('#phone');
         radioBtnPhone.checked = false;
+        radioBtnPhone.disabled = false;
         setService(undefined);
+        const serviceSelect = document.querySelector('#selectService');
+        serviceSelect.disabled = false;
         setServices([]);
         setDoctors([]);
     }
@@ -184,7 +196,6 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             setDoctors([]);
         }
     }
-
 
     function handleSubmit(e){
         e.preventDefault();
@@ -246,11 +257,39 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
                 <Col>
                     <Form.Group>
                         <Form.Label>{t("referral")}:</Form.Label>
-                        <Form.Select id='selectedReferral'>
-                            <option onClick={e=>{clearReferralFields(e)}}>{selectedReferral ? (t("dueTo") + " " + selectedReferral.expiryDate + ' - ' + selectedReferral.medicalService.name) : t("useReferral")}</option>
-                            {referrals.map((ref) => (
-                                <option value={ref} key={ref.id} onClick={(e)=>setSelectedReferral(ref)}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
-                            ))}
+                        <Form.Select id='selectedReferral' defaultValue={receivedReferral}>
+
+                            {!receivedReferral &&
+                            <>
+                                <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
+                                {referrals.map((ref) => (
+                                    <option value={ref} key={ref.id} onClick={(e)=>{
+                                        setSelectedReferral(ref)
+                                        setErrors({
+                                            ['serviceMess']:null,
+                                            ['appType']:null
+                                        })
+                                    }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                ))}
+                            </>
+                            }
+
+                            {receivedReferral &&
+                                <>
+                                    <option >{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
+                                    <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
+
+                                    {referrals.filter(ref=>ref.id!==receivedReferral.id).map((ref) => (
+                                        <option value={ref} key={ref.id} onClick={(e)=>{
+                                            setSelectedReferral(ref)
+                                            setErrors({
+                                                ['serviceMess']:null,
+                                                ['appType']:null
+                                            })
+                                        }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                    ))}
+                                </>
+                            }
                         </Form.Select>
                     </Form.Group>
                 </Col>

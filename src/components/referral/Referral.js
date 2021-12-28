@@ -23,6 +23,8 @@ const Referral = ({referral, setSelectedReferral, t}) =>{
         });
     }
 
+    const formatYmd = date => date.toISOString().slice(0, 10);
+
 return(
     <div className="referral">
         <div className="referralDiv1">
@@ -34,7 +36,7 @@ return(
         </div>
         <hr/>
         <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
-            {((new Date(ref.expiryDate).getDate()) >= (new Date().getDate())) ?
+            {formatYmd(new Date(ref.expiryDate))>= formatYmd(new Date()) ?
             <button className="actionButton" onClick={(e) => handleClick(e)}>UMÓW WIZYTĘ</button>
            : <p style={{color : 'red'}}>{t("referralInvalid")}</p> }
         </div>

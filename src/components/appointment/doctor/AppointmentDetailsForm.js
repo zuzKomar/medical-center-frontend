@@ -180,7 +180,7 @@ const AppointmentDetailsForm = ({appointment, t}) => {
             if(checkupDescription !== undefined){
                 addedCheckup["description"] = checkupDescription;
             }
-            if(checkupResult !== undefined){
+            if(checkupResult !== undefined && checkupResult !== ''){
                 addedCheckup["result"] = checkupResult;
             }
             if(checkupResultFile !== undefined){

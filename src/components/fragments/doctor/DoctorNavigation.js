@@ -3,7 +3,6 @@ import logo from '../../../logo.png';
 import {Navbar, Nav, NavDropdown, Container} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'
-import {Link} from "react-router-dom";
 
 function DoctorNavigation({changeLanguage, t}){
     const profileTitle = (<BsPerson size={42}/>);

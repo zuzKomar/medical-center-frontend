@@ -69,26 +69,27 @@ const NewAppointment = ({t}) =>{
 
     const fetchAppointments = async ()=>{
         const params = getRequestParams(page, pageSize);
+        let time = new Date().toString().slice(16,24);
         let res;
         if(doctor!==null){
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&page=${params.page}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`);
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&page=${params.page}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`);
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`);
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`);
             }
         }else{
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&page=${params.page}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`);
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&page=${params.page}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`);
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`);
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&language=${language}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`);
             }
         }
         const data = await res.json();
@@ -112,23 +113,26 @@ const NewAppointment = ({t}) =>{
             </div>
                 <NewAppointmentForm getAppointments={handleAppointmentSearch} t={t}/>
                 <>
-                    {appointments.length > 0 ? <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3> : ''}
                     {appointments.length > 0 &&
-                        <div className="itemsNumber availableAppsPagination">
-                            <p>{t("elementsNumber")}&nbsp;</p>
-                            <select onChange={handlePageSizeChange} value={pageSize}>
-                                {pageSizes.map((size) => (
-                                    <option key={size} value={size}>
-                                        {size}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                        <>
+                            <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3>
+                            <div className="itemsNumber availableAppsPagination">
+                                <p>{t("elementsNumber")}&nbsp;</p>
+                                <select onChange={handlePageSizeChange} value={pageSize}>
+                                    {pageSizes.map((size) => (
+                                        <option key={size} value={size}>
+                                            {size}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+
                     }
                     {appointments.length > 0 ?
-                        appointments.map((app)=>(
-                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
-                        )) : (receivedService!== undefined ? t("noAppointments") : '')}
+                        (appointments.map((app)=>(
+                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment} t={t}/>
+                        ))) : (receivedService !== undefined ? t("noAppointments") : '')}
                     {appointments.length > 0 &&
                     <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
                     }
