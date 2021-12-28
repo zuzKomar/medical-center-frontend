@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from "react";
-import { useHistory } from "react-router-dom";
 import PrescriptionListTable from "./PrescriptionListTable";
 import {baseUrl} from "../../config/config";
 
 const PrescriptionList = ({t}) =>{
 
     const [prescriptions, setPrescriptions] = useState([]);
-    let history = useHistory();
 
     useEffect(()=>{
         const getPrescriptions = async () =>{
@@ -23,10 +21,6 @@ const PrescriptionList = ({t}) =>{
         const data = await res.json();
 
         return data;
-    }
-
-    function handleClick(){
-        history.push("/nowa-recepta")
     }
 
     return(
