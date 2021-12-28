@@ -127,7 +127,7 @@ const NewAppointment = ({t}) =>{
                     }
                     {appointments.length > 0 ?
                         appointments.map((app)=>(
-                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment}/>
+                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment} t={t}/>
                         )) : (receivedService!== undefined ? t("noAppointments") : '')}
                     {appointments.length > 0 &&
                     <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
