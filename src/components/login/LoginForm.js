@@ -54,7 +54,7 @@ const LoginForm = () => {
                             New user?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
                                 history.push({
-                                    pathname : '/rejestracja'
+                                    pathname : '/sprawdzPesel'
                                 })
                             }}>Create an account</Button>
                         </div>

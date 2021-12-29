@@ -10,6 +10,7 @@ import ScheduleForm from "./components/schedule/ScheduleForm";
 import CheckUpList from "./components/checkup/CheckUpList";
 import PrescriptionList from "./components/prescription/PrescriptionList";
 import LoginForm from "./components/login/LoginForm";
+import CheckPeselForm from "./components/login/CheckPeselForm";
 import RegisterForm from "./components/login/RegisterForm";
 import TodayAppointmentList from "./components/appointment/doctor/TodayAppointmentList";
 import DoctorNavigation from "./components/fragments/doctor/DoctorNavigation";
@@ -28,7 +29,7 @@ import {useTranslation} from "react-i18next";
 
 
 function App() {
-    const [logged, setLogged] = useState(true);
+    const [logged, setLogged] = useState(false);
     const [patientMode, setPatientMode] = useState(true);
 
     const {t, i18n} = useTranslation()
@@ -60,6 +61,7 @@ function App() {
                               <Route exact path="/badania" component={() => <CheckUpList t={t} />}/>
                               <Route exact path="/recepty" component={() => <PrescriptionList t={t} />}/>
                               <Route exact path="/logowanie" component={LoginForm}/>
+                              <Route exact path="/sprawdzPesel" component={CheckPeselForm}/>
                               <Route exact path="/rejestracja" component={RegisterForm}/>
                           </Switch>
                       </div>
