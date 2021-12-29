@@ -9,7 +9,7 @@ const schema = yup.object().shape({
     password: yup.string().required('Field required!')
 });
 
-const LoginForm = () => {
+const LoginForm = ({t}) => {
     const history = useHistory();
 
     //TODO add login logic
@@ -41,26 +41,26 @@ const LoginForm = () => {
                         <Row className="mb-3">
                             <Form.Group as={Col} xs={12} md={6} controlId="email">
                                 <Form.Label>E-mail:</Form.Label>
-                                <Form.Control type="email" name="email" placeholder="Enter email" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={handleChange} />
+                                <Form.Control type="email" name="email" placeholder={t("enterEmail")} defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={handleChange} />
                                 <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} xs={12} md={6} controlId="password">
-                                <Form.Label>Password:</Form.Label>
-                                <Form.Control type="password" name="password" placeholder="Enter password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
+                                <Form.Label>{t("password")}:</Form.Label>
+                                <Form.Control type="password" name="password" placeholder={t("enterPassword")} defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
                                 <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
                         <div>
-                            New user?&nbsp;
+                            {t("newUser")}?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
                                 history.push({
                                     pathname : '/sprawdzPesel'
                                 })
-                            }}>Create an account</Button>
+                            }}>{t("createAccount")}</Button>
                         </div>
                         <hr/>
                         <div style={{display: 'flex',justifyContent: 'center'}}>
-                            <Button style={{fontSize:"20px"}} variant="primary" type="submit" disabled={!isValid}>Login</Button>
+                            <Button style={{fontSize:"20px"}} variant="primary" type="submit" disabled={!isValid}>{t("login")}</Button>
                         </div>
                     </Form>
                 )}

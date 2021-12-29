@@ -60,9 +60,9 @@ function App() {
                               <Route exact path="/grafik" component={() => <ScheduleForm t={t} />}/>
                               <Route exact path="/badania" component={() => <CheckUpList t={t} />}/>
                               <Route exact path="/recepty" component={() => <PrescriptionList t={t} />}/>
-                              <Route exact path="/logowanie" component={LoginForm}/>
-                              <Route exact path="/sprawdzPesel" component={CheckPeselForm}/>
-                              <Route exact path="/rejestracja" component={RegisterForm}/>
+                              <Route exact path="/logowanie" component={() => <LoginForm t={t} />}/>
+                              <Route exact path="/sprawdzPesel" component={() => <CheckPeselForm t={t}/>}/>
+                              <Route exact path="/rejestracja" component={() => <RegisterForm t={t}/>}/>
                           </Switch>
                       </div>
                   </div>

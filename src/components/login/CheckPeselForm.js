@@ -3,7 +3,7 @@ import React, {useState}from "react";
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
-const CheckPeselForm = () =>{
+const CheckPeselForm = ({t}) =>{
     const history = useHistory();
     const [correctPesel, setCorrectPesel] = useState(false);
     const [pesel, setPesel] = useState(undefined);
@@ -14,14 +14,14 @@ const CheckPeselForm = () =>{
         let reg = /^[0-9]{11}$/;
 
         if(pesel === undefined || pesel === ''){
-            newErrors.pesel = "Pesel is required"
+            newErrors.pesel = t("peselRequired")
         }else{
             if(reg.test(pesel) === false){
-                newErrors.pesel = "Pesel should contain 11 digits"
+                newErrors.pesel = t("peselCharacterError")
             }else{
                 let digits = (""+pesel).split("");
                 if ((parseInt(pesel.substring( 4, 6)) > 31)||(parseInt(pesel.substring( 2, 4)) > 12)){
-                    newErrors.pesel = "Invalid pesel"
+                    newErrors.pesel = t("invalidPeselError")
                 }
                 let checksum = (1*parseInt(digits[0]) + 3*parseInt(digits[1]) + 7*parseInt(digits[2]) + 9*parseInt(digits[3]) + 1*parseInt(digits[4]) + 3*parseInt(digits[5]) + 7*parseInt(digits[6]) + 9*parseInt(digits[7]) + 1*parseInt(digits[8]) + 3*parseInt(digits[9]))%10;
                 if(checksum === 0)
@@ -29,7 +29,7 @@ const CheckPeselForm = () =>{
                 checksum = 10 - checksum;
 
                 if(!(parseInt(digits[10]) === checksum)){
-                    newErrors.pesel = "Invalid pesel"
+                    newErrors.pesel = t("invalidPeselError")
                 }
             }
         }
@@ -45,10 +45,10 @@ const CheckPeselForm = () =>{
         }else{
             fetch(`${baseUrl}/patients/1/prescriptions`)
                 .then(()=>{
-                    window.alert('Znaleziono usera o podanym numerze pesel')
+                    window.alert(t("userWithPeselFound"))
                     setCorrectPesel(true);
                 }).catch(()=>{
-                window.alert('Nie znaleziono usera o podanym numerze pesel. Skontaktuj się z administratorem strony.')
+                window.alert(t("userWithPeselNotFound"))
             })
         }
     }
@@ -77,12 +77,12 @@ const CheckPeselForm = () =>{
                 </Form.Group>
                 <br/>
                     <div>
-                        Check your pesel number&nbsp;
-                        <Button variant="primary" size="sm"  onClick={(e)=>handlePeselCheck(e)}>Check pesel</Button>
+                        {t("checkPesel")}&nbsp;
+                        <Button variant="primary" size="sm"  onClick={(e)=>handlePeselCheck(e)}>{t("checkPeselButton")}</Button>
                     </div>
                     <hr/>
                     <div style={{display: 'flex',justifyContent: 'center'}}>
-                        <Button style={{fontSize:"20px"}} variant="primary" disabled={!correctPesel} onClick={(e)=>handleSubmit(e)}>Finish register</Button>
+                        <Button style={{fontSize:"20px"}} variant="primary" disabled={!correctPesel} onClick={(e)=>handleSubmit(e)}>{t("finishRegister")}</Button>
                     </div>
             </Form>
         </div>

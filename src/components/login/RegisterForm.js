@@ -7,13 +7,14 @@ import Button from "react-bootstrap/Button";
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
-const schema = yup.object().shape({
-    email: yup.string().email('Invalid email address!').required('Field required!'),
-    password: yup.string().min(2, 'Password should have min. 2 characters!').max(50, 'Password should have max. 50 characters!').required('Field required!'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), ''], 'Password must match!').required('Field required!')
-});
+const RegisterForm = ({t}) => {
 
-const RegisterForm = () => {
+    const schema = yup.object().shape({
+        email: yup.string().email(t("emailError")).required(t("required")),
+        password: yup.string().min(2, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
+        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")).required(t("required"))
+    });
+
     const history = useHistory();
 
     const onSubmit = values =>{
@@ -66,21 +67,21 @@ const RegisterForm = () => {
                         <Row className="align-items-center mb-3">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Password:</Form.Label>
-                                    <Form.Control type="password" name="password" placeholder="Password" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
+                                    <Form.Label>{t("password")}:</Form.Label>
+                                    <Form.Control type="password" name="password" placeholder={t("password")} defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={handleChange}/>
                                     <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>Confirm Password:</Form.Label>
-                                    <Form.Control type="password" name="confirmPassword" placeholder="Confirm Password" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} onChange={handleChange}/>
+                                    <Form.Label>{t("confirmPassword")}:</Form.Label>
+                                    <Form.Control type="password" name="confirmPassword" placeholder={t("confirmPassword")} defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} onChange={handleChange}/>
                                     <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
                          <div>
-                             Already have an account?&nbsp;
+                             {t("alreadyHaveAnAccount")}?&nbsp;
                              <Button variant="primary" size="sm" onClick={()=>{
                                  history.push({
                                      pathname : '/logowanie'
@@ -89,7 +90,7 @@ const RegisterForm = () => {
                          </div>
                          <hr/>
                         <div style={{display:"flex", justifyContent: 'center'}}>
-                            <Button variant="primary" size="lg" type="submit" disabled={!isValid}>Register</Button>
+                            <Button variant="primary" size="lg" type="submit" disabled={!isValid}>{t("register")}</Button>
                         </div>
                     </Form>
                 )}
