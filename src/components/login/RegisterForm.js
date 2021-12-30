@@ -11,6 +11,26 @@ const RegisterForm = ({t}) => {
 
     const schema = yup.object().shape({
         email: yup.string().email(t("emailError")).required(t("required")),
+        pesel: yup.string().min(11, t("peselCharacterError")).max(11, t("peselCharacterError"))
+            .test('validatePesel', t("invalidPeselError"),
+                function validatePesel(pesel) {
+                    let reg = /^[0-9]{11}$/;
+                    if(reg.test(pesel) === false)
+                        return false;
+                    else
+                    {
+                        let digits = (""+pesel).split("");
+                        if ((parseInt(pesel.substring( 4, 6)) > 31)||(parseInt(pesel.substring( 2, 4)) > 12))
+                            return false;
+
+                        let checksum = (1*parseInt(digits[0]) + 3*parseInt(digits[1]) + 7*parseInt(digits[2]) + 9*parseInt(digits[3]) + 1*parseInt(digits[4]) + 3*parseInt(digits[5]) + 7*parseInt(digits[6]) + 9*parseInt(digits[7]) + 1*parseInt(digits[8]) + 3*parseInt(digits[9]))%10;
+                        if(checksum === 0)
+                            checksum = 10;
+                        checksum = 10 - checksum;
+
+                        return (parseInt(digits[10]) === checksum);
+                    }
+                }).required(t("required")),
         password: yup.string().min(2, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
         confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")).required(t("required"))
     });
@@ -20,6 +40,7 @@ const RegisterForm = ({t}) => {
     const onSubmit = values =>{
         const newPerson = {
             email : values.email,
+            pesel : values.pesel,
             password : values.password
         };
 
@@ -29,7 +50,7 @@ const RegisterForm = ({t}) => {
                 'Content-Type': 'application/json;charset=UTF-8'},
             body : JSON.stringify(newPerson)
         }).then((res)=>res.json())
-            .catch((err)=>console.log(err))
+            .catch((err)=>window.alert(err))
     }
 
     return(
@@ -42,6 +63,7 @@ const RegisterForm = ({t}) => {
                 validateOnMount={false}
                 initialValues={{
                     email : '',
+                    pesel : '',
                     password: '',
                     confirmPassword: ''
                 }} >
@@ -57,12 +79,18 @@ const RegisterForm = ({t}) => {
                         <Row className="align-items-center mb-3">
                             <Col>
                                 <Form.Group>
+                                    <Form.Label>Pesel:</Form.Label>
+                                    <Form.Control type="text" name="pesel" placeholder="Pesel" defaultValue={values.email} isInvalid={!!errors.pesel} isValid={touched.pesel && !errors.pesel} onChange={handleChange}/>
+                                    <Form.Control.Feedback type="invalid">{errors.pesel}</Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group>
                                     <Form.Label>Email:</Form.Label>
                                     <Form.Control type="email" name="email" placeholder="Email" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={handleChange}/>
                                     <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
-                            <Col/>
                         </Row>
                         <Row className="align-items-center mb-3">
                             <Col>

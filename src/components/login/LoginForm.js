@@ -12,7 +12,7 @@ const schema = yup.object().shape({
 const LoginForm = ({t}) => {
     const history = useHistory();
 
-    //TODO add login logic
+    //TODO add login logic    nie Json a X-WWW-FORUM-URLENCODED
     const onSubmit = values =>{
         console.log(values);
     }
@@ -54,7 +54,7 @@ const LoginForm = ({t}) => {
                             {t("newUser")}?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
                                 history.push({
-                                    pathname : '/sprawdzPesel'
+                                    pathname : '/rejestracja'
                                 })
                             }}>{t("createAccount")}</Button>
                         </div>
