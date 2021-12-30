@@ -4,15 +4,14 @@ import {FaCheck, FaFile, FaRegUser} from "react-icons/fa";
 import {GiMedicines} from "react-icons/gi";
 
 const ArchivalVisit = ({appointment, t}) => {
-
     const [open, setOpen] = useState(false);
+    let x = (new Date()).getTimezoneOffset() * 60000;
 
-    function togglePanel(e){
+    const togglePanel = (e) =>{
         e.preventDefault();
         setOpen(!open);
     }
 
-    let x = (new Date()).getTimezoneOffset() * 60000;
     return(
         <div className="appointmentAndCheckup archivalApp" onClick={e => togglePanel(e)}>
             <div className="top">

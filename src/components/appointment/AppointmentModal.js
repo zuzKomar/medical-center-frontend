@@ -1,5 +1,4 @@
-import React from 'react';
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
@@ -7,6 +6,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
     const history = useHistory();
     const [appointment, setAppointment] = useState(selectedAppointment);
     const [referral, setReferral] = useState(selectedReferral);
+    let x = (new Date()).getTimezoneOffset() * 60000;
 
     useEffect(()=>{
         if(selectedAppointment !== undefined){
@@ -21,9 +21,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
         }
     },[selectedReferral])
 
-    var x = (new Date()).getTimezoneOffset() * 60000;
-
-    function bookAnAppointment(e){
+    const bookAnAppointment = (e) =>{
         e.preventDefault();
 
         const formatYmd = date => date.toISOString().slice(0, 10);
@@ -59,8 +57,8 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
             })).catch((err)=> console.log(err));
     }
 
-
     const formatYmd = date => date.toISOString().slice(0, 10);
+
     return (
         <div className="modalBackground">
             <div className="modalContainer">

@@ -4,7 +4,7 @@ import {Navbar, Nav, NavDropdown, Container} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'
 
-function DoctorNavigation({changeLanguage, t}){
+const DoctorNavigation = ({changeLanguage, t}) =>{
     const profileTitle = (<BsPerson size={42}/>);
     return(
         <Navbar bg="light" variant="light" expand="lg" collapseOnSelect="true" sticky="top" className="navContainer">

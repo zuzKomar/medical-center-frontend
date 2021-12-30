@@ -7,10 +7,9 @@ import RangeSlider from "react-bootstrap-range-slider";
 import Button from "react-bootstrap/Button";
 
 const AppointmentDetailsForm = ({appointment, t}) => {
-
-    const formatYmd = date => date.toISOString().slice(0,10);
-    const ref = useRef();
     const history = useHistory();
+    const ref = useRef();
+    const formatYmd = date => date.toISOString().slice(0,10);
     const [errors, setErrors] = useState({});
 
     const [services, setServices] = useState([]);
@@ -242,14 +241,12 @@ const AppointmentDetailsForm = ({appointment, t}) => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-
         const errors = findFormErrors();
 
         if(Object.keys(errors).length > 0){
             setErrors(errors);
         }else{
             let prescriptions = [];
-
             if(medicationsToAdd.length > 0){
                 let prescription = {};
                 let expiryDate = formatYmd(new Date(new Date().setDate(new Date().getDate()+31)));
@@ -269,7 +266,6 @@ const AppointmentDetailsForm = ({appointment, t}) => {
             fetchBody["prescriptions"] = prescriptions;
             fetchBody["checkUps"] = checkUpsToAdd;
 
-
             fetch(`${baseUrl}/appointments/${app.id}/done`,{
                 method : 'PATCH',
                 headers :{
@@ -287,13 +283,20 @@ const AppointmentDetailsForm = ({appointment, t}) => {
         }
     }
 
+    const handleCancel = (e) =>{
+        e.preventDefault();
+        sessionStorage.clear();
+        history.push({
+            pathname : '/today-visits'
+        })
+    }
+
     const findFormErrors = () =>{
         const newErrors = {};
 
         if(description === undefined || description === ''){
             newErrors.description = t("appointmentDescriptionRequired");
         }
-
         return newErrors;
     }
 
@@ -457,12 +460,7 @@ const AppointmentDetailsForm = ({appointment, t}) => {
                 <hr />
             </div>
             <div style={{display:"flex", justifyContent: 'center'}}>
-                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='danger' onClick={()=>{
-                    sessionStorage.clear();
-                    history.push({
-                        pathname : '/today-visits'
-                    })
-                }}>{t("cancel")}</Button>
+                <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='danger' onClick={(e)=>handleCancel(e)}>{t("cancel")}</Button>
                 <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>handleSubmit(e)}>{t("saveChanges")}</Button>
             </div>
         </Form>

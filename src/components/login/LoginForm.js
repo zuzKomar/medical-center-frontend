@@ -8,7 +8,7 @@ import LanguageChanger from "./LanguageChanger";
 const LoginForm = ({t, changeLanguage}) => {
     const history = useHistory();
 
-    //TODO add login logic
+    //TODO add login logic    nie Json a X-WWW-FORUM-URLENCODED
     const onSubmit = values =>{
         console.log(values);
     }
@@ -56,7 +56,7 @@ const LoginForm = ({t, changeLanguage}) => {
                             {t("newUser")}?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
                                 history.push({
-                                    pathname : '/sprawdzPesel'
+                                    pathname : '/rejestracja'
                                 })
                             }}>{t("createAccount")}</Button>
                         </div>

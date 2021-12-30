@@ -71,13 +71,11 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
 
     const handleRealization = (e) =>{
         e.preventDefault();
-
         const errors = findFormErrors();
 
         if (Object.keys(errors).length > 0) {
             setErrors(errors);
         } else {
-
             let fetchBody = {};
             fetchBody['result'] = result;
             fetchBody['doctorsDescription'] = doctorsDescription;
@@ -159,8 +157,6 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
                     }
                 </Form>) : null}
         </div>
-
-
     )
 }
 

@@ -58,7 +58,7 @@ const DoctorCheckUpList = ({t}) => {
         return data;
     }
 
-    function filterCheckups(checkup){
+    const filterCheckups = (checkup) =>{
         if(checkup.appointmentId !== selectedCheckup.appointmentId && checkup.checkUpId !== selectedCheckup.checkUpId){
             return checkup;
         }
