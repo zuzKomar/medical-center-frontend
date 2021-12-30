@@ -5,7 +5,7 @@ import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'
 import {useLocation} from "react-router-dom";
 
-function Navigation({changeLanguage, t}){
+const Navigation = ({changeLanguage, t}) =>{
     const profileTitle = (<BsPerson size={46}/>);
     const {pathname} = useLocation()
     return(

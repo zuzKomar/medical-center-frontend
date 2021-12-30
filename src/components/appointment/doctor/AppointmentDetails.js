@@ -4,7 +4,6 @@ import AppointmentDetailsForm from "./AppointmentDetailsForm";
 import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
 
 const AppointmentDetails = ({t}) => {
-
     let history = useHistory();
     const appointment = history.location.state;
 

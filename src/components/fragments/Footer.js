@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer({t}){
+const Footer = ({t}) =>{
     return(
         <footer>
             {t("footer")}

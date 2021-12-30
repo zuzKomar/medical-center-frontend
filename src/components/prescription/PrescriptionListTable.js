@@ -1,8 +1,7 @@
 import React from "react";
 import PrescriptionListTableRow from "./PrescriptionListTableRow";
 
-function PrescriptionListTable({prescriptionData, t}){
-
+const PrescriptionListTable = ({prescriptionData, t}) =>{
 
     return(
         <table className="table table-hover fileTable" style={{backgroundColor:"white", width : '90%'}}>

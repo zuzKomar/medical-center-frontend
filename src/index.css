@@ -94,7 +94,6 @@ footer{
     color: #006666 !important;
 }
 
-
 .itemsList{
     display: flex;
     width: 100%;
@@ -147,7 +146,7 @@ footer{
 
 .referralHeader{
     font-weight: bold;
-    font-size: 26px;
+    font-size: 23px;
     margin-right: 5%;
 }
 
@@ -162,7 +161,7 @@ footer{
 .referralDiv2{
     display: flex;
     justify-content: space-between;
-    font-size: 20px;
+    font-size: 18px;
     align-items: center;
 }
 
@@ -177,7 +176,6 @@ footer{
     cursor: pointer;
     font-size: 20px;
 }
-
 
 .form{
     padding: 1rem;
@@ -247,11 +245,12 @@ footer{
 
 .appointmentAndCheckupHeader{
     font-weight: bold;
-    font-size: 26px;
+    font-size: 23px;
 }
+
 .header{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 19px;
 }
 
 .subsections{
@@ -267,7 +266,6 @@ footer{
     display: flex;
     justify-content: space-between;
 }
-
 
 .listHeader{
     display: flex;
@@ -308,7 +306,7 @@ footer{
 
 .checkbox{
     margin: 0 20px 0 20px;
-    font-size: 22px;
+    font-size: 18px;
     font-family: 'Montserrat', sans-serif;
     transform: scale(1.1);
 }
@@ -445,7 +443,6 @@ footer{
     align-items: center;
     font-size: 22px;
     width: 50%;
-
 }
 
 .availableAppointmentDoctor p{
@@ -455,7 +452,6 @@ footer{
     align-items: center;
 }
 
-
 .availableAppointmentBtn{
     width: 25%;
     display: flex;
@@ -464,15 +460,12 @@ footer{
     margin-right: 1%;
 }
 
-
-
 .modalBackground {
     width: 100vw;
     height: 150vh;
     background-color: rgba(200, 200, 200, 1);
     position: fixed;
 }
-
 
 .modalContainer {
     position: relative;
@@ -617,7 +610,6 @@ footer{
     footer {
         margin: 0;
     }
-
 
     .navCollapse{
         display: flex;

@@ -36,7 +36,7 @@ const NewAppointment = ({t}) =>{
         return params;
     }
 
-    function handleAppointmentSearch(appointmentType, language, service, doctor, dateFrom, dateTo, selectedReferral){
+    const handleAppointmentSearch = (appointmentType, language, service, doctor, dateFrom, dateTo, selectedReferral) =>{
         setReceivedService(service);
         setSelectedReferral(selectedReferral);
         setDateFrom(dateFrom);

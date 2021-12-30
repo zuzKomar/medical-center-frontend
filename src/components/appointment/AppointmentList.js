@@ -6,24 +6,24 @@ import "react-datepicker/dist/react-datepicker.css"
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
-
 const AppointmentList = ({t}) =>{
-    const pageSizes = [3, 5, 10];
+    let history = useHistory();
     const formatYmd = date => date.toISOString().slice(0,10);
     const facility = 'FACILITY';
     const phone = 'TELEPHONE';
     const reserved = 'RESERVED';
     const confirmed = 'CONFIRMED';
     const done = 'DONE';
+
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(undefined);
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
     const [canceledAppointment, setCancelledAppointment] = useState(undefined);
 
+    const pageSizes = [3, 5, 10];
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
-    let history = useHistory();
 
     const getRequestParams = (page, pageSize) =>{
         let params = {};
@@ -71,7 +71,7 @@ const AppointmentList = ({t}) =>{
     }, [canceledAppointment, page, pageSize])
 
 
-    function checkAppId(app){
+    const checkAppId = (app) =>{
         return app.patientId !=null;
     }
 
@@ -133,7 +133,6 @@ const AppointmentList = ({t}) =>{
         }else{
             setAppDate(formatYmd(new Date()));
         }
-
     }
 
     const handleClick = () =>{

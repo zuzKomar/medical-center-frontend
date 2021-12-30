@@ -5,7 +5,6 @@ import ArchivalVisit from "./ArchivalVisit";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
 const VisitsHistoryList = ({t}) => {
-
     let history = useHistory();
     const appointment = history.location.state;
     const [patientsAppointments, setPatientsAppointments] = useState([]);

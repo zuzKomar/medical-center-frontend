@@ -59,7 +59,7 @@ const ReferralList = ({t}) =>{
         return data
     }
 
-    function filterReferrals(referral){
+    const filterReferrals = (referral) =>{
         if(referral.id !== selectedReferral.id){
             return referral;
         }
