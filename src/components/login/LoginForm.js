@@ -3,13 +3,9 @@ import {Formik} from 'formik';
 import * as yup from "yup";
 import React from "react";
 import {useHistory} from 'react-router';
+import LanguageChanger from "./LanguageChanger";
 
-const schema = yup.object().shape({
-    email: yup.string().email('Invalid email address!').required('Field required!'),
-    password: yup.string().required('Field required!')
-});
-
-const LoginForm = ({t}) => {
+const LoginForm = ({t, changeLanguage}) => {
     const history = useHistory();
 
     //TODO add login logic
@@ -17,8 +13,14 @@ const LoginForm = ({t}) => {
         console.log(values);
     }
 
+    const schema = yup.object().shape({
+        email: yup.string().email(t("emailError")).required(t("required")),
+        password: yup.string().required(t("required"))
+    });
+
     return (
         <div className="loginForm" style={{marginTop:"17%", marginBottom:"27%"}}>
+            <LanguageChanger changeLanguage={changeLanguage} t={t}/>
             <Formik
                 validationSchema={schema}
                 onSubmit={onSubmit}

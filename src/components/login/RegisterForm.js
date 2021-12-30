@@ -6,8 +6,9 @@ import {Col, Row} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
+import LanguageChanger from "./LanguageChanger";
 
-const RegisterForm = ({t}) => {
+const RegisterForm = ({changeLanguage, t}) => {
 
     const schema = yup.object().shape({
         email: yup.string().email(t("emailError")).required(t("required")),
@@ -34,6 +35,7 @@ const RegisterForm = ({t}) => {
 
     return(
         <div className="loginForm" style={{marginTop:"15%", marginBottom:"27%"}}>
+            <LanguageChanger changeLanguage={changeLanguage} t={t} />
             <Formik
                 validationSchema={schema}
                 enableReinitialize={true}

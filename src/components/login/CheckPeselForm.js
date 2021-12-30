@@ -2,8 +2,9 @@ import {Button, Form} from "react-bootstrap";
 import React, {useState}from "react";
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
+import LanguageChanger from "./LanguageChanger";
 
-const CheckPeselForm = ({t}) =>{
+const CheckPeselForm = ({t, changeLanguage}) =>{
     const history = useHistory();
     const [correctPesel, setCorrectPesel] = useState(false);
     const [pesel, setPesel] = useState(undefined);
@@ -62,6 +63,7 @@ const CheckPeselForm = ({t}) =>{
 
     return (
         <div className="loginForm" style={{marginTop:"17%", marginBottom:"27%"}}>
+            <LanguageChanger changeLanguage={changeLanguage} t={t} />
             <Form>
                 <Form.Group controlId="pesel" >
                     <Form.Label>Pesel:</Form.Label>

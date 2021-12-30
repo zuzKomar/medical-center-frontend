@@ -166,5 +166,6 @@
   "register": "Zarejestruj",
   "passwordMinCharactersError": "Hasło powinno mieć min. 2 znaki!",
   "passwordMaxCharactersError": "Hasło powinno mieć max. 50 znaków!",
-  "passwordMatch": "Hasło musi być takie samo!"
+  "passwordMatch": "Hasło musi być takie samo!",
+  "chooseLanguage": "Wybierz język"
 }

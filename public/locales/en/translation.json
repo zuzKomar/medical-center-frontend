@@ -166,5 +166,6 @@
   "register": "Register",
   "passwordMinCharactersError": "Password should have min. 2 characters!",
   "passwordMaxCharactersError": "Password should have max. 50 characters!",
-  "passwordMatch": "Password must match!"
+  "passwordMatch": "Password must match!",
+  "chooseLanguage": "Choose language"
 }
