@@ -28,8 +28,8 @@ import background from '../src/stetoscope.jpg';
 import {useTranslation} from "react-i18next";
 
 
-function App() {
-    const [logged, setLogged] = useState(false);
+const App = () =>{
+    const [logged, setLogged] = useState(true);
     const [patientMode, setPatientMode] = useState(true);
 
     const {t, i18n} = useTranslation()

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 
 const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment, t}) =>{
     const [app, setApp] = useState(appointment);
+    let x = (new Date()).getTimezoneOffset() * 60000;
 
     useEffect(()=>{
         if(appointment !== undefined){
@@ -9,13 +10,12 @@ const AvailableAppointment = ({appointment, setOpenModal, setSelectedAppointment
         }
     },[appointment])
 
-    function handleClick(e){
+    const handleClick = (e) =>{
         e.preventDefault();
         setSelectedAppointment(app);
         setOpenModal(true);
     }
 
-    var x = (new Date()).getTimezoneOffset() * 60000;
     return(
         <div className='availableAppointment' title={t("chooseAppointment")}>
             <div className="availableAppointmentDate">

@@ -2,20 +2,22 @@ import React from "react";
 import {useHistory} from "react-router-dom";
 
 const AppointmentDetailsButtonPanel = ({appointment, t}) => {
-
     let history = useHistory();
+    const visitButton = 'visitButton';
+    const checkUpButton = 'checkUpButton';
+    const backButton = 'backButton';
 
     const handleClick = e => {
         e.preventDefault();
 
         const button = e.target.id;
-        if (button === 'visitButton') {
+        if (button === visitButton) {
             history.push({
                 pathname: `/today-visits/${appointment.id}/details/visits-history`,
                 state: appointment
             })
         }
-        else if (button === 'checkUpButton') {
+        else if (button === checkUpButton) {
             history.push({
                 pathname: `/today-visits/${appointment.id}/details/check-ups`,
                 state: {
@@ -24,7 +26,7 @@ const AppointmentDetailsButtonPanel = ({appointment, t}) => {
                 }
             })
         }
-        else if (button === 'backButton') {
+        else if (button === backButton) {
             history.push({
                 pathname: `/today-visits/${appointment.id}/details`,
                 state: appointment

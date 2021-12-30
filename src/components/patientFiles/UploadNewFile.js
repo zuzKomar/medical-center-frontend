@@ -4,8 +4,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
-
-function UploadNewFile({t}) {
+const UploadNewFile = ({t}) =>{
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(undefined);
     const [deletedFile, setDeletedFile] = useState(undefined);

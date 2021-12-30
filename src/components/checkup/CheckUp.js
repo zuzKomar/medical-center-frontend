@@ -35,7 +35,6 @@ const CheckUp = ({checkup, t}) =>{
             })
     }
 
-
     return(
         <div className="appointmentAndCheckup" onClick={(e)=> togglePanel(e)}>
             <div className="top">

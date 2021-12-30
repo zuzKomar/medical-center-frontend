@@ -147,11 +147,9 @@ const PatientData = ({t}) => {
                             country : country
                         }} >
                     {({
-                          handleChange,
                           handleSubmit,
                           values,
                           touched,
-                          isValid,
                           errors
                       })=>(
                         <Form className="newAppointmentForm" onSubmit={handleSubmit}>

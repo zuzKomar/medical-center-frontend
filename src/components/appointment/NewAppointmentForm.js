@@ -7,15 +7,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
-
 const NewAppointmentForm = ({getAppointments, t}) =>{
-
     let history = useHistory();
     const formatYmd = date => date.toISOString().slice(0,10);
-
-    const languages = ["polski", "english"];
-
     const referral = history.location.state;
+    const languages = ["polski", "english"];
 
     const [appointmentType, setAppointmentType] = useState(undefined);
     const [language, setLanguage] = useState(languages[0]);
@@ -171,7 +167,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
         return newErrors;
     }
 
-    function clearReferralFields(e){
+    const clearReferralFields = (e) =>{
         e.preventDefault();
         setSelectedReferral(undefined);
         setReceivedReferral(undefined);
@@ -189,7 +185,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
         setDoctors([]);
     }
 
-    function clearService(e){
+    const clearService = (e) =>{
         if(selectedReferral === undefined){
             e.preventDefault();
             setService(undefined);
@@ -197,7 +193,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
         }
     }
 
-    function handleSubmit(e){
+    const handleSubmit = (e) =>{
         e.preventDefault();
 
         const errors = findFormErrors();

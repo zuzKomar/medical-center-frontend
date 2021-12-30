@@ -5,18 +5,19 @@ import {useHistory} from 'react-router';
 import {GiConfirmed} from "react-icons/all";
 
 const DoctorAppointment = ({app, t}) => {
+    const history = useHistory();
     const [appointment, setAppointment] = useState(app);
+    const done = 'DONE';
+    const telephone = 'TELEPHONE';
+    let x = (new Date()).getTimezoneOffset() * 60000;
+    let a = moment(Date.now());
+    let b = moment(appointment.patient.birthDate)
 
     useEffect(()=>{
         if(app !== undefined){
             setAppointment(app);
         }
     },[app])
-
-    const history = useHistory();
-    let x = (new Date()).getTimezoneOffset() * 60000;
-    let a = moment(Date.now());
-    let b = moment(appointment.patient.birthDate)
 
     const handleClick = e => {
         e.preventDefault();
@@ -28,20 +29,20 @@ const DoctorAppointment = ({app, t}) => {
     }
 
     return (
-        <div className={appointment.state === 'DONE' ? "appointmentAndCheckup todayApp" : "appointmentAndCheckup archivalApp"}>
+        <div className={appointment.state === done ? "appointmentAndCheckup todayApp" : "appointmentAndCheckup archivalApp"}>
             <div className="top">
                 <p className="appointmentAndCheckupHeader">{appointment.medicalServiceName}</p>
                 <div className="data">
-                    {appointment.state === 'DONE' && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
+                    {appointment.state === done && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
                     <p>{t("hour")}&nbsp;{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
                 </div>
             </div>
             <div>
                 <p><FaRegUser size={42}/>{(appointment.patient ? (appointment.patient.firstName + ' ' + appointment.patient.lastName) : '')}</p>
                 <p>{t("age")}&nbsp;{a.diff(b, 'year')}</p>
-                {appointment.type==='TELEPHONE' ? t("phoneNumber") + ' ' + appointment.patient.phoneNumber : ''}
+                {appointment.type === telephone ? t("phoneNumber") + ' ' + appointment.patient.phoneNumber : ''}
             </div>
-            {appointment.state !== 'DONE' &&
+            {appointment.state !== done &&
                 <>
                     <hr />
                     <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>

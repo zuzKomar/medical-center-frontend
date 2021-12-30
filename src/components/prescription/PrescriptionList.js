@@ -3,7 +3,6 @@ import PrescriptionListTable from "./PrescriptionListTable";
 import {baseUrl} from "../../config/config";
 
 const PrescriptionList = ({t}) =>{
-
     const [prescriptions, setPrescriptions] = useState([]);
 
     useEffect(()=>{
