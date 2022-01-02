@@ -80,6 +80,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
                 const radioBtnPhone = document.querySelector('#phone');
                 radioBtnPhone.checked = true;
             }
+            receivedReferral.medicalService.name = t(receivedReferral.medicalService.name)
             setService(receivedReferral.medicalService);
             const serviceSelect = document.querySelector('#selectService');
             serviceSelect.disabled = true;

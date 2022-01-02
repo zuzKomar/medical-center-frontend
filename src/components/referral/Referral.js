@@ -26,7 +26,7 @@ const Referral = ({referral, setSelectedReferral, t}) =>{
     return(
         <div className="referral">
             <div className="referralDiv1">
-                <p className="referralHeader">{ref.medicalService.name}</p>
+                <p className="referralHeader">{t(ref.medicalService.name)}</p>
             </div>
             <div className="referralDiv2">
                 <p>{t("issueDate")}&nbsp;{ref.issueDate}</p>
@@ -35,7 +35,7 @@ const Referral = ({referral, setSelectedReferral, t}) =>{
             <hr/>
             <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
                 {formatYmd(new Date(ref.expiryDate))>= formatYmd(new Date()) ?
-                <button className="actionButton" onClick={(e) => handleClick(e)}>UMÓW WIZYTĘ</button>
+                <button className="actionButton" onClick={(e) => handleClick(e)}>{t("makeAppointment")}</button>
                : <p style={{color : 'red'}}>{t("referralInvalid")}</p> }
             </div>
         </div>
