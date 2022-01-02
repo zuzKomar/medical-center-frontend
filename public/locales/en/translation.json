@@ -229,5 +229,20 @@
   "Posiew moczu": "Urine culture",
   "appointmentReserved": "The appointment has been reserved",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "Ginekolog": "Gynecologist",
+  "Radiolog": "Radiologist",
+  "Dermatolog": "Dermatologist",
+  "Internista": "Internist",
+  "Pediatra": "Pediatrician",
+  "Okulista": "Ophthalmologist",
+  "Ortopeda": "Orthopaedist",
+  "Endokrynolog": "Endocrinologist",
+  "Kardiolog": "Cardiologist",
+  "Laryngolog": "ENT specialist",
+  "Neurolog": "Neurologist",
+  "Psychiatra": "Psychiatrist",
+  "Urolog": "Urologist",
+  "Chirurg": "Surgeon",
+  "Gastrolog": "Gastrologist"
 }

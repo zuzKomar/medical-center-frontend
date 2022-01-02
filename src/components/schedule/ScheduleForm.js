@@ -22,6 +22,9 @@ const ScheduleForm = ({t}) =>{
     useEffect(()=>{
         const getSpecializations = async () =>{
             const specializations = await fetchSpecializations()
+            specializations.forEach(spec => {
+                spec.name = t(spec.name)
+            })
             setSpecializations(specializations)
         }
 

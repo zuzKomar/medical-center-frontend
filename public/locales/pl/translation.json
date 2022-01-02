@@ -229,5 +229,20 @@
   "Posiew moczu": "Posiew moczu",
   "appointmentReserved": "Umówiono wizytę",
   "yes": "Tak",
-  "no": "Nie"
+  "no": "Nie",
+  "Ginekolog": "Ginekolog",
+  "Radiolog": "Radiolog",
+  "Dermatolog": "Dermatolog",
+  "Internista": "Internista",
+  "Pediatra": "Pediatra",
+  "Okulista": "Okulista",
+  "Ortopeda": "Ortopeda",
+  "Endokrynolog": "Endokrynolog",
+  "Kardiolog": "Kardiolog",
+  "Laryngolog": "Laryngolog",
+  "Neurolog": "Neurolog",
+  "Psychiatra": "Psychiatra",
+  "Urolog": "Urolog",
+  "Chirurg": "Chirurg",
+  "Gastrolog": "Gastrolog"
 }
