@@ -8,6 +8,16 @@ import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
 const NewAppointmentForm = ({getAppointments, t}) =>{
+
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     let history = useHistory();
     const formatYmd = date => date.toISOString().slice(0,10);
     const referral = history.location.state;
@@ -121,7 +131,9 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
 
     const fetchReferrals = async () =>{
-        const res = await fetch(`${baseUrl}/patients/1/referrals?size=100`);
+        const res = await fetch(`${baseUrl}/patients/${userId}/referrals?size=100`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         const data = await res.json();
 
         return data;
@@ -130,9 +142,13 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
     const fetchDoctors = async () =>{
         let res;
         if(language === 'polski'){
-            res = await fetch(`${baseUrl}/doctors/services?language=PL&medicalServiceId=${service.id}`);
+            res = await fetch(`${baseUrl}/doctors/services?language=PL&medicalServiceId=${service.id}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }else{
-            res = await fetch(`${baseUrl}/doctors/services?language=EN&medicalServiceId=${service.id}`);
+            res = await fetch(`${baseUrl}/doctors/services?language=EN&medicalServiceId=${service.id}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }
 
         const data = await res.json();
@@ -143,9 +159,13 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
     const fetchServices = async (type) =>{
         let res;
         if(type === true){
-            res = await fetch(`${baseUrl}/medicalServices?type=FACILITY`);
+            res = await fetch(`${baseUrl}/medicalServices?type=FACILITY`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }else{
-            res = await fetch(`${baseUrl}/medicalServices?type=TELEPHONE`);
+            res = await fetch(`${baseUrl}/medicalServices?type=TELEPHONE`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }
 
         const data = await res.json();

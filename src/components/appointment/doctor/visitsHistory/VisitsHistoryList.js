@@ -5,6 +5,12 @@ import ArchivalVisit from "./ArchivalVisit";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
 const VisitsHistoryList = ({t}) => {
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     let history = useHistory();
     const appointment = history.location.state;
     const [patientsAppointments, setPatientsAppointments] = useState([]);
@@ -18,7 +24,9 @@ const VisitsHistoryList = ({t}) => {
     }, [])
 
     const fetchAppointments = async () =>{
-        const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/doneAppointments`);
+        const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/doneAppointments`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         return await res.json();
     }
 

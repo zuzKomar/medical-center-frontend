@@ -5,6 +5,16 @@ import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
 const UploadNewFile = ({t}) =>{
+
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(undefined);
     const [deletedFile, setDeletedFile] = useState(undefined);
@@ -39,7 +49,9 @@ const UploadNewFile = ({t}) =>{
     },[deletedFile])
 
     const fetchPatientFiles = async ()=>{
-        const res = await fetch(`${baseUrl}/patients/1/files`)
+        const res = await fetch(`${baseUrl}/patients/${userId}/files`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
         const data = await res.json()
 
         return data;
@@ -94,11 +106,12 @@ const UploadNewFile = ({t}) =>{
             if(selectedFile !== undefined && fileDescription !== undefined){
                 selectedFile["description"] = fileDescription;
 
-                fetch(`${baseUrl}/patients/1/files`,{
+                fetch(`${baseUrl}/patients/${baseUrl}/files`,{
                     method : 'POST',
                     headers :{
                         'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': `${baseUrl}`
+                        'Access-Control-Allow-Origin': `${baseUrl}`,
+                        'Authorization' : `Bearer ${userToken}`
                     },
                     body: JSON.stringify(selectedFile)
                 }).then(()=>{
@@ -113,7 +126,9 @@ const UploadNewFile = ({t}) =>{
 
      const handleFileDownload = (e, file) => {
          e.preventDefault();
-         fetch(`${baseUrl}/patients/1/files/${file.id}`)
+         fetch(`${baseUrl}/patients/${baseUrl}/files/${file.id}`,{
+             headers: {'Authorization' : `Bearer ${userToken}`}
+         })
              .then(res => res.json())
              .then(res => {
                  let a = window.document.createElement('a');
@@ -129,7 +144,8 @@ const UploadNewFile = ({t}) =>{
      const handleFileDeletion = (e, file) =>{
         e.preventDefault();
 
-        fetch(`${baseUrl}/patients/1/files/${file.id}`,{
+        fetch(`${baseUrl}/patients/${baseUrl}/files/${file.id}`,{
+            headers: {'Authorization' : `Bearer ${userToken}`},
             method: 'DELETE',
         }).then(res => res.json())
             .catch(err => console.log(err))

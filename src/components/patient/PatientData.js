@@ -10,6 +10,15 @@ const  today = new Date();
 
 const PatientData = ({t}) => {
 
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const schema = yup.object().shape({
         firstName: yup.string().min(2, t("firstNameMinCharacter")).max(50, t("firstNameMaxCharacter")).required(t("required")),
         lastName: yup.string().min(2, t("lastNameMinCharacter")).max(50, t("lastNameMaxCharacter")).required(t("required")),
@@ -85,7 +94,9 @@ const PatientData = ({t}) => {
     },[data])
 
     const fetchPatient = async () => {
-        const res = await fetch(`${baseUrl}/patients/1`)
+        const res = await fetch(`${baseUrl}/patients/${userId}`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
         const data = await res.json()
 
         return data
@@ -113,7 +124,8 @@ const PatientData = ({t}) => {
         fetch(`${baseUrl}/patients`,{
             method: 'PUT',
             headers: {'Access-Control-Allow-Origin': `${baseUrl}`,
-                'Content-Type': 'application/json;charset=UTF-8'},
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization' : `Bearer ${userToken}`},
             body: JSON.stringify(newObj)
         }).then((res)=>res.json())
             .catch((err)=>console.log(err));

@@ -7,6 +7,12 @@ import RangeSlider from "react-bootstrap-range-slider";
 import Button from "react-bootstrap/Button";
 
 const AppointmentDetailsForm = ({appointment, t}) => {
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const history = useHistory();
     const ref = useRef();
     const formatYmd = date => date.toISOString().slice(0,10);
@@ -70,7 +76,9 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     }, [])
 
     const fetchServices = async () =>{
-        const res = await fetch(`${baseUrl}/medicalServices`);
+        const res = await fetch(`${baseUrl}/medicalServices`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         return await res.json();
     }
 
@@ -83,7 +91,9 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     }, [])
 
     const fetchCheckUps = async () =>{
-        const res = await fetch(`${baseUrl}/checkups`);
+        const res = await fetch(`${baseUrl}/checkups`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         return await res.json();
     }
 
@@ -96,7 +106,9 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     }, [])
 
     const fetchMedications = async () =>{
-        const res = await fetch(`${baseUrl}/medications`);
+        const res = await fetch(`${baseUrl}/medications`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         return await res.json();
     }
 
@@ -270,6 +282,7 @@ const AppointmentDetailsForm = ({appointment, t}) => {
                 method : 'PATCH',
                 headers :{
                     'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${userToken}`
                 },
                 body : JSON.stringify(fetchBody)
             }).then((res)=>res.json())

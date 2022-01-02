@@ -26,7 +26,7 @@ const DoctorNavigation = ({changeLanguage, t}) =>{
                             <NavDropdown.Item onClick={() => {changeLanguage('pl')}}>Polski</NavDropdown.Item>
                         </NavDropdown>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="#wyloguj">{t("logout")}</NavDropdown.Item>
+                        <NavDropdown.Item href="/logout">{t("logout")}</NavDropdown.Item>
                     </NavDropdown>
                 </Navbar.Collapse>
             </Container>

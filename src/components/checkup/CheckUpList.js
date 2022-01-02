@@ -6,6 +6,16 @@ import Pagination from "@material-ui/lab/Pagination";
 import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
 const CheckUpList = ({t}) =>{
+
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const location = useLocation();
     const pageSizes = [3, 5, 10];
     const [checkups, setCheckups] = useState([]);
@@ -36,7 +46,7 @@ const CheckUpList = ({t}) =>{
             setCount(checkUps.totalPages)
         }
         getCheckups()
-    },[page, pageSize])
+    },[page, pageSize, userId, userToken])
 
     useEffect(()=>{
         if(location.state !== undefined){
@@ -49,13 +59,21 @@ const CheckUpList = ({t}) =>{
         const params = getRequestParams(page, pageSize);
         let res;
         if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?page=${params.page}&size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}&size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?page=${params.page}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests?size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else{
-            res = await fetch(`${baseUrl}/patients/1/diagnosticTests`)
+            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }
 
         const data = await res.json();

@@ -7,6 +7,12 @@ import {baseUrl} from "../../config/config";
 import {GiConfirmed} from "react-icons/all";
 
 const Appointment = ({appointment, setCancelledAppointment, t}) =>{
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [app, setAppointment] = useState(appointment);
     const [open, setOpen] = useState(false);
 
@@ -38,6 +44,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${userToken}`
             },
         }).then((res)=>res.json())
             .then(window.alert(t("confirmedAppointmentInfo")))
@@ -54,6 +61,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${userToken}`
             },
         }).then((res)=>res.json())
             .then(window.alert(t("canceledAppointmentInfo")))

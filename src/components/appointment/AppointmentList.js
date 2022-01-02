@@ -15,6 +15,15 @@ const AppointmentList = ({t}) =>{
     const confirmed = 'CONFIRMED';
     const done = 'DONE';
 
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [appointments, setAppointments] = useState([]);
     const [appDate, setAppDate] = useState(undefined);
     const [filteredAppointments, setFilteredAppointments] = useState([appointments]);
@@ -68,7 +77,7 @@ const AppointmentList = ({t}) =>{
         }
 
         getAppointments()
-    }, [canceledAppointment, page, pageSize])
+    }, [canceledAppointment, page, pageSize, userId, userToken])
 
 
     const checkAppId = (app) =>{
@@ -87,13 +96,21 @@ const AppointmentList = ({t}) =>{
         const params = getRequestParams(page, pageSize);
         let res;
         if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/appointments?page=${params.page}&size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/appointments?page=${params.page}&size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/patients/1/appointments?page=${params.page}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/appointments?page=${params.page}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/appointments?size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/appointments?size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else{
-            res = await fetch(`${baseUrl}/patients/1/appointments`)
+            res = await fetch(`${baseUrl}/patients/${userId}/appointments`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }
 
         const data = await res.json();

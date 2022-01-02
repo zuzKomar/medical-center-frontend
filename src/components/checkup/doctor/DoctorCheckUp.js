@@ -5,6 +5,12 @@ import {Form} from "react-bootstrap";
 import {baseUrl} from "../../../config/config";
 
 const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [state, setState] = useState(false);
     const [showAll, setShowAll] = useState(true);
     const [checkUp, setCheckUp] = useState(checkup);
@@ -84,7 +90,8 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
             fetch(`${baseUrl}/appointments/${checkUp.appointmentId}/testResult/${checkUp.checkUpId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${userToken}`
                 },
                 body: JSON.stringify(fetchBody)
             })

@@ -1,16 +1,35 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Formik} from 'formik';
 import * as yup from "yup";
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {useHistory} from 'react-router';
 import LanguageChanger from "./LanguageChanger";
+import {baseUrl} from "../../config/config";
 
-const LoginForm = ({t, changeLanguage}) => {
+const LoginForm = ({t, changeLanguage, setLogged}) => {
     const history = useHistory();
-
-    //TODO add login logic    nie Json a X-WWW-FORUM-URLENCODED
     const onSubmit = values =>{
-        console.log(values);
+
+        fetch(`${baseUrl}/login`,{
+            method : 'POST',
+            headers : {'Access-Control-Allow-Origin': `${baseUrl}`,
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body : new URLSearchParams({
+                'userEmail' : values.email,
+                'password' : values.password
+            }),
+        })
+            .then(res=>res.json())
+            .then((res)=>{
+                sessionStorage.setItem('token', res.access_token);
+                sessionStorage.setItem('id', res.user_id);
+                setLogged(true);
+
+                history.push({
+                    pathname : '/',})
+            })
+            .catch(err=>console.log(err))
     }
 
     const schema = yup.object().shape({

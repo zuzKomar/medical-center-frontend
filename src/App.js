@@ -11,6 +11,7 @@ import CheckUpList from "./components/checkup/CheckUpList";
 import PrescriptionList from "./components/prescription/PrescriptionList";
 import LoginForm from "./components/login/LoginForm";
 import RegisterForm from "./components/login/RegisterForm";
+import NotFound from "./components/login/NotFound";
 import TodayAppointmentList from "./components/appointment/doctor/TodayAppointmentList";
 import DoctorNavigation from "./components/fragments/doctor/DoctorNavigation";
 import AppointmentDetails from "./components/appointment/doctor/AppointmentDetails";
@@ -28,7 +29,12 @@ import {useTranslation} from "react-i18next";
 
 
 const App = () =>{
-    const [logged, setLogged] = useState(false);
+    sessionStorage.setItem('logged', false);
+    const [logged, setLogged] = useState(()=>{
+        const saved = sessionStorage.getItem('logged');
+        return saved || undefined;
+    });
+
     const [patientMode, setPatientMode] = useState(true);
 
     const {t, i18n} = useTranslation()
@@ -41,15 +47,19 @@ const App = () =>{
         setPatientMode(!patientMode);
     }
 
+    const handleLogin = (logged) =>{
+        sessionStorage.setItem('logged', logged);
+    }
+
   return (
       <Router>
           {patientMode &&
               <div>
                   <button onClick={()=>handleClick()}>Switch to doctor's view</button>
-                  {logged &&
+                  {logged===true &&
                   <Navigation changeLanguage={changeLanguage} t={t}/>}
                   <div className="wholePage">
-                      <div className="content" style={logged===false ? {width: '100%', backgroundImage : `url(${background})`}: {width: '80%', backgroundImage: null}}>
+                      <div className="content" style={logged!==false ? {width: '100%', backgroundImage : `url(${background})`}: {width: '80%', backgroundImage: null}}>
                           <Switch>
                               <Route exact path="/moje-konto" component={() => <PatientData t={t} />} />
                               <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
@@ -59,8 +69,9 @@ const App = () =>{
                               <Route exact path="/grafik" component={() => <ScheduleForm t={t} />}/>
                               <Route exact path="/badania" component={() => <CheckUpList t={t} />}/>
                               <Route exact path="/recepty" component={() => <PrescriptionList t={t} />}/>
-                              <Route exact path="/logowanie" component={() => <LoginForm t={t} changeLanguage={changeLanguage} />}/>
-                              <Route exact path="/rejestracja" component={() => <RegisterForm t={t} changeLanguage={changeLanguage} />}/>
+                              <Route exact path="/logowanie" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={handleLogin}/>}/>
+                              <Route exact path="/rejestracja" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
+                              <Route component={NotFound}/>
                           </Switch>
                       </div>
                   </div>

@@ -7,6 +7,15 @@ import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
 const FilesTable = ({t}) => {
 
+    const [userId, setUserId] = useState(()=>{
+        const saved = sessionStorage.getItem('id');
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [files, setFiles] = useState([]);
     let history = useHistory();
     const appointment = history.location.state;
@@ -20,13 +29,17 @@ const FilesTable = ({t}) => {
     }, [])
 
     const fetchFiles = async () => {
-        const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/files`);
+        const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/files`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        });
         return await res.json();
     }
 
     const handleFileDownload = (e, file) => {
         e.preventDefault();
-        fetch(`${baseUrl}/patients/${appointment.patient.id}/files/${file.id}`)
+        fetch(`${baseUrl}/patients/${appointment.patient.id}/files/${file.id}`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
             .then(res => res.json())
             .then(res => {
                 let a = window.document.createElement('a');

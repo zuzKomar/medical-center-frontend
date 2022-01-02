@@ -4,6 +4,12 @@ import {Button} from "react-bootstrap";
 import {baseUrl} from "../../config/config";
 
 const CheckUp = ({checkup, t}) =>{
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = sessionStorage.getItem('token');
+        return saved || undefined;
+    });
+
     const [state, setState] = useState(false);
     const [checkUp, setChekup] = useState(checkup);
 
@@ -21,7 +27,9 @@ const CheckUp = ({checkup, t}) =>{
     function handleFileDownload(e, checkup){
         e.preventDefault();
 
-        fetch(`${baseUrl}/appointments/diagnosticTests?appointmentId=${checkup.appointmentId}&checkUpId=${checkup.checkUpId}`)
+        fetch(`${baseUrl}/appointments/diagnosticTests?appointmentId=${checkup.appointmentId}&checkUpId=${checkup.checkUpId}`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
             .then(res => res.json())
             .then(res =>{
                 let a = window.document.createElement('a');
