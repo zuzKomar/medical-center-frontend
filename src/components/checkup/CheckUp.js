@@ -38,7 +38,7 @@ const CheckUp = ({checkup, t}) =>{
     return(
         <div className="appointmentAndCheckup" onClick={(e)=> togglePanel(e)}>
             <div className="top">
-                <p className="appointmentAndCheckupHeader">{checkUp.diagnosticTestName}</p>
+                <p className="appointmentAndCheckupHeader">{t(checkUp.diagnosticTestName)}</p>
                 <div className="data">
                     <p>{t("date")}</p>
                     <p>{new Date(checkUp.appointmentDate).toISOString().slice(0,10)}</p>

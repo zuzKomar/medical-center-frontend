@@ -51,7 +51,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
             },
             body: JSON.stringify(data),
         }).then((res) => res.json())
-            .then(window.alert('Umówiono wizytę'))
+            .then(window.alert(t("appointmentReserved")))
             .then(history.push({
                 pathname : '/wizyty'
             })).catch((err)=> console.log(err));
@@ -84,7 +84,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
                     </div>
                     <div className="modalSection">
                         <p>{t("service")}</p>
-                        <p>{appointment.service.name}</p>
+                        <p>{t(appointment.service.name)}</p>
                     </div>
                     {appointment.doctor &&  <div className="modalSection">
                         <p>{t("doctor")}</p>
@@ -92,7 +92,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
                     </div>}
                     {referral !== null && <div className="modalSection">
                         <p>{t("usedReferral")}</p>
-                        <p>{referral ? 'tak' : 'nie'}</p>
+                        <p>{referral ? t("yes") : t("no")}</p>
                     </div>}
                     {(new Date(new Date(appointment.date)-x).toISOString().slice(0,10) === (formatYmd(new Date()))) && <div className="warning">
                         <p>{t("appointmentAutoConfirm")}</p>

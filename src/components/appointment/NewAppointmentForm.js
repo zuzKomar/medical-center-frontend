@@ -32,6 +32,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             if(appointmentType === 'facility'){
                 const getServices = async () =>{
                     const services = await fetchServices(true)
+                    services.forEach(service => service.name = t(service.name));
                     setServices(services)
                 }
                 getServices();
@@ -39,6 +40,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             }else{
                 const getServices = async () =>{
                     const services = await fetchServices(false)
+                    services.forEach(service => service.name = t(service.name));
                     setServices(services)
                 }
                 getServices();
@@ -114,6 +116,9 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             const formatYmd = date => date.toISOString().slice(0, 10);
             const referrals = await fetchReferrals()
             const availableReferrals = referrals.referrals.filter(ref=>(formatYmd(new Date(ref.expiryDate)) >= formatYmd(new Date())));
+            availableReferrals.forEach(referral => {
+                referral.medicalService.name = t(referral.medicalService.name)
+            })
             setReferrals(availableReferrals);
         }
         getReferrals()

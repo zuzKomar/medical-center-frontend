@@ -68,7 +68,7 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
             ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate() && app.state === confirmed)) ? 'appointmentAndCheckup todayApp' :
             'appointmentAndCheckup archivalApp') : ''} onClick={e=>togglePanel(e)}>
             <div className="top">
-                <p className="appointmentAndCheckupHeader">{(app.service ? (app.service.name) : app.serviceName)}</p>
+                <p className="appointmentAndCheckupHeader">{(app.service ? (t(app.service.name)) : t(app.serviceName))}</p>
                 <div className="data">
                     <p>{t("date")}</p>
                     <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
