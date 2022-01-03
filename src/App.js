@@ -56,16 +56,15 @@ const App = () =>{
                   }
                   <div className="wholePage">
                       <div className="content" style={logged !== true ? {width: '100%', backgroundImage : `url(${background})`}: {width: '80%', backgroundImage: null}}>
-                          <Switch>
-                              {logged === false &&
-                                  <>
-                                      <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
-                                      <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
-                                      {/*<Route  component={NotFound}/>*/}
-                                  </>
-                              }
-                              {role === patient &&
-                              <>
+                          {logged === false &&
+                              <Switch>
+                                  <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
+                                  <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
+                                  <Route path="*" component={NotFound}/>
+                              </Switch>
+                          }
+                          {role === patient &&
+                              <Switch>
                                   <Route exact path="/my-account" component={() => <PatientData t={t} />} />
                                   <Route exact path="/my-files"  component={() => <UploadNewFile t={t} />}/>
                                   <Route exact path="/appointments" component={() => <AppointmentList t={t} />}/>
@@ -74,21 +73,20 @@ const App = () =>{
                                   <Route exact path="/schedule" component={() => <ScheduleForm t={t} />}/>
                                   <Route exact path="/check-ups" component={() => <CheckUpList t={t} />}/>
                                   <Route exact path="/prescriptions" component={() => <PrescriptionList t={t} />}/>
-                                  {/*<Route component={NotFound}/>*/}
-                              </>
-                              }
-                              {role === doctor &&
-                              <>
+                                  <Route path="*" component={NotFound}/>
+                              </Switch>
+                          }
+                          {role === doctor &&
+                              <Switch>
                                   <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} />}/>
                                   <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} />} />
                                   <Route exact path="/today-visits/:id/details/visits-history" component={() => <VisitsHistoryList t={t} />} />
                                   <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} />} />
                                   <Route exact path="/today-visits/:id/details/files" component={() => <FilesTable t={t} />} />
                                   <Route exact path="/check-ups" component={() => <DoctorCheckUpList t={t} />} />
-                                  {/*<Route path='*' component={NotFound}/>*/}
-                              </>
-                              }
-                          </Switch>
+                                  <Route path="*" component={NotFound}/>
+                              </Switch>
+                          }
                       </div>
                   </div>
                   <Footer t={t}/>
