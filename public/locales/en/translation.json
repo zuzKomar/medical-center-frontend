@@ -244,5 +244,8 @@
   "Psychiatra": "Psychiatrist",
   "Urolog": "Urologist",
   "Chirurg": "Surgeon",
-  "Gastrolog": "Gastrologist"
+  "Gastrolog": "Gastrologist",
+  "issued": "Issued",
+  "to": "to",
+  "package": "pack"
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-const PrescriptionListTableRow = ({prescription}) =>{
+const PrescriptionListTableRow = ({prescription, t}) =>{
 
     return(
         <tr key={prescription.id}>
@@ -21,7 +21,7 @@ const PrescriptionListTableRow = ({prescription}) =>{
                     ))}
                     </ul> : '')}
             </td>
-            <td>Wystawiona</td>
+            <td>{t("issued")}</td>
             <td>{prescription.accessCode}</td>
         </tr>
     )

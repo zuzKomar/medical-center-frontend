@@ -15,7 +15,7 @@ const ArchivalVisit = ({appointment, t}) => {
     return(
         <div className="appointmentAndCheckup archivalApp" onClick={e => togglePanel(e)}>
             <div className="top">
-                <p className="appointmentAndCheckupHeader">{appointment.serviceName}</p>
+                <p className="appointmentAndCheckupHeader">{t(appointment.serviceName)}</p>
                 <div className="data">
                     <p>{t("date")}</p>
                     <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>

@@ -31,7 +31,7 @@ const DoctorAppointment = ({app, t}) => {
     return (
         <div className={appointment.state === done ? "appointmentAndCheckup todayApp" : "appointmentAndCheckup archivalApp"}>
             <div className="top">
-                <p className="appointmentAndCheckupHeader">{appointment.medicalServiceName}</p>
+                <p className="appointmentAndCheckupHeader">{t(appointment.medicalServiceName)}</p>
                 <div className="data">
                     {appointment.state === done && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
                     <p>{t("hour")}&nbsp;{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>

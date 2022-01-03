@@ -244,5 +244,8 @@
   "Psychiatra": "Psychiatra",
   "Urolog": "Urolog",
   "Chirurg": "Chirurg",
-  "Gastrolog": "Gastrolog"
+  "Gastrolog": "Gastrolog",
+  "Issued": "Wystawiona",
+  "to": "do",
+  "package": "op"
 }

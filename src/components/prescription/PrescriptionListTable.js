@@ -16,7 +16,7 @@ const PrescriptionListTable = ({prescriptionData, t}) =>{
             </thead>
             <tbody>
             {prescriptionData.map((prescription) =>
-                <PrescriptionListTableRow prescription={prescription} key={prescription.id}/>
+                <PrescriptionListTableRow t={t} prescription={prescription} key={prescription.id}/>
             )}
             </tbody>
         </table>

@@ -64,6 +64,9 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     useEffect(() => {
         const getServices = async () => {
             const services = await fetchServices()
+            services.forEach(service => {
+                service.name = t(service.name)
+            })
             setServices(services)
         }
         getServices();
@@ -77,6 +80,9 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     useEffect(() => {
         const getCheckUps = async () => {
             const checkUps = await fetchCheckUps()
+            checkUps.forEach(checkUp => {
+                checkUp.name = t(checkUp.name)
+            })
             setCheckUps(checkUps)
         }
         getCheckUps()
@@ -89,8 +95,8 @@ const AppointmentDetailsForm = ({appointment, t}) => {
 
     useEffect(() => {
         const getMedications = async () => {
-            const checkUps = await fetchMedications()
-            setMedications(checkUps)
+            const medications = await fetchMedications()
+            setMedications(medications)
         }
         getMedications()
     }, [])
@@ -347,7 +353,7 @@ const AppointmentDetailsForm = ({appointment, t}) => {
                         {referrals.map((referral) => {
                             return <div className="appointmentFormSubsectionItem" key={referral.id} onClick={()=>{
                                 setReferralToDelete(referral);
-                            }}>{referral.medicalServiceName + ' do: ' +referral.expiryDate}</div>
+                            }}>{referral.medicalServiceName + ' ' + t("to") + ': ' +referral.expiryDate}</div>
                         })}
                     </div>
                 </Col>
@@ -390,7 +396,7 @@ const AppointmentDetailsForm = ({appointment, t}) => {
                         {medicationsToAdd.map((medication)=>{
                             return <div className="appointmentFormSubsectionItem" key={medication.id} onClick={()=>{
                                 setMedicationToDelete(medication);
-                            }}>{medication.name + ', '+medication.numberOfPackages + ' op.'}</div>
+                            }}>{medication.name + ', '+medication.numberOfPackages + ' ' + t("package") + '. '}</div>
                         })}
                     </div>
                 </Col>
