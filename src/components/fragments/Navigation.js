@@ -15,7 +15,7 @@ const Navigation = ({changeLanguage, t, setLogged}) =>{
         sessionStorage.clear();
         sessionStorage.setItem('logged', 'false');
         setLogged(false);
-        history.push('/logowanie');
+        history.push('/login');
     }
 
     return(
@@ -25,27 +25,27 @@ const Navigation = ({changeLanguage, t, setLogged}) =>{
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="navbarToggleExternalContent" className="navCollapse">
                         <Nav className="navNav" key={pathname}>
-                                <LinkContainer to="/wizyty" activeHref="active">
+                                <LinkContainer to="/appointments" activeHref="active">
                                     <Nav.Link exact className="navItemLink" >{t("appointments")}</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to="/skierowania" activeHref="active">
+                                <LinkContainer to="/referrals" activeHref="active">
                                     <Nav.Link exact className="navItemLink" >{t("referrals")}</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to="/grafik" activeHref="active">
+                                <LinkContainer to="/schedule" activeHref="active">
                                     <Nav.Link exact className="navItemLink" >{t("schedules")}</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to="/badania" activeHref="active">
+                                <LinkContainer to="/check-ups" activeHref="active">
                                     <Nav.Link exact className="navItemLink" >{t("checkups")}</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to="/recepty" activeHref="active">
+                                <LinkContainer to="/prescriptions" activeHref="active">
                                     <Nav.Link exact className="navItemLink" >{t("prescriptions")}</Nav.Link>
                                 </LinkContainer>
                         </Nav>
                         <NavDropdown className="navItemLanguages" title={profileTitle} id="basic-nav-dropdown">
-                            <LinkContainer to="/moje-konto" activeHref="active">
+                            <LinkContainer to="/my-account" activeHref="active">
                                 <Nav.Link exact className="navItemLink2 nav-link">{t("myAccount")}</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to="/moje-pliki" activeHref="active">
+                            <LinkContainer to="/my-files" activeHref="active">
                                 <Nav.Link exact className="navItemLink2">{t("myFiles")}</Nav.Link>
                             </LinkContainer>
 

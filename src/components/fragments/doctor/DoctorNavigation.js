@@ -15,7 +15,7 @@ const DoctorNavigation = ({changeLanguage, t, setLogged}) =>{
         sessionStorage.clear();
         sessionStorage.setItem('logged', 'false');
         setLogged(false);
-        history.push('/logowanie');
+        history.push('/login');
     }
 
     return(

@@ -59,21 +59,21 @@ const App = () =>{
                           <Switch>
                               {logged === false &&
                                   <>
-                                      <Route exact path="/logowanie" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
-                                      <Route exact path="/rejestracja" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
+                                      <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
+                                      <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
                                       {/*<Route  component={NotFound}/>*/}
                                   </>
                               }
                               {role === patient &&
                               <>
-                                  <Route exact path="/moje-konto" component={() => <PatientData t={t} />} />
-                                  <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
-                                  <Route exact path="/wizyty" component={() => <AppointmentList t={t} />}/>
-                                  <Route exact path="/nowa-wizyta" component={() => <NewAppointment t={t} />}/>
-                                  <Route exact path="/skierowania" component={() => <ReferralList t={t} />}/>
-                                  <Route exact path="/grafik" component={() => <ScheduleForm t={t} />}/>
-                                  <Route exact path="/badania" component={() => <CheckUpList t={t} />}/>
-                                  <Route exact path="/recepty" component={() => <PrescriptionList t={t} />}/>
+                                  <Route exact path="/my-account" component={() => <PatientData t={t} />} />
+                                  <Route exact path="/my-files"  component={() => <UploadNewFile t={t} />}/>
+                                  <Route exact path="/appointments" component={() => <AppointmentList t={t} />}/>
+                                  <Route exact path="/new-appointment" component={() => <NewAppointment t={t} />}/>
+                                  <Route exact path="/referrals" component={() => <ReferralList t={t} />}/>
+                                  <Route exact path="/schedule" component={() => <ScheduleForm t={t} />}/>
+                                  <Route exact path="/check-ups" component={() => <CheckUpList t={t} />}/>
+                                  <Route exact path="/prescriptions" component={() => <PrescriptionList t={t} />}/>
                                   {/*<Route component={NotFound}/>*/}
                               </>
                               }

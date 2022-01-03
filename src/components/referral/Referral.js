@@ -18,7 +18,7 @@ const Referral = ({referral, setSelectedReferral, t}) =>{
         setSelectedReferral(referral);
 
         history.push({
-            pathname: '/nowa-wizyta',
+            pathname: '/new-appointment',
             state: ref
         });
     }

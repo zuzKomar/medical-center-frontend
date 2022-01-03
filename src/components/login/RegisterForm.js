@@ -59,7 +59,7 @@ const RegisterForm = ({changeLanguage, t}) => {
                 }else{
                     window.alert("Rejestracja przebiegła pomyślnie");
                     history.push({
-                        pathname:'/logowanie'
+                        pathname:'/login'
                     })}
             })
             .catch(err=>{
@@ -127,7 +127,7 @@ const RegisterForm = ({changeLanguage, t}) => {
                              {t("alreadyHaveAnAccount")}?&nbsp;
                              <Button variant="primary" size="sm" onClick={()=>{
                                  history.push({
-                                     pathname : '/logowanie'
+                                     pathname : '/login'
                                 })
                              }}>Login</Button>
                          </div>

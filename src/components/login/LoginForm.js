@@ -36,7 +36,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
 
                 if(decoded.role === patient){
                     history.push({
-                        pathname : '/wizyty'})
+                        pathname : '/appointments'})
                 }else if(decoded.role === doctor){
                     history.push({
                         pathname : '/today-visits'})
@@ -88,7 +88,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                             {t("newUser")}?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
                                 history.push({
-                                    pathname : '/rejestracja'
+                                    pathname : '/register'
                                 })
                             }}>{t("createAccount")}</Button>
                         </div>

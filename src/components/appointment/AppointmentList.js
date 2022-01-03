@@ -153,7 +153,7 @@ const AppointmentList = ({t}) =>{
     }
 
     const handleClick = () =>{
-        history.push("/nowa-wizyta");
+        history.push("/new-appointment");
     }
 
     return(

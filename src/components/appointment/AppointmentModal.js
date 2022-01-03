@@ -60,7 +60,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
         }).then((res) => res.json())
             .then(window.alert(t("appointmentReserved")))
             .then(history.push({
-                pathname : '/wizyty'
+                pathname : '/appointments'
             })).catch((err)=> console.log(err));
     }
 
