@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 const AppointmentDetailsForm = ({appointment, t}) => {
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

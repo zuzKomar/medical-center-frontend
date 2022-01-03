@@ -33,7 +33,7 @@ const RegisterForm = ({changeLanguage, t}) => {
             //         }
             //     })
             .required(t("required")),
-        password: yup.string().min(2, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
+        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
         confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")).required(t("required"))
     });
 

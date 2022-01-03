@@ -11,7 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 const NewAppointment = ({t}) =>{
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

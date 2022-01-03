@@ -8,11 +8,11 @@ import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDeta
 const CheckUpList = ({t}) =>{
 
     const [userId, setUserId] = useState(()=>{
-        const saved = sessionStorage.getItem('id');
+        const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
     });
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

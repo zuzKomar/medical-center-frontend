@@ -11,11 +11,11 @@ const  today = new Date();
 const PatientData = ({t}) => {
 
     const [userId, setUserId] = useState(()=>{
-        const saved = sessionStorage.getItem('id');
+        const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
     });
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 
@@ -44,6 +44,8 @@ const PatientData = ({t}) => {
         birthDate: yup.date().max(today, t("dateFromFuture")).required(t("required")),
         phoneNumber: yup.string().min(9, t("phoneNumberError")).required(t("required")),
         email: yup.string().email(t("emailError")).required(t("required")),
+        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")),
+        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")),
         street: yup.string().min(2).required(t("required")),
         streetNumber: yup.string().required(t("required")),
         city: yup.string().required(t("required")),
@@ -58,6 +60,7 @@ const PatientData = ({t}) => {
     const [birthDate, setBirthDate] = useState(undefined);
     const [phoneNumber, setPhone] = useState(undefined);
     const [email, setEmail] = useState(undefined);
+    const [password, setPassword] = useState(undefined);
     const [patientsFiles, setPatientFiles] = useState(undefined);
 
     const [street, setStreet] = useState(undefined);
@@ -152,6 +155,8 @@ const PatientData = ({t}) => {
                             birthDate : birthDate,
                             phoneNumber : phoneNumber,
                             email : email,
+                            password : undefined,
+                            confirmPassword : undefined,
                             street : street,
                             streetNumber : streetNumber,
                             city: city,
@@ -210,6 +215,22 @@ const PatientData = ({t}) => {
                                         <Form.Label>Email:</Form.Label>
                                         <Form.Control type="email" name="email" placeholder="Email" size="lg" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={(e)=>setEmail(e.target.value)}/>
                                         <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center mb-3">
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>{t("password")}:</Form.Label>
+                                        <Form.Control type="password" name="password" placeholder={t("password")} size="lg" defaultValue={values.password} isInvalid={!!errors.password} isValid={touched.password && !errors.password} onChange={(e)=>setPassword(e.target.value)}/>
+                                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>{t("confirmPassword")}:</Form.Label>
+                                        <Form.Control type="password" name="confirmPassword" placeholder={t("confirmPassword")} size="lg" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword}/>
+                                        <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                             </Row>

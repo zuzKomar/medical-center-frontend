@@ -4,10 +4,20 @@ import {Navbar, Nav, NavDropdown, Container, ListGroup} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'
 import {useLocation} from "react-router-dom";
+import {useHistory} from 'react-router';
 
-const Navigation = ({changeLanguage, t}) =>{
+const Navigation = ({changeLanguage, t, setLogged}) =>{
+    const history = useHistory();
     const profileTitle = (<BsPerson size={46}/>);
     const {pathname} = useLocation()
+
+    const handleLogout = () =>{
+        sessionStorage.clear();
+        sessionStorage.setItem('logged', 'false');
+        setLogged(false);
+        history.push('/logowanie');
+    }
+
     return(
             <Navbar bg="light" variant="light" expand="lg" collapseOnSelect="true" sticky="top" className="navContainer">
                 <Container fluid>
@@ -44,7 +54,7 @@ const Navigation = ({changeLanguage, t}) =>{
                                 <NavDropdown.Item onClick={() => {changeLanguage('pl')}}>Polski</NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/logout">{t("logout")}</NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout}>{t("logout")}</NavDropdown.Item>
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Container>

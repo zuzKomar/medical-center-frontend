@@ -16,12 +16,12 @@ const AppointmentList = ({t}) =>{
     const done = 'DONE';
 
     const [userId, setUserId] = useState(()=>{
-        const saved = sessionStorage.getItem('id');
-        return saved || undefined;
+        const savedUserId = JSON.parse(sessionStorage.getItem('id'));
+        return savedUserId || undefined;
     });
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
-        return saved || undefined;
+        const savedToken = JSON.parse(sessionStorage.getItem('token'));
+        return savedToken || undefined;
     });
 
     const [appointments, setAppointments] = useState([]);

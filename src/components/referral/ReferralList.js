@@ -6,11 +6,11 @@ import Pagination from "@material-ui/lab/Pagination";
 const ReferralList = ({t}) =>{
 
     const [userId, setUserId] = useState(()=>{
-        const saved = sessionStorage.getItem('id');
+        const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
     });
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 
@@ -36,8 +36,6 @@ const ReferralList = ({t}) =>{
 
     useEffect(() =>{
         const getReferrals = async () =>{
-            console.log(userToken);
-            console.log(userId);
                 const referrals = await fetchReferrals()
                 setReferrals(referrals.referrals)
                 setCount(referrals.totalPages)

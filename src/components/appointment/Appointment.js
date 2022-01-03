@@ -9,7 +9,7 @@ import {GiConfirmed} from "react-icons/all";
 const Appointment = ({appointment, setCancelledAppointment, t}) =>{
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

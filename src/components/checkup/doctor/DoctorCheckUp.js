@@ -7,7 +7,7 @@ import {baseUrl} from "../../../config/config";
 const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

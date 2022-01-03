@@ -159,7 +159,7 @@
   "confirmPassword": "Confirm password",
   "alreadyHaveAnAccount": "Already have an account",
   "register": "Register",
-  "passwordMinCharactersError": "Password should have min. 2 characters!",
+  "passwordMinCharactersError": "Password should have min. 6 characters!",
   "passwordMaxCharactersError": "Password should have max. 50 characters!",
   "passwordMatch": "Password must match!",
   "chooseLanguage": "Choose language"

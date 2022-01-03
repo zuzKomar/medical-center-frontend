@@ -159,7 +159,7 @@
   "confirmPassword": "Potwierdź hasło",
   "alreadyHaveAnAccount": "Posiadasz już konto",
   "register": "Zarejestruj",
-  "passwordMinCharactersError": "Hasło powinno mieć min. 2 znaki!",
+  "passwordMinCharactersError": "Hasło powinno mieć min. 6 znaków!",
   "passwordMaxCharactersError": "Hasło powinno mieć max. 50 znaków!",
   "passwordMatch": "Hasło musi być takie samo!",
   "chooseLanguage": "Wybierz język"

@@ -5,7 +5,7 @@ import {baseUrl} from "../../config/config";
 const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t}) => {
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 

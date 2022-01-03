@@ -1,12 +1,15 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Formik} from 'formik';
 import * as yup from "yup";
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {useHistory} from 'react-router';
 import LanguageChanger from "./LanguageChanger";
 import {baseUrl} from "../../config/config";
+import jwtDecode from "jwt-decode";
 
-const LoginForm = ({t, changeLanguage, setLogged}) => {
+const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
+    const patient = 'PATIENT';
+    const doctor = 'DOCTOR';
     const history = useHistory();
     const onSubmit = values =>{
 
@@ -22,12 +25,22 @@ const LoginForm = ({t, changeLanguage, setLogged}) => {
         })
             .then(res=>res.json())
             .then((res)=>{
-                sessionStorage.setItem('token', res.access_token);
-                sessionStorage.setItem('id', res.user_id);
+                sessionStorage.setItem('logged', 'true');
+                sessionStorage.setItem('token', JSON.stringify(res.access_token));
+                sessionStorage.setItem('id', JSON.stringify(res.user_id));
+                sessionStorage.setItem('logged', 'true');
                 setLogged(true);
+                let decoded = jwtDecode(res.access_token);
+                setRole(decoded.role);
+                sessionStorage.setItem('role', JSON.stringify(decoded.role));
 
-                history.push({
-                    pathname : '/',})
+                if(decoded.role === patient){
+                    history.push({
+                        pathname : '/wizyty'})
+                }else if(decoded.role === doctor){
+                    history.push({
+                        pathname : '/today-visits'})
+                }
             })
             .catch(err=>console.log(err))
     }

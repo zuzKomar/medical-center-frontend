@@ -7,7 +7,7 @@ import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 const VisitsHistoryList = ({t}) => {
 
     const [userToken, setUserToken] = useState(()=>{
-        const saved = sessionStorage.getItem('token');
+        const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
 
