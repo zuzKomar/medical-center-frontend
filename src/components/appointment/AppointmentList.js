@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
-const AppointmentList = ({t}) =>{
+const AppointmentList = ({t, logout}) =>{
     let history = useHistory();
     const formatYmd = date => date.toISOString().slice(0,10);
     const facility = 'FACILITY';
@@ -45,6 +45,10 @@ const AppointmentList = ({t}) =>{
         }
         return params;
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(() =>{
         const getAppointments = async () =>{

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import PrescriptionListTable from "./PrescriptionListTable";
 import {baseUrl} from "../../config/config";
 
-const PrescriptionList = ({t}) =>{
-
+const PrescriptionList = ({t, logout}) =>{
+    const history = useHistory();
     const [userId, ,setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -14,6 +15,10 @@ const PrescriptionList = ({t}) =>{
     });
 
     const [prescriptions, setPrescriptions] = useState([]);
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(()=>{
         const getPrescriptions = async () =>{

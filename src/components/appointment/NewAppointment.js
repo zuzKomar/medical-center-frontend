@@ -1,6 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import {withRouter} from "react-router-dom";
+import {useHistory} from "react-router";
 import "react-datepicker/dist/react-datepicker.css"
 import NewAppointmentForm from "./NewAppointmentForm";
 import AvailableAppointment from "./AvailableAppointment";
@@ -8,8 +9,8 @@ import AppointmentModal from "./AppointmentModal";
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
-const NewAppointment = ({t}) =>{
-
+const NewAppointment = ({t, logout}) =>{
+    const history = useHistory();
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -54,6 +55,10 @@ const NewAppointment = ({t}) =>{
             setLanguage("EN");
         }
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(()=>{
         if(receivedService !== undefined){

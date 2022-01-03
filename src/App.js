@@ -30,6 +30,7 @@ import {
 const App = () =>{
     const patient = 'PATIENT';
     const doctor = 'DOCTOR';
+
     const [logged, setLogged] = useState(()=>{
         const savedState = JSON.parse(sessionStorage.getItem('logged'));
         return savedState || false;
@@ -44,6 +45,20 @@ const App = () =>{
 
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
+    }
+
+    const logOut = (history) =>{
+        const exp = JSON.parse(sessionStorage.getItem('exp'));
+        if(exp * 1000 < Date.now()){
+            history.push({
+                pathname : '/logowanie'
+            })
+            window.alert('Nastąpiło wylogowanie z powodu wygaśnięcia sesji');
+            sessionStorage.clear();
+            sessionStorage.setItem('logged', 'false');
+            setLogged(false);
+            setRole(undefined);
+        }
     }
 
   return (
@@ -66,25 +81,25 @@ const App = () =>{
                               }
                               {role === patient &&
                               <>
-                                  <Route exact path="/moje-konto" component={() => <PatientData t={t} />} />
-                                  <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} />}/>
-                                  <Route exact path="/wizyty" component={() => <AppointmentList t={t} />}/>
-                                  <Route exact path="/nowa-wizyta" component={() => <NewAppointment t={t} />}/>
-                                  <Route exact path="/skierowania" component={() => <ReferralList t={t} />}/>
-                                  <Route exact path="/grafik" component={() => <ScheduleForm t={t} />}/>
-                                  <Route exact path="/badania" component={() => <CheckUpList t={t} />}/>
-                                  <Route exact path="/recepty" component={() => <PrescriptionList t={t} />}/>
+                                  <Route exact path="/moje-konto" component={() => <PatientData t={t} logout={logOut}/>}/>
+                                  <Route exact path="/moje-pliki"  component={() => <UploadNewFile t={t} logout={logOut}/>}/>
+                                  <Route exact path="/wizyty" component={() => <AppointmentList t={t} logout={logOut}/>}/>
+                                  <Route exact path="/nowa-wizyta" component={() => <NewAppointment t={t} logout={logOut}/>}/>
+                                  <Route exact path="/skierowania" component={() => <ReferralList t={t} logout={logOut}/>}/>
+                                  <Route exact path="/grafik" component={() => <ScheduleForm t={t} logout={logOut}/>}/>
+                                  <Route exact path="/badania" component={() => <CheckUpList t={t} logout={logOut}/>}/>
+                                  <Route exact path="/recepty" component={() => <PrescriptionList t={t} logout={logOut}/>}/>
                                   {/*<Route component={NotFound}/>*/}
                               </>
                               }
                               {role === doctor &&
                               <>
-                                  <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} />}/>
-                                  <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} />} />
-                                  <Route exact path="/today-visits/:id/details/visits-history" component={() => <VisitsHistoryList t={t} />} />
-                                  <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} />} />
-                                  <Route exact path="/today-visits/:id/details/files" component={() => <FilesTable t={t} />} />
-                                  <Route exact path="/check-ups" component={() => <DoctorCheckUpList t={t} />} />
+                                  <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} logout={logOut}/>}/>
+                                  <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} logout={logOut}/>} />
+                                  <Route exact path="/today-visits/:id/details/visits-history" component={() => <VisitsHistoryList t={t} logout={logOut}/>} />
+                                  <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} logout={logOut}/>} />
+                                  <Route exact path="/today-visits/:id/details/files" component={() => <FilesTable t={t} logout={logOut}/>} />
+                                  <Route exact path="/check-ups" component={() => <DoctorCheckUpList t={t} logout={logOut}/>} />
                                   {/*<Route path='*' component={NotFound}/>*/}
                               </>
                               }

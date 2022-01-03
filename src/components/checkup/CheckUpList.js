@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
+import {useHistory} from "react-router";
 import CheckUp from "./CheckUp";
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
-const CheckUpList = ({t}) =>{
+const CheckUpList = ({t, logout}) =>{
 
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
@@ -16,6 +17,7 @@ const CheckUpList = ({t}) =>{
         return saved || undefined;
     });
 
+    const history = useHistory();
     const location = useLocation();
     const pageSizes = [3, 5, 10];
     const [checkups, setCheckups] = useState([]);
@@ -38,6 +40,10 @@ const CheckUpList = ({t}) =>{
         }
         return params;
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(()=>{
         const getCheckups = async () =>{

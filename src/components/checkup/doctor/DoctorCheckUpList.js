@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router";
 import {baseUrl} from "../../../config/config";
 import DoctorCheckUp from "./DoctorCheckUp";
 import Pagination from "@material-ui/lab/Pagination";
 
-const DoctorCheckUpList = ({t}) => {
+const DoctorCheckUpList = ({t, logout}) => {
+    const history = useHistory();
 
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
@@ -33,6 +35,10 @@ const DoctorCheckUpList = ({t}) => {
         }
         return params;
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(() => {
         const getCheckUps = async () => {

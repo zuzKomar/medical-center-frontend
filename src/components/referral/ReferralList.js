@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import Referral from "./Referral";
 import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
-const ReferralList = ({t}) =>{
-
+const ReferralList = ({t, logout}) =>{
+    const history = useHistory();
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -33,6 +34,10 @@ const ReferralList = ({t}) =>{
         }
         return params;
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(() =>{
         const getReferrals = async () =>{
