@@ -4,6 +4,16 @@ import DoctorAppointment from "./DoctorAppointment";
 import Pagination from "@material-ui/lab/Pagination";
 
 const TodayAppointmentList = ({t}) => {
+
+    const [userId, setUserId] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('id'));
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const pageSizes = [3, 5, 10];
     const [appointments, setAppointments] = useState([]);
     const [page, setPage] = useState(1);
@@ -35,13 +45,21 @@ const TodayAppointmentList = ({t}) => {
         const params = getRequestParams(page, pageSize);
         let res;
         if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?page=${params.page}&size=${params.size}`);
+            res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}&size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?page=${params.page}`);
+            res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/doctors/7/todaysVisits?size=${params.size}`);
+            res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }else{
-            res = await fetch(`${baseUrl}/doctors/7/todaysVisits`);
+            res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            });
         }
 
         const data = await res.json();

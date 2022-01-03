@@ -4,13 +4,45 @@ import * as yup from "yup";
 import React from "react";
 import {useHistory} from 'react-router';
 import LanguageChanger from "./LanguageChanger";
+import {baseUrl} from "../../config/config";
+import jwtDecode from "jwt-decode";
 
-const LoginForm = ({t, changeLanguage}) => {
+const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
+    const patient = 'PATIENT';
+    const doctor = 'DOCTOR';
     const history = useHistory();
-
-    //TODO add login logic    nie Json a X-WWW-FORUM-URLENCODED
     const onSubmit = values =>{
-        console.log(values);
+
+        fetch(`${baseUrl}/login`,{
+            method : 'POST',
+            headers : {'Access-Control-Allow-Origin': `${baseUrl}`,
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body : new URLSearchParams({
+                'userEmail' : values.email,
+                'password' : values.password
+            }),
+        })
+            .then(res=>res.json())
+            .then((res)=>{
+                sessionStorage.setItem('logged', 'true');
+                sessionStorage.setItem('token', JSON.stringify(res.access_token));
+                sessionStorage.setItem('id', JSON.stringify(res.user_id));
+                sessionStorage.setItem('logged', 'true');
+                setLogged(true);
+                let decoded = jwtDecode(res.access_token);
+                setRole(decoded.role);
+                sessionStorage.setItem('role', JSON.stringify(decoded.role));
+
+                if(decoded.role === patient){
+                    history.push({
+                        pathname : '/wizyty'})
+                }else if(decoded.role === doctor){
+                    history.push({
+                        pathname : '/today-visits'})
+                }
+            })
+            .catch(err=>console.log(err))
     }
 
     const schema = yup.object().shape({

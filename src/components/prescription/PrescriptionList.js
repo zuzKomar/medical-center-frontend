@@ -3,6 +3,16 @@ import PrescriptionListTable from "./PrescriptionListTable";
 import {baseUrl} from "../../config/config";
 
 const PrescriptionList = ({t}) =>{
+
+    const [userId, ,setUserId] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('id'));
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const [prescriptions, setPrescriptions] = useState([]);
 
     useEffect(()=>{
@@ -16,7 +26,9 @@ const PrescriptionList = ({t}) =>{
 
 
     const fetchPrescriptions = async () =>{
-        const res = await fetch(`${baseUrl}/patients/1/prescriptions`)
+        const res = await fetch(`${baseUrl}/patients/${userId}/prescriptions`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
         const data = await res.json();
 
         return data;

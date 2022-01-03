@@ -7,6 +7,12 @@ import Schedule from "./Schedule";
 import {baseUrl} from "../../config/config";
 
 const ScheduleForm = ({t}) =>{
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const [specializations, setSpecializations] = useState([]);
     const [doctors, setDoctors] = useState([]);
     const [selectedSpecialization, setSelectedSpecialization] = useState(undefined);
@@ -45,14 +51,18 @@ const ScheduleForm = ({t}) =>{
     }, [selectedSpecialization])
 
     const fetchSpecializations = async () =>{
-        const res = await fetch(`${baseUrl}/specializations`)
+        const res = await fetch(`${baseUrl}/specializations`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
         const data = await res.json()
 
         return data
     }
 
     const fetchDoctors = async () =>{
-        const res = await fetch(`${baseUrl}/doctors/specialization?id=${selectedSpecialization.id}`)
+        const res = await fetch(`${baseUrl}/doctors/specialization?id=${selectedSpecialization.id}`,{
+            headers: {'Authorization' : `Bearer ${userToken}`}
+        })
         const data = await res.json()
 
         return data
@@ -89,7 +99,9 @@ const ScheduleForm = ({t}) =>{
         if(Object.keys(errors).length > 0){
             setErrors(errors);
         }else{
-            fetch(`${baseUrl}/doctors/${selectedDoctor.id}/schedule?specializationId=${selectedSpecialization.id}`)
+            fetch(`${baseUrl}/doctors/${selectedDoctor.id}/schedule?specializationId=${selectedSpecialization.id}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
                 .then((res)=>res.json())
                 .then((obj)=>{
                     setSchedule(obj)

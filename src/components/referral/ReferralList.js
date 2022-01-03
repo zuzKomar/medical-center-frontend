@@ -4,6 +4,16 @@ import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
 const ReferralList = ({t}) =>{
+
+    const [userId, setUserId] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('id'));
+        return saved || undefined;
+    });
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const pageSizes = [3, 5, 10];
     const [referrals, setReferrals] = useState([]);
     const [selectedReferral, setSelectedReferral] = useState(undefined);
@@ -29,9 +39,10 @@ const ReferralList = ({t}) =>{
                 const referrals = await fetchReferrals()
                 setReferrals(referrals.referrals)
                 setCount(referrals.totalPages)
+
         }
         getReferrals()
-    },[page, pageSize])
+    },[page, pageSize, userId, userToken])
 
     useEffect(()=>{
         if(selectedReferral!==undefined) {
@@ -45,13 +56,21 @@ const ReferralList = ({t}) =>{
         const params = getRequestParams(page, pageSize);
         let res;
         if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/referrals?page=${params.page}&size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/referrals?page=${params.page}&size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/patients/1/referrals?page=${params.page}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/referrals?page=${params.page}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/1/referrals?size=${params.size}`)
+            res = await fetch(`${baseUrl}/patients/${userId}/referrals?size=${params.size}`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }else{
-            res = await fetch(`${baseUrl}/patients/1/referrals`)
+            res = await fetch(`${baseUrl}/patients/${userId}/referrals`,{
+                headers: {'Authorization' : `Bearer ${userToken}`}
+            })
         }
 
         const data = await res.json()

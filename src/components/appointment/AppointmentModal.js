@@ -3,6 +3,12 @@ import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
 const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t}) => {
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const history = useHistory();
     const [appointment, setAppointment] = useState(selectedAppointment);
     const [referral, setReferral] = useState(selectedReferral);
@@ -48,6 +54,7 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
             method: 'PATCH',
             headers:{
                 'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${userToken}`
             },
             body: JSON.stringify(data),
         }).then((res) => res.json())

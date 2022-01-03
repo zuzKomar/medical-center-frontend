@@ -9,6 +9,12 @@ import {baseUrl} from "../../config/config";
 import Pagination from "@material-ui/lab/Pagination";
 
 const NewAppointment = ({t}) =>{
+
+    const [userToken, setUserToken] = useState(()=>{
+        const saved = JSON.parse(sessionStorage.getItem('token'));
+        return saved || undefined;
+    });
+
     const [appointments, setAppointments] = useState([]);
     const [receivedService, setReceivedService] = useState(undefined);
     const [selectedAppointment, setSelectedAppointment] = useState(undefined);
@@ -73,23 +79,39 @@ const NewAppointment = ({t}) =>{
         let res;
         if(doctor!==null){
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }
         }else{
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`);
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                });
             }
         }
         const data = await res.json();
