@@ -28,7 +28,7 @@ import {useTranslation} from "react-i18next";
 
 
 const App = () =>{
-    const [logged, setLogged] = useState(true);
+    const [logged, setLogged] = useState(false);
     const [patientMode, setPatientMode] = useState(true);
 
     const {t, i18n} = useTranslation()
