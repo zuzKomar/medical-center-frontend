@@ -12,6 +12,8 @@ const PrescriptionListTable = ({prescriptionData, t}) =>{
                     <th>{t("numberOfPackages")}</th>
                     <th>{t("status")}</th>
                     <th>{t("eReceiptCode")}</th>
+                    <th>{t("doctor")}</th>
+                    <th>PWZ:</th>
                 </tr>
             </thead>
             <tbody>

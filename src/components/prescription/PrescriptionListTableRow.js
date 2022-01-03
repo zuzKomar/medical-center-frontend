@@ -23,6 +23,8 @@ const PrescriptionListTableRow = ({prescription, t}) =>{
             </td>
             <td>{t("issued")}</td>
             <td>{prescription.accessCode}</td>
+            <td>{prescription.doctorFirstName + ' ' + prescription.doctorLastName}</td>
+            <td>{prescription.doctorPwz}</td>
         </tr>
     )
 }
