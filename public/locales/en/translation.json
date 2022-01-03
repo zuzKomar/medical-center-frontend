@@ -247,5 +247,7 @@
   "Gastrolog": "Gastrologist",
   "issued": "Issued",
   "to": "to",
-  "package": "pack"
+  "package": "pack",
+  "userWithPeselNotFound": "User with given pesel number was not found!",
+  "registerSuccessful": "Registration was successful!"
 }

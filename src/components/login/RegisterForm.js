@@ -54,10 +54,10 @@ const RegisterForm = ({changeLanguage, t}) => {
         })
             .then(res=>{
                 if(!res.ok){
-                    window.alert("Nie znaleziono użytkownika o podanym numerze pesel");
-                    throw new Error('Nie znaleziono użytkownika o podanym numerze pesel')
+                    window.alert(t("userWithPeselNotFound"));
+                    throw new Error(t("userWithPeselNotFound"))
                 }else{
-                    window.alert("Rejestracja przebiegła pomyślnie");
+                    window.alert(t("registerSuccessful"));
                     history.push({
                         pathname:'/login'
                     })}

@@ -247,5 +247,7 @@
   "Gastrolog": "Gastrolog",
   "Issued": "Wystawiona",
   "to": "do",
-  "package": "op"
+  "package": "op",
+  "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel!",
+  "registerSuccessful": "Rejestracja przebiegła pomyślnie"
 }
