@@ -249,5 +249,6 @@
   "to": "do",
   "package": "op",
   "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel!",
-  "registerSuccessful": "Rejestracja przebiegła pomyślnie"
+  "registerSuccessful": "Rejestracja przebiegła pomyślnie",
+  "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX"
 }

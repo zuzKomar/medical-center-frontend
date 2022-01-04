@@ -41,7 +41,7 @@ const PatientData = ({t}) => {
                         return (parseInt(digits[10]) === checksum);
                     }
                 }).required(t("required")),
-        birthDate: yup.date().max(today, t("dateFromFuture")).required(t("required")),
+        birthDate: yup.date().max(today, t("dateFromFutureError")).required(t("required")),
         phoneNumber: yup.string().min(9, t("phoneNumberError")).required(t("required")),
         email: yup.string().email(t("emailError")).required(t("required")),
         password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")),
@@ -49,7 +49,7 @@ const PatientData = ({t}) => {
         street: yup.string().min(2).required(t("required")),
         streetNumber: yup.string().required(t("required")),
         city: yup.string().required(t("required")),
-        postCode: yup.string().required(t("required")),
+        postCode: yup.string().required(t("required")).matches(/[0-9]{2}-[0-9]{3}/, t("postCodeError")),
         country: yup.string().required(t("required"))
     });
 

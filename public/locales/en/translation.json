@@ -249,5 +249,6 @@
   "to": "to",
   "package": "pack",
   "userWithPeselNotFound": "User with given pesel number was not found!",
-  "registerSuccessful": "Registration was successful!"
+  "registerSuccessful": "Registration was successful!",
+  "postCodeError": "Postal code should have XX-XXX format!"
 }
