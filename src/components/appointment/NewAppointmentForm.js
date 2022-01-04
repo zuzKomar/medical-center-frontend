@@ -60,18 +60,13 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
     useEffect(()=>{
         if(service !== undefined){
-            if(service.doneByMedicalStaff === false){
-                const getDoctors = async () =>{
-                    const doctors = await fetchDoctors()
-                    setDoctors(doctors)
-                    const doctorSelect = document.querySelector('#doctorr');
-                    doctorSelect.disabled = false;
-                }
-                getDoctors()
-            }else{
+            const getDoctors = async () =>{
+                const doctors = await fetchDoctors()
+                setDoctors(doctors)
                 const doctorSelect = document.querySelector('#doctorr');
-                doctorSelect.disabled = true;
+                doctorSelect.disabled = false;
             }
+            getDoctors()
         }
 
     },[service])
@@ -100,6 +95,8 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
+            let element = document.getElementById('selectedReferral');
+            element.value = selectedReferral;
             if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
@@ -298,7 +295,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
                             {receivedReferral &&
                                 <>
-                                    <option >{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
+                                    <option value={receivedReferral}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
                                     <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
 
                                     {referrals.filter(ref=>ref.id!==receivedReferral.id).map((ref) => (
