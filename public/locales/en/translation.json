@@ -249,6 +249,8 @@
   "to": "to",
   "package": "pack",
   "userWithPeselNotFound": "User with given pesel number was not found or has already registered!",
+  "userDontExists" : "User does not exist! Please make sure you passed correct credentials.",
+  "tokenExpiredLogout" : "You've been logged out due to session expiration.",
   "registerSuccessful": "Registration was successful!",
   "postCodeError": "Postal code should have XX-XXX format!"
 }

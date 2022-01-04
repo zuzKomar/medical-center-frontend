@@ -28,6 +28,7 @@ import {
 
 
 const App = () =>{
+
     const patient = 'PATIENT';
     const doctor = 'DOCTOR';
 
@@ -51,9 +52,9 @@ const App = () =>{
         const exp = JSON.parse(sessionStorage.getItem('exp'));
         if(exp * 1000 < Date.now()){
             history.push({
-                pathname : '/logowanie'
+                pathname : '/login'
             })
-            window.alert('Nastąpiło wylogowanie z powodu wygaśnięcia sesji');
+            window.alert(t("tokenExpiredLogout"));
             sessionStorage.clear();
             sessionStorage.setItem('logged', 'false');
             setLogged(false);

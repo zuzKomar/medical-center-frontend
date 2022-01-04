@@ -6,7 +6,6 @@ import {useHistory} from 'react-router';
 import LanguageChanger from "./LanguageChanger";
 import {baseUrl} from "../../config/config";
 import jwtDecode from "jwt-decode";
-import {red} from "@material-ui/core/colors";
 
 const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
     const patient = 'PATIENT';
@@ -29,8 +28,8 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
         })
             .then(res => {
                 if(res.status === 403) {
-                    setNotExistError('User does not exist! Please make sure you passed correct credentials.');
-                    throw new Error('User does not exist! Please make sure you passed correct credentials.')
+                    setNotExistError(t("userDontExists"));
+                    throw new Error(t("userDontExists"))
                 }
                 return res;
             })

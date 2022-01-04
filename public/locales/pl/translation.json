@@ -249,6 +249,8 @@
   "to": "do",
   "package": "op",
   "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel lub jest już zarejestrowany!",
+  "userDontExists" : "Podany użytkownik nie istnieje! Upewnij się, że podajesz prawidłowe dane.",
+  "tokenExpiredLogout" : "Nastąpiło wylogowanie z powodu wygaśnięcia sesji.",
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
   "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX"
 }
