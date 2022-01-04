@@ -1,11 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useHistory} from "react-router-dom";
 import AppointmentDetailsForm from "./AppointmentDetailsForm";
 import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
 
-const AppointmentDetails = ({t}) => {
+const AppointmentDetails = ({t, logout}) => {
     let history = useHistory();
     const appointment = history.location.state;
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     return (
         <div className="itemsList">

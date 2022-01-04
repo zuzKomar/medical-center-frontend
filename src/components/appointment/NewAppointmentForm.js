@@ -94,6 +94,8 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
+            let element = document.getElementById('selectedReferral');
+            element.value = selectedReferral;
             if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');

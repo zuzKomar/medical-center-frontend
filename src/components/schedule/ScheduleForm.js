@@ -1,13 +1,14 @@
 import React from "react";
 import {useState, useEffect, useRef} from 'react';
+import {useHistory} from "react-router";
 import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Schedule from "./Schedule";
 import {baseUrl} from "../../config/config";
 
-const ScheduleForm = ({t}) =>{
-
+const ScheduleForm = ({t, logout}) =>{
+    const history = useHistory();
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -24,6 +25,10 @@ const ScheduleForm = ({t}) =>{
     const reset = () =>{
         ref.current.value = t("chooseDoctor");
     };
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(()=>{
         const getSpecializations = async () =>{

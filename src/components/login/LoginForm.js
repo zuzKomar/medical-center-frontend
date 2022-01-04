@@ -42,6 +42,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                 sessionStorage.setItem('logged', 'true');
                 setLogged(true);
                 let decoded = jwtDecode(res.access_token);
+                sessionStorage.setItem('exp', JSON.stringify(decoded.exp));
                 setRole(decoded.role);
                 sessionStorage.setItem('role', JSON.stringify(decoded.role));
 

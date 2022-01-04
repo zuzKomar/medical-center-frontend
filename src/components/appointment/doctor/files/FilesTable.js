@@ -5,7 +5,7 @@ import {Table} from "@material-ui/core";
 import Button from "react-bootstrap/Button";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
-const FilesTable = ({t}) => {
+const FilesTable = ({t, logout}) => {
 
     const [userId, setUserId] = useState(()=>{
         const saved = sessionStorage.getItem('id');
@@ -19,6 +19,10 @@ const FilesTable = ({t}) => {
     const [files, setFiles] = useState([]);
     let history = useHistory();
     const appointment = history.location.state;
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(() => {
         const getFiles = async () => {

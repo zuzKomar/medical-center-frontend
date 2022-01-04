@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from 'react-router';
 import {Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -8,8 +9,8 @@ import {baseUrl} from "../../config/config";
 
 const  today = new Date();
 
-const PatientData = ({t}) => {
-
+const PatientData = ({t, logout}) => {
+    const history = useHistory();
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -70,6 +71,10 @@ const PatientData = ({t}) => {
     const [city, setCity] = useState(undefined);
     const [postCode, setPostCode] = useState(undefined);
     const [country, setCountry] = useState(undefined);
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
 
     useEffect(() => {

@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from "react";
+import {useHistory} from 'react-router';
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
-const UploadNewFile = ({t}) =>{
-
+const UploadNewFile = ({t, logout}) =>{
+    const history = useHistory();
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -25,6 +26,10 @@ const UploadNewFile = ({t}) =>{
     const reset = () =>{
         ref.current.value = "";
     };
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(()=>{
         const getPatientFiles = async ()=>{

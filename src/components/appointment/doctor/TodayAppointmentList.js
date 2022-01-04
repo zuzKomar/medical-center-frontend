@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import {baseUrl} from "../../../config/config";
 import DoctorAppointment from "./DoctorAppointment";
 import Pagination from "@material-ui/lab/Pagination";
 
-const TodayAppointmentList = ({t}) => {
-
+const TodayAppointmentList = ({t, logout}) => {
+    const history = useHistory();
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -31,6 +32,10 @@ const TodayAppointmentList = ({t}) => {
         }
         return params;
     }
+
+    useEffect(()=>{
+        logout(history);
+    },[])
 
     useEffect(() => {
         const getAppointments = async () => {
