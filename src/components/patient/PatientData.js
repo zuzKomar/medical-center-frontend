@@ -60,8 +60,9 @@ const PatientData = ({t}) => {
     const [birthDate, setBirthDate] = useState(undefined);
     const [phoneNumber, setPhone] = useState(undefined);
     const [email, setEmail] = useState(undefined);
+    const [emailChange, setEmailChange] = useState(false);
     const [password, setPassword] = useState(undefined);
-    const [confirmedPassword, setConfirmedPassword] = useState(undefined);
+    const [confirmPassword, setConfirmPassword] = useState(undefined);
     const [patientsFiles, setPatientFiles] = useState(undefined);
 
     const [street, setStreet] = useState(undefined);
@@ -119,11 +120,12 @@ const PatientData = ({t}) => {
             phoneNumber,
             firstName,
             lastName,
-            email,
             birthDate,
             pesel,
             patientsFiles,
         };
+
+        console.log(newObj);
 
         fetch(`${baseUrl}/patients`,{
             method: 'PUT',
@@ -136,14 +138,22 @@ const PatientData = ({t}) => {
         }).then((res)=>res.json())
             .catch((err)=>console.log(err));
 
+        let newAuthObj = {}
         if(password !== undefined && password !== ''){
-            const newPassword = {password};
+            let newObj = {
+                password
+            }
+            const newPassword = {
+                email,
+                password
+            };
             fetch(`${baseUrl}/users/${userId}/changePassword`,{
-                method: 'PUT',
+                method: 'PATCH',
                 headers : {
+                    'Authorization' : `Bearer ${userToken}`,
                     'Access-Control-Allow-Origin': `${baseUrl}`,
                     'Content-Type': 'application/json;charset=UTF-8',
-                    'Authorization' : `Bearer ${userToken}`},
+                    },
                 body : JSON.stringify(newPassword)
             }).then((res)=>res.json())
                 .catch(err=>console.log(err))
@@ -171,8 +181,8 @@ const PatientData = ({t}) => {
                             birthDate : birthDate,
                             phoneNumber : phoneNumber,
                             email : email,
-                            password : undefined,
-                            confirmPassword : undefined,
+                            password : password,
+                            confirmPassword : confirmPassword,
                             street : street,
                             streetNumber : streetNumber,
                             city: city,
@@ -229,7 +239,10 @@ const PatientData = ({t}) => {
                                 <Col>
                                     <Form.Group>
                                         <Form.Label>Email:</Form.Label>
-                                        <Form.Control type="email" name="email" placeholder="Email" size="lg" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={(e)=>setEmail(e.target.value)}/>
+                                        <Form.Control type="email" name="email" placeholder="Email" size="lg" defaultValue={values.email} isInvalid={!!errors.email} isValid={touched.email && !errors.email} onChange={(e)=>{
+                                            setEmail(e.target.value)
+                                            setEmailChange(true);
+                                        }}/>
                                         <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
@@ -245,7 +258,7 @@ const PatientData = ({t}) => {
                                 <Col>
                                     <Form.Group>
                                         <Form.Label>{t("confirmPassword")}:</Form.Label>
-                                        <Form.Control type="password" name="confirmPassword" placeholder={t("confirmPassword")} size="lg" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword}/>
+                                        <Form.Control type="password" name="confirmPassword" placeholder={t("confirmPassword")} size="lg" defaultValue={values.confirmPassword} isInvalid={!!errors.confirmPassword} isValid={touched.confirmPassword && !errors.confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}/>
                                         <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>

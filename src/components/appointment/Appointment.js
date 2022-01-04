@@ -90,16 +90,19 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                         <FaRegUser size={42}/>
                         {t("doctorTitle")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                     </div>
-                    <div className="appointmentButtons">
-                        {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === reserved))&&
-                        <Button variant='danger' size="lg" onClick={e=>handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
-                        }
-
-                        {(app.state === reserved) &&
-                        <Button variant='primary' size='lg' onClick={e=>handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
-                        }
+                    <div >
+                        <div>
+                            {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === reserved))&&
+                            <Button variant='outline-success' size="lg" onClick={e=>handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
+                            }
+                        </div>
+                        <div>
+                            {(app.state === reserved) &&
+                            <Button variant='outline-primary' size='lg' onClick={e=>handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
+                            }
+                        </div>
                     </div>
-            </div> : ''}
+                </div> : ''}
             {(app.state === done)  ?
                 <>
                 {open ? (
