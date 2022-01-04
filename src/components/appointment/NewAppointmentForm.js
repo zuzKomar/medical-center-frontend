@@ -60,20 +60,14 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
     useEffect(()=>{
         if(service !== undefined){
-            if(service.doneByMedicalStaff === false){
-                const getDoctors = async () =>{
-                    const doctors = await fetchDoctors()
-                    setDoctors(doctors)
-                    const doctorSelect = document.querySelector('#doctorr');
-                    doctorSelect.disabled = false;
-                }
-                getDoctors()
-            }else{
+            const getDoctors = async () =>{
+                const doctors = await fetchDoctors()
+                setDoctors(doctors)
                 const doctorSelect = document.querySelector('#doctorr');
-                doctorSelect.disabled = true;
+                doctorSelect.disabled = false;
             }
+            getDoctors()
         }
-
     },[service])
 
     useEffect(()=>{
