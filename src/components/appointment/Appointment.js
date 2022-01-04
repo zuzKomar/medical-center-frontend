@@ -90,13 +90,13 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                         <FaRegUser size={42}/>
                         {t("doctorTitle")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                     </div>
-                    <div >
-                        <div>
+                    <div style={{display: "inline-flex"}}>
+                        <div style={{margin : "6px"}}>
                             {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === reserved))&&
                             <Button variant='outline-success' size="lg" onClick={e=>handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
                             }
                         </div>
-                        <div>
+                        <div style={{margin : "6px"}}>
                             {(app.state === reserved) &&
                             <Button variant='outline-primary' size='lg' onClick={e=>handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
                             }
