@@ -4,6 +4,11 @@ import {baseUrl} from "../../config/config";
 
 const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t}) => {
 
+    const [userId, setUserId] = useState(()=>{
+        const savedUserId = JSON.parse(sessionStorage.getItem('id'));
+        return savedUserId || undefined;
+    });
+
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -34,12 +39,12 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
         let data;
         if(referral !== null){
             data = {
-                patientId : 1,
+                patientId : userId,
                 referralId : referral.id
             }
         }else{
             data = {
-                patientId : 1
+                patientId : userId
             }
         }
 

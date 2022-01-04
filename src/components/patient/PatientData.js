@@ -61,6 +61,7 @@ const PatientData = ({t}) => {
     const [phoneNumber, setPhone] = useState(undefined);
     const [email, setEmail] = useState(undefined);
     const [password, setPassword] = useState(undefined);
+    const [confirmedPassword, setConfirmedPassword] = useState(undefined);
     const [patientsFiles, setPatientFiles] = useState(undefined);
 
     const [street, setStreet] = useState(undefined);
@@ -107,7 +108,7 @@ const PatientData = ({t}) => {
 
     function handleSubmit(){
         const newObj = {
-            "id": 1,
+            "id": userId,
             address: {
                 street,
                 streetNumber,
@@ -126,12 +127,27 @@ const PatientData = ({t}) => {
 
         fetch(`${baseUrl}/patients`,{
             method: 'PUT',
-            headers: {'Access-Control-Allow-Origin': `${baseUrl}`,
+            headers: {
+                'Authorization' : `Bearer ${userToken}`,
+                'Access-Control-Allow-Origin': `${baseUrl}`,
                 'Content-Type': 'application/json;charset=UTF-8',
-                'Authorization' : `Bearer ${userToken}`},
+                },
             body: JSON.stringify(newObj)
         }).then((res)=>res.json())
             .catch((err)=>console.log(err));
+
+        if(password !== undefined && password !== ''){
+            const newPassword = {password};
+            fetch(`${baseUrl}/users/${userId}/changePassword`,{
+                method: 'PUT',
+                headers : {
+                    'Access-Control-Allow-Origin': `${baseUrl}`,
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization' : `Bearer ${userToken}`},
+                body : JSON.stringify(newPassword)
+            }).then((res)=>res.json())
+                .catch(err=>console.log(err))
+        }
     }
 
     if(!data) {

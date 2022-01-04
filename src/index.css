@@ -233,6 +233,10 @@ footer{
     border-color: #636667;
 }
 
+.appointmentButtons .Button{
+    margin-right: 1%;
+}
+
 .top{
     display: flex;
     justify-content: space-between;

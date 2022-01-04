@@ -28,6 +28,7 @@ import {
 
 
 const App = () =>{
+    //sessionStorage.clear();
     const patient = 'PATIENT';
     const doctor = 'DOCTOR';
     const [logged, setLogged] = useState(()=>{
@@ -60,10 +61,10 @@ const App = () =>{
                               <Switch>
                                   <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
                                   <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
-                                  <Route path="*" component={NotFound}/>
+                                  <Route component={NotFound}/>
                               </Switch>
                           }
-                          {role === patient &&
+                          {(role === patient && logged === true) &&
                               <Switch>
                                   <Route exact path="/my-account" component={() => <PatientData t={t} />} />
                                   <Route exact path="/my-files"  component={() => <UploadNewFile t={t} />}/>
@@ -76,7 +77,7 @@ const App = () =>{
                                   <Route path="*" component={NotFound}/>
                               </Switch>
                           }
-                          {role === doctor &&
+                          {(role === doctor && logged === true) &&
                               <Switch>
                                   <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} />}/>
                                   <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} />} />

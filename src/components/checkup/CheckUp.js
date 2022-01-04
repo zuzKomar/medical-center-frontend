@@ -5,6 +5,11 @@ import {baseUrl} from "../../config/config";
 
 const CheckUp = ({checkup, t}) =>{
 
+    const [userId, setUserId] = useState(()=>{
+        const savedUserId = JSON.parse(sessionStorage.getItem('id'));
+        return savedUserId || undefined;
+    });
+
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -84,7 +89,7 @@ const CheckUp = ({checkup, t}) =>{
                         <div className="subsections">
                             <FaFile size={42}/>
                             <p className="header">{t("downloadResultPDF")}</p>
-                            <Button className="download" href={`${baseUrl}/patients/1/diagnosticTests`} onClick={(e)=>{
+                            <Button className="download" href={`${baseUrl}/patients/${userId}/diagnosticTests`} onClick={(e)=>{
                                 handleFileDownload(e, checkup);
                             }}>{t("download")}</Button>
                         </div>
