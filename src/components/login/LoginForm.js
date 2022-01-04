@@ -1,16 +1,20 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Formik} from 'formik';
 import * as yup from "yup";
-import React from "react";
+import React, {useState} from "react";
 import {useHistory} from 'react-router';
 import LanguageChanger from "./LanguageChanger";
 import {baseUrl} from "../../config/config";
 import jwtDecode from "jwt-decode";
+import {red} from "@material-ui/core/colors";
 
 const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
     const patient = 'PATIENT';
     const doctor = 'DOCTOR';
     const history = useHistory();
+
+    const [notExistError, setNotExistError] = useState(undefined);
+
     const onSubmit = values =>{
 
         fetch(`${baseUrl}/login`,{
@@ -23,6 +27,13 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                 'password' : values.password
             }),
         })
+            .then(res => {
+                if(res.status === 403) {
+                    setNotExistError('User does not exist! Please make sure you passed correct credentials.');
+                    throw new Error('User does not exist! Please make sure you passed correct credentials.')
+                }
+                return res;
+            })
             .then(res=>res.json())
             .then((res)=>{
                 sessionStorage.setItem('logged', 'true');
@@ -47,7 +58,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
 
     const schema = yup.object().shape({
         email: yup.string().email(t("emailError")).required(t("required")),
-        password: yup.string().required(t("required"))
+        password: yup.string().required(t("required")).min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError"))
     });
 
     return (
@@ -84,6 +95,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                                 <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                             </Form.Group>
                         </Row>
+                        <div style={{color: '#dc3545', marginBottom: "20px"}}>{notExistError}</div>
                         <div>
                             {t("newUser")}?&nbsp;
                             <Button variant="primary" size="sm" onClick={()=>{
