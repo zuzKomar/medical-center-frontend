@@ -53,7 +53,7 @@ const RegisterForm = ({changeLanguage, t}) => {
             body : JSON.stringify(newPerson),
         })
             .then(res=>{
-                if(!res.ok){
+                if(res.status === 404){
                     window.alert(t("userWithPeselNotFound"));
                     throw new Error(t("userWithPeselNotFound"))
                 }else{

@@ -248,7 +248,7 @@
   "Issued": "Wystawiona",
   "to": "do",
   "package": "op",
-  "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel!",
+  "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel lub jest już zarejestrowany!",
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
   "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX"
 }
