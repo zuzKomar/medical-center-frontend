@@ -292,7 +292,7 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
 
                             {receivedReferral &&
                                 <>
-                                    <option >{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
+                                    <option value={receivedReferral}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
                                     <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
 
                                     {referrals.filter(ref=>ref.id!==receivedReferral.id).map((ref) => (
