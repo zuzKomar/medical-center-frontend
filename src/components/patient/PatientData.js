@@ -122,10 +122,8 @@ const PatientData = ({t}) => {
             lastName,
             birthDate,
             pesel,
-            patientsFiles,
+            patientsFiles
         };
-
-        console.log(newObj);
 
         fetch(`${baseUrl}/patients`,{
             method: 'PUT',
@@ -138,15 +136,17 @@ const PatientData = ({t}) => {
         }).then((res)=>res.json())
             .catch((err)=>console.log(err));
 
-        let newAuthObj = {}
-        if(password !== undefined && password !== ''){
-            let newObj = {
-                password
+
+        if((password !== undefined && password !== '') || emailChange === true){
+            let newAuthObj = {}
+
+            if(password !== undefined && password !== ''){
+                newAuthObj['password'] = password;
             }
-            const newPassword = {
-                email,
-                password
-            };
+            if(emailChange === true){
+                newAuthObj['email'] = email;
+            }
+
             fetch(`${baseUrl}/users/${userId}/changePassword`,{
                 method: 'PATCH',
                 headers : {
@@ -154,7 +154,7 @@ const PatientData = ({t}) => {
                     'Access-Control-Allow-Origin': `${baseUrl}`,
                     'Content-Type': 'application/json;charset=UTF-8',
                     },
-                body : JSON.stringify(newPassword)
+                body : JSON.stringify(newAuthObj)
             }).then((res)=>res.json())
                 .catch(err=>console.log(err))
         }
