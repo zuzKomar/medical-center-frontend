@@ -245,7 +245,7 @@
   "Urolog": "Urolog",
   "Chirurg": "Chirurg",
   "Gastrolog": "Gastrolog",
-  "Issued": "Wystawiona",
+  "issued": "Wystawiona",
   "to": "do",
   "package": "op",
   "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel lub jest już zarejestrowany!",
@@ -257,5 +257,6 @@
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
   "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX",
   "checkupResultRequired" : "Należy wprowadzić wynik badania!",
-  "checkupResultFileRequired" : "Należy załączyć plik PDF z wynikiem!"
+  "checkupResultFileRequired" : "Należy załączyć plik PDF z wynikiem!",
+  "notFound": "Przepraszamy, nie znaleziono strony!"
 }

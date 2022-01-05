@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router';
 import {baseUrl} from "../../config/config";
 
-const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t}) => {
-
+const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, t, logout}) => {
+    const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
         const savedUserId = JSON.parse(sessionStorage.getItem('id'));
         return savedUserId || undefined;
@@ -62,61 +62,74 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
                 'Authorization' : `Bearer ${userToken}`
             },
             body: JSON.stringify(data),
-        }).then((res) => res.json())
-            .then(window.alert(t("appointmentReserved")))
-            .then(history.push({
+        }).then((res) => {
+            res.json()
+            if(res.status === 403){
+                setRedirect(true);
+            }else{
+                window.alert(t("appointmentReserved"))
+            }
+        }).then(history.push({
                 pathname : '/appointments'
             })).catch((err)=> console.log(err));
     }
 
     const formatYmd = date => date.toISOString().slice(0, 10);
 
-    return (
-        <div className="modalBackground">
-            <div className="modalContainer">
-                <div className="titleCloseBtn">
-                    <button onClick={()=>setOpenModal(false)}> X </button>
-                </div>
-                <div className="modalTitle">
-                    <h2>{t("confirmAppointment")}</h2>
-                    <hr/>
-                </div>
-                <div className="modalBody">
-                    <div className="modalSection">
-                        <p>{t("date")}</p>
-                        <p>{new Date(new Date(appointment.date)-x).toISOString().slice(0,10)}</p>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="modalBackground">
+                <div className="modalContainer">
+                    <div className="titleCloseBtn">
+                        <button onClick={() => setOpenModal(false)}> X</button>
                     </div>
-                    <div className="modalSection">
-                        <p>{t("hour")}</p>
-                        <p>{new Date(new Date(appointment.date)-x).toISOString().slice(11,16)}</p>
+                    <div className="modalTitle">
+                        <h2>{t("confirmAppointment")}</h2>
+                        <hr/>
                     </div>
-                    <div className="modalSection">
-                        <p>{t("appointmentType")}</p>
-                        <p>{appointment.type === 'FACILITY' ? t("facility") : t("teleconsultation")}</p>
+                    <div className="modalBody">
+                        <div className="modalSection">
+                            <p>{t("date")}</p>
+                            <p>{new Date(new Date(appointment.date) - x).toISOString().slice(0, 10)}</p>
+                        </div>
+                        <div className="modalSection">
+                            <p>{t("hour")}</p>
+                            <p>{new Date(new Date(appointment.date) - x).toISOString().slice(11, 16)}</p>
+                        </div>
+                        <div className="modalSection">
+                            <p>{t("appointmentType")}</p>
+                            <p>{appointment.type === 'FACILITY' ? t("facility") : t("teleconsultation")}</p>
+                        </div>
+                        <div className="modalSection">
+                            <p>{t("service")}</p>
+                            <p>{t(appointment.service.name)}</p>
+                        </div>
+                        {appointment.doctor && <div className="modalSection">
+                            <p>{t("doctor")}</p>
+                            <p>{appointment.doctor.firstName + ' ' + appointment.doctor.lastName}</p>
+                        </div>}
+                        {referral !== null && <div className="modalSection">
+                            <p>{t("usedReferral")}</p>
+                            <p>{referral ? t("yes") : t("no")}</p>
+                        </div>}
+                        {(new Date(new Date(appointment.date) - x).toISOString().slice(0, 10) === (formatYmd(new Date()))) &&
+                        <div className="warning">
+                            <p>{t("appointmentAutoConfirm")}</p>
+                        </div>}
+                        <div className="modalFooter">
+                            <button onClick={() => setOpenModal(false)} className="cancelButton">{t("cancel")}</button>
+                            <button onClick={(e) => bookAnAppointment(e)}>{t("confirm")}</button>
+                        </div>
                     </div>
-                    <div className="modalSection">
-                        <p>{t("service")}</p>
-                        <p>{t(appointment.service.name)}</p>
-                    </div>
-                    {appointment.doctor &&  <div className="modalSection">
-                        <p>{t("doctor")}</p>
-                        <p>{appointment.doctor.firstName + ' ' + appointment.doctor.lastName}</p>
-                    </div>}
-                    {referral !== null && <div className="modalSection">
-                        <p>{t("usedReferral")}</p>
-                        <p>{referral ? t("yes") : t("no")}</p>
-                    </div>}
-                    {(new Date(new Date(appointment.date)-x).toISOString().slice(0,10) === (formatYmd(new Date()))) && <div className="warning">
-                        <p>{t("appointmentAutoConfirm")}</p>
-                    </div>}
-                <div className="modalFooter">
-                    <button onClick={()=>setOpenModal(false)} className="cancelButton">{t("cancel")}</button>
-                    <button onClick={(e)=>bookAnAppointment(e)}>{t("confirm")}</button>
                 </div>
             </div>
-        </div>
-        </div>
-    );
+        );
+    }
 };
 
 export default AppointmentModal;

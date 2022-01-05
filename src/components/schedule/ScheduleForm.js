@@ -21,14 +21,11 @@ const ScheduleForm = ({t, logout}) =>{
     const [schedule, setSchedule] = useState(undefined);
     const [errors, setErrors] = useState({});
     const ref = useRef();
+    const [redirect, setRedirect] = useState(false);
 
     const reset = () =>{
         ref.current.value = t("chooseDoctor");
     };
-
-    useEffect(()=>{
-        logout(history);
-    },[])
 
     useEffect(()=>{
         const getSpecializations = async () =>{
@@ -59,6 +56,10 @@ const ScheduleForm = ({t, logout}) =>{
         const res = await fetch(`${baseUrl}/specializations`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
+        if(res.status === 403){
+            setRedirect(true);
+        }
+
         const data = await res.json()
 
         return data
@@ -68,6 +69,9 @@ const ScheduleForm = ({t, logout}) =>{
         const res = await fetch(`${baseUrl}/doctors/specialization?id=${selectedSpecialization.id}`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
+        if(res.status === 403){
+            setRedirect(true);
+        }
         const data = await res.json()
 
         return data
@@ -114,68 +118,74 @@ const ScheduleForm = ({t, logout}) =>{
                 .catch((err)=>console.log(err));
         }
     }
-
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("doctorSchedule")}</h2>
-            </div>
-            <Form className="newAppointmentForm">
-                <Row className="align-items-center mb-3">
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{t("chooseSpecialization")}:</Form.Label>
-                            <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}>
-                                <option onClick={clearSpecialization}>{t("chooseSpecialization")}</option>
-                                {specializations.map((spec)=>(
-                                    <option value={spec} onClick={(e)=>{
-                                        setSelectedDoctor(undefined);
-                                        reset();
-                                        setSchedule(undefined);
-                                        setSelectedSpecialization(spec);
-
-                                        if(!!errors['specialization'])
-                                            setErrors({
-                                                ...errors,
-                                                ['specialization']:null
-                                            })
-                                    }}>{spec.name}</option>
-                                ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type='invalid'>{errors.specialization}</Form.Control.Feedback>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row className="align-items-center mb-3">
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{t("chooseDoctor")}:</Form.Label>
-                            <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}>
-                                <option onClick={clearDoctor}>{t("chooseDoctor")}</option>
-                                {doctors.map((doc)=>(
-                                    <option value={doc} onClick={(e)=>{
-                                        setSelectedDoctor(doc);
-                                        setSchedule(undefined);
-                                        if(!!errors['doctor'])
-                                            setErrors({
-                                                ...errors,
-                                                ['doctor']:null
-                                            })
-                                    }}>{doc.firstName +  ' ' + doc.lastName}</option>
-                                ))}
-                            </Form.Select>
-                            <Form.Control.Feedback type='invalid'>{errors.doctor}</Form.Control.Feedback>
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <div style={{display:"flex", justifyContent: 'center'}}>
-                    <Button variant='primary' onClick={e=>handleSubmit(e)}>{t("showSchedule")}</Button>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("doctorSchedule")}</h2>
                 </div>
-            </Form>
-            {(schedule !== undefined && selectedDoctor !== undefined && selectedSpecialization !== undefined) &&
-            <Schedule schedule={schedule} />}
-        </div>
-    )
+                <Form className="newAppointmentForm">
+                    <Row className="align-items-center mb-3">
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>{t("chooseSpecialization")}:</Form.Label>
+                                <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}>
+                                    <option onClick={clearSpecialization}>{t("chooseSpecialization")}</option>
+                                    {specializations.map((spec) => (
+                                        <option value={spec} onClick={(e) => {
+                                            setSelectedDoctor(undefined);
+                                            reset();
+                                            setSchedule(undefined);
+                                            setSelectedSpecialization(spec);
+
+                                            if (!!errors['specialization'])
+                                                setErrors({
+                                                    ...errors,
+                                                    ['specialization']: null
+                                                })
+                                        }}>{spec.name}</option>
+                                    ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type='invalid'>{errors.specialization}</Form.Control.Feedback>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row className="align-items-center mb-3">
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>{t("chooseDoctor")}:</Form.Label>
+                                <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}>
+                                    <option onClick={clearDoctor}>{t("chooseDoctor")}</option>
+                                    {doctors.map((doc) => (
+                                        <option value={doc} onClick={(e) => {
+                                            setSelectedDoctor(doc);
+                                            setSchedule(undefined);
+                                            if (!!errors['doctor'])
+                                                setErrors({
+                                                    ...errors,
+                                                    ['doctor']: null
+                                                })
+                                        }}>{doc.firstName + ' ' + doc.lastName}</option>
+                                    ))}
+                                </Form.Select>
+                                <Form.Control.Feedback type='invalid'>{errors.doctor}</Form.Control.Feedback>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <div style={{display: "flex", justifyContent: 'center'}}>
+                        <Button variant='primary' onClick={e => handleSubmit(e)}>{t("showSchedule")}</Button>
+                    </div>
+                </Form>
+                {(schedule !== undefined && selectedDoctor !== undefined && selectedSpecialization !== undefined) &&
+                <Schedule schedule={schedule}/>}
+            </div>
+        )
+    }
 }
 
 export default ScheduleForm;

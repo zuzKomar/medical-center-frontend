@@ -257,5 +257,6 @@
   "registerSuccessful": "Registration was successful!",
   "postCodeError": "Postal code should have XX-XXX format!",
   "checkupResultRequired" : "Result must be added!",
-  "checkupResultFileRequired" : "PDF file must be added!"
+  "checkupResultFileRequired" : "PDF file must be added!",
+  "notFound": "Sorry, this page could not be found!"
 }

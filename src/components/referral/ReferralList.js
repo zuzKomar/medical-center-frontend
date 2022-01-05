@@ -23,6 +23,8 @@ const ReferralList = ({t, logout}) =>{
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
 
+    const [redirect, setRedirect] = useState(false);
+
     const getRequestParams = (page, pageSize) =>{
         let params = {};
 
@@ -35,10 +37,6 @@ const ReferralList = ({t, logout}) =>{
         return params;
     }
 
-    useEffect(()=>{
-        logout(history);
-    },[])
-
     useEffect(() =>{
         const getReferrals = async () =>{
                 const referrals = await fetchReferrals()
@@ -47,7 +45,7 @@ const ReferralList = ({t, logout}) =>{
 
         }
         getReferrals()
-    },[page, pageSize, userId, userToken])
+    },[page, pageSize])
 
     useEffect(()=>{
         if(selectedReferral!==undefined) {
@@ -64,18 +62,31 @@ const ReferralList = ({t, logout}) =>{
             res = await fetch(`${baseUrl}/patients/${userId}/referrals?page=${params.page}&size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
+
         }else if(params.page !== null && params.size === null){
             res = await fetch(`${baseUrl}/patients/${userId}/referrals?page=${params.page}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+        }
         }else if(params.page === null && params.size !== null){
             res = await fetch(`${baseUrl}/patients/${userId}/referrals?size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true)
+        }
         }else{
             res = await fetch(`${baseUrl}/patients/${userId}/referrals`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true)
+            }
         }
 
         const data = await res.json()
@@ -98,29 +109,35 @@ const ReferralList = ({t, logout}) =>{
         setPage(1);
     };
 
+    if(redirect === true){
+        logout(history);
+        return (
+       <></>
+        )
+    }else{
+        return(
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("yourReferrals")}</h2>
+                </div>
+                <div className="itemsNumber">
+                    <p>{t("elementsNumber")}&nbsp;</p>
+                    <select onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("yourReferrals")}</h2>
-            </div>
-            <div className="itemsNumber">
-                <p>{t("elementsNumber")}&nbsp;</p>
-                <select onChange={handlePageSizeChange} value={pageSize}>
-                    {pageSizes.map((size) => (
-                        <option key={size} value={size}>
-                            {size}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            {referrals.map((referral) =>(
-                <Referral key={referral.id} referral={referral} setSelectedReferral={setSelectedReferral} t={t}/>
+                {referrals.map((referral) =>(
+                    <Referral key={referral.id} referral={referral} setSelectedReferral={setSelectedReferral} t={t}/>
                 ))}
-            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
-        </div>
-    )
+                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
+            </div>
+        )
+    }
 }
 
 export default ReferralList

@@ -7,7 +7,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import AppointmentDetailsButtonPanel from "../appointment/doctor/AppointmentDetailsButtonPanel";
 
 const CheckUpList = ({t, logout}) =>{
-
+    const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -42,17 +42,13 @@ const CheckUpList = ({t, logout}) =>{
     }
 
     useEffect(()=>{
-        logout(history);
-    },[])
-
-    useEffect(()=>{
         const getCheckups = async () =>{
             const checkUps = await fetchCheckups()
             setCheckups(checkUps.diagnosticTests)
             setCount(checkUps.totalPages)
         }
         getCheckups()
-    },[page, pageSize, userId, userToken])
+    },[page, pageSize])
 
     useEffect(()=>{
         if(location.state !== undefined){
@@ -68,18 +64,33 @@ const CheckUpList = ({t, logout}) =>{
             res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}&size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
+
         }else if(params.page !== null && params.size === null){
             res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
+
         }else if(params.page === null && params.size !== null){
             res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
+
         }else{
             res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }
 
         const data = await res.json();
@@ -96,31 +107,39 @@ const CheckUpList = ({t, logout}) =>{
         setPage(1);
     };
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("yourCheckUps")}</h2>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("yourCheckUps")}</h2>
+                </div>
+                <br/>
+                {(appointment !== undefined) &&
+                <AppointmentDetailsButtonPanel appointment={appointment} t={t}/>
+                }
+                <div className="itemsNumber">
+                    <p>{t("elementsNumber")}&nbsp;</p>
+                    <select onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                {checkups.map((checkup) => (
+                    <CheckUp key={checkup.id} checkup={checkup} t={t} logout={logout}/>
+                ))}
+                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                            shape="rounded" onChange={handlePageChange}/>
             </div>
-            <br/>
-            {(appointment !== undefined) &&
-                <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
-            }
-            <div className="itemsNumber">
-                <p>{t("elementsNumber")}&nbsp;</p>
-                <select onChange={handlePageSizeChange} value={pageSize}>
-                    {pageSizes.map((size) => (
-                        <option key={size} value={size}>
-                            {size}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            {checkups.map((checkup) =>(
-                <CheckUp key={checkup.id} checkup={checkup} t={t}/>
-            ))}
-            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
-        </div>
-    )
+        )
+    }
 }
 
 export default CheckUpList;

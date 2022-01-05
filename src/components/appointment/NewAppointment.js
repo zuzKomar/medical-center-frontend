@@ -11,6 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 const NewAppointment = ({t, logout}) =>{
     const history = useHistory();
+    const [redirect, setRedirect] = useState(false);
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -57,10 +58,6 @@ const NewAppointment = ({t, logout}) =>{
     }
 
     useEffect(()=>{
-        logout(history);
-    },[])
-
-    useEffect(()=>{
         if(receivedService !== undefined){
             const getAvailableAppointments = async () =>{
                 const apps = await fetchAppointments();
@@ -87,36 +84,64 @@ const NewAppointment = ({t, logout}) =>{
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
             }else if(params.page !== null && params.size === null){
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
             }else if(params.page === null && params.size !== null){
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
             }else{
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
             }
         }else{
             if(params.page !== null && params.size !== null){
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
             }else if(params.page !== null && params.size === null){
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
             }else if(params.page === null && params.size !== null){
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
             }else{
                 res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
+                if(res.status === 403){
+                    setRedirect(true);
+                }
             }
         }
         const data = await res.json();
@@ -133,40 +158,52 @@ const NewAppointment = ({t, logout}) =>{
         setPage(1);
     };
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("newAppointment")}</h2>
-            </div>
-                <NewAppointmentForm getAppointments={handleAppointmentSearch} t={t}/>
+
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("newAppointment")}</h2>
+                </div>
+                <NewAppointmentForm getAppointments={handleAppointmentSearch} t={t} logout={logout}/>
                 <>
                     {appointments.length > 0 &&
-                        <>
-                            <h3 style={{fontFamily : 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3>
-                            <div className="itemsNumber availableAppsPagination">
-                                <p>{t("elementsNumber")}&nbsp;</p>
-                                <select onChange={handlePageSizeChange} value={pageSize}>
-                                    {pageSizes.map((size) => (
-                                        <option key={size} value={size}>
-                                            {size}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </>
+                    <>
+                        <h3 style={{fontFamily: 'Montserrat, sans-serif'}}>{t("availableAppointments")}</h3>
+                        <div className="itemsNumber availableAppsPagination">
+                            <p>{t("elementsNumber")}&nbsp;</p>
+                            <select onChange={handlePageSizeChange} value={pageSize}>
+                                {pageSizes.map((size) => (
+                                    <option key={size} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </>
 
                     }
                     {appointments.length > 0 ?
-                        (appointments.map((app)=>(
-                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal} setSelectedAppointment={setSelectedAppointment} t={t}/>
+                        (appointments.map((app) => (
+                            <AvailableAppointment key={app.id} appointment={app} setOpenModal={setOpenModal}
+                                                  setSelectedAppointment={setSelectedAppointment} t={t}/>
                         ))) : (receivedService !== undefined ? t("noAppointments") : '')}
                     {appointments.length > 0 &&
-                    <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
+                    <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                                shape="rounded" onChange={handlePageChange}/>
                     }
-                    {(openModal && selectedAppointment !== undefined) ? <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal} selectedReferral={selectedReferral} t={t}/> : ''}
+                    {(openModal && selectedAppointment !== undefined) ?
+                        <AppointmentModal selectedAppointment={selectedAppointment} setOpenModal={setOpenModal}
+                                          selectedReferral={selectedReferral} t={t} logout={logout}/> : ''}
                 </>
-        </div>
-    )
+            </div>
+        )
+    }
 }
 
 export default withRouter(NewAppointment);

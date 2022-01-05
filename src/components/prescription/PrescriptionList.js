@@ -5,6 +5,7 @@ import {baseUrl} from "../../config/config";
 
 const PrescriptionList = ({t, logout}) =>{
     const history = useHistory();
+    const [redirect, setRedirect] = useState(false);
     const [userId, ,setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -17,16 +18,19 @@ const PrescriptionList = ({t, logout}) =>{
     const [prescriptions, setPrescriptions] = useState([]);
 
     useEffect(()=>{
-        logout(history);
-    },[])
+        let controller = new AbortController();
 
-    useEffect(()=>{
-        const getPrescriptions = async () =>{
-            const prescriptions = await fetchPrescriptions()
-            setPrescriptions(prescriptions)
-        }
-
-        getPrescriptions()
+        (async () =>{
+            try{
+                const prescriptions = await fetchPrescriptions()
+                setPrescriptions(prescriptions);
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () => controller?.abort();
     },[])
 
 
@@ -34,21 +38,31 @@ const PrescriptionList = ({t, logout}) =>{
         const res = await fetch(`${baseUrl}/patients/${userId}/prescriptions`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
+        if(res.status === 403){
+            setRedirect(true);
+        }
         const data = await res.json();
 
         return data;
     }
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("yourPrescriptions")}</h2>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("yourPrescriptions")}</h2>
+                </div>
+                <div className="appointmentList">
+                    <PrescriptionListTable prescriptionData={prescriptions} t={t}/>
+                </div>
             </div>
-            <div className="appointmentList">
-                <PrescriptionListTable prescriptionData={prescriptions} t={t}/>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 

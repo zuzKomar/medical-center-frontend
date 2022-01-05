@@ -1,13 +1,15 @@
 import React from "react";
 import {useState, useEffect} from "react";
+import {useHistory} from "react-router";
 import {FaRegUser, FaCheck, FaFile} from 'react-icons/fa'
 import {GiMedicines} from 'react-icons/gi'
 import {Button} from "react-bootstrap";
 import {baseUrl} from "../../config/config";
 import {GiConfirmed} from "react-icons/all";
 
-const Appointment = ({appointment, setCancelledAppointment, t}) =>{
-
+const Appointment = ({appointment, setCancelledAppointment, t, logout}) =>{
+    const history = useHistory();
+    const [redirect, setRedirect] = useState(false);
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -46,9 +48,14 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${userToken}`
             },
-        }).then((res)=>res.json())
-            .then(window.alert(t("confirmedAppointmentInfo")))
-            .catch((err)=>console.log(err));
+        }).then((res)=>{
+            res.json()
+            if(res.status === 403){
+                setRedirect(true);
+            }else{
+                window.alert(t("confirmedAppointmentInfo"))
+            }
+        }).catch((err)=>console.log(err));
     }
 
     const handleCancellation = (e) =>{
@@ -63,75 +70,90 @@ const Appointment = ({appointment, setCancelledAppointment, t}) =>{
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${userToken}`
             },
-        }).then((res)=>res.json())
-            .then(window.alert(t("canceledAppointmentInfo")))
-            .catch((err)=>console.log(err));
+        }).then((res)=>{
+            res.json()
+            if(res.status === 403){
+                setRedirect(true);
+            }else{
+                window.alert(t("canceledAppointmentInfo"))
+            }
+        }).catch((err)=>console.log(err));
     }
 
     const formatYmd = date => date.toISOString().slice(0, 10);
-
-    return(
-        <div className={app.date ? ((new Date(new Date().setDate(new Date().getDate()+1)) < (new Date(app.date.slice(0,10))))&& app.state === reserved) ? 'appointmentAndCheckup incomingApp'  :
-            (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate()) && app.state === reserved) ? 'appointmentAndCheckup appToConfirm' :
-            ((formatYmd(new Date()) === app.date.slice(0,10)) || (((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate() && app.state === confirmed)) ? 'appointmentAndCheckup todayApp' :
-            'appointmentAndCheckup archivalApp') : ''} onClick={e=>togglePanel(e)}>
-            <div className="top">
-                <p className="appointmentAndCheckupHeader">{(app.service ? (t(app.service.name)) : t(app.serviceName))}</p>
-                <div className="data">
-                    <p>{t("date")}</p>
-                    <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(0,10) : ''}</p>
-                    <p>{appointment.date ? new Date(new Date(appointment.date)-x).toISOString().slice(11,16) : ''}</p>
-                    {(appointment.state === done && (formatYmd(new Date()) === app.date.slice(0,10))) && <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div
+                className={app.date ? ((new Date(new Date().setDate(new Date().getDate() + 1)) < (new Date(app.date.slice(0, 10)))) && app.state === reserved) ? 'appointmentAndCheckup incomingApp' :
+                    (((new Date(new Date().setDate(new Date().getDate() + 1))).getDate() === (new Date(app.date.slice(0, 10))).getDate()) && app.state === reserved) ? 'appointmentAndCheckup appToConfirm' :
+                        ((formatYmd(new Date()) === app.date.slice(0, 10)) || (((new Date(new Date().setDate(new Date().getDate() + 1))).getDate() === (new Date(app.date.slice(0, 10))).getDate() && app.state === confirmed)) ? 'appointmentAndCheckup todayApp' :
+                            'appointmentAndCheckup archivalApp') : ''} onClick={e => togglePanel(e)}>
+                <div className="top">
+                    <p className="appointmentAndCheckupHeader">{(app.service ? (t(app.service.name)) : t(app.serviceName))}</p>
+                    <div className="data">
+                        <p>{t("date")}</p>
+                        <p>{appointment.date ? new Date(new Date(appointment.date) - x).toISOString().slice(0, 10) : ''}</p>
+                        <p>{appointment.date ? new Date(new Date(appointment.date) - x).toISOString().slice(11, 16) : ''}</p>
+                        {(appointment.state === done && (formatYmd(new Date()) === app.date.slice(0, 10))) &&
+                        <p><GiConfirmed size={42} style={{color: "#18a74b"}}/></p>}
+                    </div>
                 </div>
-            </div>
-            {app.date?
-                <div style={{display: 'flex', justifyContent:'space-between'}}>
-                    <div>
-                        <FaRegUser size={42}/>
-                        {t("doctorTitle")}&nbsp;{(app.doctor? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
-                    </div>
-                    <div style={{display: "inline-flex"}}>
-                        <div style={{margin : "6px"}}>
-                            {(((new Date(new Date().setDate(new Date().getDate()+1))).getDate() === (new Date(app.date.slice(0,10))).getDate())  && (app.state === reserved))&&
-                            <Button variant='outline-success' size="lg" onClick={e=>handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
-                            }
+                {app.date ?
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <div>
+                            <FaRegUser size={42}/>
+                            {t("doctorTitle")}&nbsp;{(app.doctor ? (app.doctor.firstName + ' ' + app.doctor.lastName) : '')}
                         </div>
-                        <div style={{margin : "6px"}}>
-                            {(app.state === reserved) &&
-                            <Button variant='outline-primary' size='lg' onClick={e=>handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
-                            }
+                        <div style={{display: "inline-flex"}}>
+                            <div style={{margin: "6px"}}>
+                                {(((new Date(new Date().setDate(new Date().getDate() + 1))).getDate() === (new Date(app.date.slice(0, 10))).getDate()) && (app.state === reserved)) &&
+                                <Button variant='outline-success' size="lg"
+                                        onClick={e => handleConfirmation(e)}>{t("confirmAppointmentMessage")}</Button>
+                                }
+                            </div>
+                            <div style={{margin: "6px"}}>
+                                {(app.state === reserved) &&
+                                <Button variant='outline-primary' size='lg'
+                                        onClick={e => handleCancellation(e)}>{t("cancelAppointmentMessage")}</Button>
+                                }
+                            </div>
                         </div>
-                    </div>
-                </div> : ''}
-            {(app.state === done)  ?
-                <>
-                {open ? (
-                    <div>
-                        <hr/>
-                        <div className="subsections">
-                            <FaCheck size={42}/>
-                            <p className="header">{t("recommendations")}</p>
-                        </div>
-                        <ol>
-                            <li>{app.recommendations ? app.recommendations : t("noRecommendations")}</li>
-                        </ol>
-                        <hr/>
+                    </div> : ''}
+                {(app.state === done) ?
+                    <>
+                        {open ? (
+                            <div>
+                                <hr/>
+                                <div className="subsections">
+                                    <FaCheck size={42}/>
+                                    <p className="header">{t("recommendations")}</p>
+                                </div>
+                                <ol>
+                                    <li>{app.recommendations ? app.recommendations : t("noRecommendations")}</li>
+                                </ol>
+                                <hr/>
 
-                        <div className="subsections">
-                            <FaFile size={42}/>
-                            <p className="header">{t("madeCheckUps")}</p>
-                        </div>
-                        <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test)=>test.diagnosticTestName)) : t("noCheckUps")}</p>
-                        <hr/>
+                                <div className="subsections">
+                                    <FaFile size={42}/>
+                                    <p className="header">{t("madeCheckUps")}</p>
+                                </div>
+                                <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test) => test.diagnosticTestName)) : t("noCheckUps")}</p>
+                                <hr/>
 
-                        <div className="subsections">
-                            <GiMedicines size={42}/>
-                            <p className="header">{t("eReceipt")}</p>
-                        </div>
-                        <p>{app.prescriptions.length > 0 ? t("eReceiptIssued"): t("noReceipts")}</p>
-                    </div>) : null}
-                </> : null}
-        </div>);
+                                <div className="subsections">
+                                    <GiMedicines size={42}/>
+                                    <p className="header">{t("eReceipt")}</p>
+                                </div>
+                                <p>{app.prescriptions.length > 0 ? t("eReceiptIssued") : t("noReceipts")}</p>
+                            </div>) : null}
+                    </> : null}
+            </div>);
+    }
 }
 
 export default Appointment;

@@ -76,7 +76,7 @@ const App = () =>{
                               <Switch>
                                   <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
                                   <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
-                                  <Route component={NotFound}/>
+                                  <Route component={()=><NotFound t={t}/>}/>
                               </Switch>
                           }
                           {(role === patient && logged === true) &&
@@ -89,7 +89,7 @@ const App = () =>{
                                   <Route exact path="/schedule" component={() => <ScheduleForm t={t} logout={logOut}/>}/>
                                   <Route exact path="/check-ups" component={() => <CheckUpList t={t} logout={logOut}/>}/>
                                   <Route exact path="/prescriptions" component={() => <PrescriptionList t={t} logout={logOut}/>}/>
-                                  <Route path="*" component={NotFound}/>
+                                  <Route path="*" component={()=><NotFound t={t}/>}/>
                               </Switch>
                           }
                           {(role === doctor && logged === true) &&
@@ -100,7 +100,7 @@ const App = () =>{
                                   <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} logout={logOut}/>} />
                                   <Route exact path="/today-visits/:id/details/files" component={() => <FilesTable t={t} logout={logOut}/>} />
                                   <Route exact path="/check-ups" component={() => <DoctorCheckUpList t={t} logout={logOut}/>} />
-                                  <Route path="*" component={NotFound}/>
+                                  <Route path="*" component={()=><NotFound t={t}/>}/>
                               </Switch>
                           }
                       </div>

@@ -7,6 +7,7 @@ import {baseUrl} from "../../config/config";
 
 const UploadNewFile = ({t, logout}) =>{
     const history = useHistory();
+
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -22,14 +23,11 @@ const UploadNewFile = ({t, logout}) =>{
     const [fileDescription, setFileDescription] = useState(undefined);
     const [errors, setErrors] = useState({});
     const ref = useRef();
+    const [redirect, setRedirect] = useState(false);
 
     const reset = () =>{
         ref.current.value = "";
     };
-
-    useEffect(()=>{
-        logout(history);
-    },[])
 
     useEffect(()=>{
         const getPatientFiles = async ()=>{
@@ -57,6 +55,9 @@ const UploadNewFile = ({t, logout}) =>{
         const res = await fetch(`${baseUrl}/patients/${userId}/files`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
+        if(res.status === 403){
+            setRedirect(true);
+        }
         const data = await res.json()
 
         return data;
@@ -119,10 +120,13 @@ const UploadNewFile = ({t, logout}) =>{
                         'Access-Control-Allow-Origin': `${baseUrl}`
                     },
                     body: JSON.stringify(selectedFile)
-                }).then(()=>{
+                }).then((res)=>{
                     setSelectedFile(undefined)
                     setFileDescription('');
                     reset();
+                    if(res.status === 403){
+                        setRedirect(true);
+                    }
                 })
                     .catch(err=>console.log(err));
             }
@@ -152,7 +156,12 @@ const UploadNewFile = ({t, logout}) =>{
         fetch(`${baseUrl}/patients/${userId}/files/${file.id}`,{
             headers: {'Authorization' : `Bearer ${userToken}`},
             method: 'DELETE',
-        }).then(res => res.json())
+        }).then(res => {
+            res.json()
+            if(res.status === 403){
+                setRedirect(true);
+            }
+        })
             .catch(err => console.log(err))
      }
 
@@ -175,76 +184,86 @@ const UploadNewFile = ({t, logout}) =>{
         return newErrors;
      }
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("addNewFile")}</h2>
-            </div>
-            <Form className="newAppointmentForm" >
-                <Form.Group controlId="file" className="mb-2">
-                    <Form.Label>{t("file")}</Form.Label>
-                    <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={(e)=>{
-                        handleFileUpload(e);
-                        if(!!errors['file'])
-                            setErrors({
-                                ...errors,
-                                ['file']:null
-                            })
-                    }}/>
-                    <Form.Control.Feedback type='invalid'>{errors.file}</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="description" className="mb-2">
-                    <Form.Label>{t("fileDescription")}</Form.Label>
-                    <Form.Control as="textarea" value={fileDescription} isInvalid={!!errors.description} onChange={(e)=>{
-                        setFileDescription(e.target.value);
-                        if(!!errors['description'])
-                            setErrors({
-                                ...errors,
-                                ['description']:null
-                            })
-                    }}/>
-                    <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
-                </Form.Group>
-                <div style={{display:"flex", justifyContent: 'center'}}>
-                    <Button variant='primary' onClick={(e)=>handleSubmit(e)}>{t("addFile")}</Button>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("addNewFile")}</h2>
                 </div>
-            </Form>
-            {files.length > 0 ?
-                <Table className="table table-hover table-bordered fileTable" style={{width : '80%'}}>
-                    <thead style={{backgroundColor : '#e6eeff'}}>
-                    <tr>
-                        <th>{t("fileNameFormat")}</th>
-                        <th>{t("fileDescription")}</th>
-                        <th>{t("createDate")}</th>
-                        <th>{t("action")}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {files.map((file)=>
-                        <tr key={file.id}>
-                            <td>{file.name}</td>
-                            <td>{file.description}</td>
-                            <td>{file.uploadDate}</td>
-                            <td>
-                                <ul className="listActions">
-                                    <li>
-                                        <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>handleFileDownload(e, file)}>{t("download")}</Button>
-                                    </li>
-                                    <li>
-                                        <Button variant='danger' href={`${baseUrl}/patients/1/files/${file.id}`} onClick={e=>{
-                                            setDeletedFile(file);
-                                            handleFileDeletion(e, file)
-                                        }}>{t("delete")}</Button>
-                                    </li>
-                                </ul>
-                            </td>
+                <Form className="newAppointmentForm">
+                    <Form.Group controlId="file" className="mb-2">
+                        <Form.Label>{t("file")}</Form.Label>
+                        <Form.Control as="input" ref={ref} type="file" isInvalid={!!errors.file} onChange={(e) => {
+                            handleFileUpload(e);
+                            if (!!errors['file'])
+                                setErrors({
+                                    ...errors,
+                                    ['file']: null
+                                })
+                        }}/>
+                        <Form.Control.Feedback type='invalid'>{errors.file}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="description" className="mb-2">
+                        <Form.Label>{t("fileDescription")}</Form.Label>
+                        <Form.Control as="textarea" value={fileDescription} isInvalid={!!errors.description}
+                                      onChange={(e) => {
+                                          setFileDescription(e.target.value);
+                                          if (!!errors['description'])
+                                              setErrors({
+                                                  ...errors,
+                                                  ['description']: null
+                                              })
+                                      }}/>
+                        <Form.Control.Feedback type='invalid'>{errors.description}</Form.Control.Feedback>
+                    </Form.Group>
+                    <div style={{display: "flex", justifyContent: 'center'}}>
+                        <Button variant='primary' onClick={(e) => handleSubmit(e)}>{t("addFile")}</Button>
+                    </div>
+                </Form>
+                {files.length > 0 ?
+                    <Table className="table table-hover table-bordered fileTable" style={{width: '80%'}}>
+                        <thead style={{backgroundColor: '#e6eeff'}}>
+                        <tr>
+                            <th>{t("fileNameFormat")}</th>
+                            <th>{t("fileDescription")}</th>
+                            <th>{t("createDate")}</th>
+                            <th>{t("action")}</th>
                         </tr>
-                    )}
-                    </tbody>
-                </Table> : t("noFiles")
-            }
-        </div>
+                        </thead>
+                        <tbody>
+                        {files.map((file) =>
+                            <tr key={file.id}>
+                                <td>{file.name}</td>
+                                <td>{file.description}</td>
+                                <td>{file.uploadDate}</td>
+                                <td>
+                                    <ul className="listActions">
+                                        <li>
+                                            <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`}
+                                                    onClick={e => handleFileDownload(e, file)}>{t("download")}</Button>
+                                        </li>
+                                        <li>
+                                            <Button variant='danger' href={`${baseUrl}/patients/1/files/${file.id}`}
+                                                    onClick={e => {
+                                                        setDeletedFile(file);
+                                                        handleFileDeletion(e, file)
+                                                    }}>{t("delete")}</Button>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </Table> : t("noFiles")
+                }
+            </div>
         );
+    }
 }
 
 export default UploadNewFile;

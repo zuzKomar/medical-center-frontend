@@ -7,8 +7,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {baseUrl} from "../../config/config";
 
-const NewAppointmentForm = ({getAppointments, t}) =>{
-
+const NewAppointmentForm = ({getAppointments, t, logout}) =>{
+    const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -38,35 +38,59 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
     const [errors, setErrors] = useState({});
 
     useEffect(()=>{
+        let controller = new AbortController();
+
         if(appointmentType !== undefined){
             if(appointmentType === 'facility'){
-                const getServices = async () =>{
-                    const services = await fetchServices(true)
-                    services.forEach(service => service.name = t(service.name));
-                    setServices(services)
-                }
-                getServices();
+                (async () =>{
+                    try{
+                        const services = await fetchServices(true)
+                        services.forEach(service => service.name = t(service.name));
+                        setServices(services)
+                        controller = null;
+                    }catch (e){
+                        console.log(e)
+                        setRedirect(true);
+                    }
+                })();
+               return () =>controller?.abort();
 
             }else{
-                const getServices = async () =>{
-                    const services = await fetchServices(false)
-                    services.forEach(service => service.name = t(service.name));
-                    setServices(services)
-                }
-                getServices();
+                (async () =>{
+                    try{
+                        const services = await fetchServices(false)
+                        services.forEach(service => service.name = t(service.name));
+                        setServices(services)
+                        controller = null;
+                    }catch (e){
+                        console.log(e)
+                        setRedirect(true);
+                    }
+
+                })();
+                return () =>controller?.abort();
             }
         }
     },[appointmentType])
 
     useEffect(()=>{
+        let controller = new AbortController();
+
         if(service !== undefined){
-            const getDoctors = async () =>{
-                const doctors = await fetchDoctors()
-                setDoctors(doctors)
-                const doctorSelect = document.querySelector('#doctorr');
-                doctorSelect.disabled = false;
-            }
-            getDoctors()
+            (async () =>{
+                try{
+                    const doctors = await fetchDoctors()
+                    setDoctors(doctors)
+                    const doctorSelect = document.querySelector('#doctorr');
+                    doctorSelect.disabled = false;
+                    controller = null;
+                }catch (e){
+                    console.log(e);
+                    setRedirect(true);
+                }
+
+            })();
+            return () => controller?.abort();
         }
     },[service])
 
@@ -119,16 +143,24 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
     }, [selectedReferral])
 
     useEffect(()=>{
-        const getReferrals = async () =>{
+        let controller = new AbortController();
+
+        (async () =>{
             const formatYmd = date => date.toISOString().slice(0, 10);
-            const referrals = await fetchReferrals()
-            const availableReferrals = referrals.referrals.filter(ref=>(formatYmd(new Date(ref.expiryDate)) >= formatYmd(new Date())));
-            availableReferrals.forEach(referral => {
-                referral.medicalService.name = t(referral.medicalService.name)
-            })
-            setReferrals(availableReferrals);
-        }
-        getReferrals()
+            try{
+                const referrals = await fetchReferrals()
+                const availableReferrals = referrals.referrals.filter(ref=>(formatYmd(new Date(ref.expiryDate)) >= formatYmd(new Date())));
+                availableReferrals.forEach(referral => {
+                    referral.medicalService.name = t(referral.medicalService.name)
+                })
+                setReferrals(availableReferrals);
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () => controller?.abort();
     }, [])
 
 
@@ -136,6 +168,11 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
         const res = await fetch(`${baseUrl}/patients/${userId}/referrals?size=100`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         });
+
+        if(res.status === 403){
+            setRedirect(true);
+        }
+
         const data = await res.json();
 
         return data;
@@ -147,10 +184,16 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             res = await fetch(`${baseUrl}/doctors/services?language=PL&medicalServiceId=${service.id}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             });
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }else{
             res = await fetch(`${baseUrl}/doctors/services?language=EN&medicalServiceId=${service.id}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             });
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }
 
         const data = await res.json();
@@ -164,10 +207,16 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             res = await fetch(`${baseUrl}/medicalServices?type=FACILITY`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             });
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }else{
             res = await fetch(`${baseUrl}/medicalServices?type=TELEPHONE`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             });
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }
 
         const data = await res.json();
@@ -238,125 +287,140 @@ const NewAppointmentForm = ({getAppointments, t}) =>{
             }
         }
     }
-
-    return(
-        <Form className="newAppointmentForm">
-            <Form.Group className="mb-3">
-                <Form.Label >{t("appointmentType")}</Form.Label>
-                <Form.Check type="radio" name="type" id="facility" label={t("facility")} onClick={(e)=>{
-                    setAppointmentType('facility');
-                    if(!!errors['appType'])
-                        setErrors({
-                            ...errors,
-                            ['appType']:null
-                        })
-                }} isInvalid={!!errors.appType}/>
-                <Form.Check type="radio" name="type" id="phone" label={t("teleconsultation")} onClick={(e)=>{
-                    setAppointmentType('phone');
-                    if(!!errors['appType'])
-                        setErrors({
-                            ...errors,
-                            ['appType']:null
-                        })
-                }} isInvalid={!!errors.appType}/>
-                <Form.Control.Feedback type='invalid'>{errors.appType}</Form.Control.Feedback>
-            </Form.Group>
-            <Row className="align-items-center mb-3">
-                <Col>
-                    <Form.Group>
-                        <Form.Label>{t("language")}:</Form.Label>
-                        <Form.Select id='selectedLanguage'>
-                            {languages.map((lang)=>(
-                                <option value={lang} onClick={(e)=>setLanguage(lang)}>{lang}</option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-                </Col>
-                <Col>
-                    <Form.Group>
-                        <Form.Label>{t("referral")}:</Form.Label>
-                        <Form.Select id='selectedReferral' defaultValue={receivedReferral}>
-
-                            {!receivedReferral &&
-                            <>
-                                <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
-                                {referrals.map((ref) => (
-                                    <option value={ref} key={ref.id} onClick={(e)=>{
-                                        setSelectedReferral(ref)
-                                        setErrors({
-                                            ['serviceMess']:null,
-                                            ['appType']:null
-                                        })
-                                    }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <Form className="newAppointmentForm">
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("appointmentType")}</Form.Label>
+                    <Form.Check type="radio" name="type" id="facility" label={t("facility")} onClick={(e) => {
+                        setAppointmentType('facility');
+                        if (!!errors['appType'])
+                            setErrors({
+                                ...errors,
+                                ['appType']: null
+                            })
+                    }} isInvalid={!!errors.appType}/>
+                    <Form.Check type="radio" name="type" id="phone" label={t("teleconsultation")} onClick={(e) => {
+                        setAppointmentType('phone');
+                        if (!!errors['appType'])
+                            setErrors({
+                                ...errors,
+                                ['appType']: null
+                            })
+                    }} isInvalid={!!errors.appType}/>
+                    <Form.Control.Feedback type='invalid'>{errors.appType}</Form.Control.Feedback>
+                </Form.Group>
+                <Row className="align-items-center mb-3">
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{t("language")}:</Form.Label>
+                            <Form.Select id='selectedLanguage'>
+                                {languages.map((lang) => (
+                                    <option value={lang} onClick={(e) => setLanguage(lang)}>{lang}</option>
                                 ))}
-                            </>
-                            }
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{t("referral")}:</Form.Label>
+                            <Form.Select id='selectedReferral' defaultValue={receivedReferral}>
 
-                            {receivedReferral &&
+                                {!receivedReferral &&
                                 <>
-                                    <option value={receivedReferral}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
-                                    <option onClick={e=>{clearReferralFields(e)}} value="0">{t("useReferral")}</option>
-
-                                    {referrals.filter(ref=>ref.id!==receivedReferral.id).map((ref) => (
-                                        <option value={ref} key={ref.id} onClick={(e)=>{
+                                    <option onClick={e => {
+                                        clearReferralFields(e)
+                                    }} value="0">{t("useReferral")}</option>
+                                    {referrals.map((ref) => (
+                                        <option value={ref} key={ref.id} onClick={(e) => {
                                             setSelectedReferral(ref)
                                             setErrors({
-                                                ['serviceMess']:null,
-                                                ['appType']:null
+                                                ['serviceMess']: null,
+                                                ['appType']: null
                                             })
                                         }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
                                     ))}
                                 </>
-                            }
-                        </Form.Select>
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Form.Group className="mb-3">
-                <Form.Label>{t("service")}</Form.Label>
-                <Form.Select id = 'selectService' isInvalid={!!errors.serviceMess}>
-                    <option onClick={e=>clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : t("chooseService")}</option>
-                    {services.map((ser)=>(
-                        <option value={ser.name} onClick={(e)=>{
-                            setService(ser);
-                            if(!!errors['serviceMess'])
-                                setErrors({
-                                    ...errors,
-                                    ['serviceMess']:null
-                                })
-                        }}>{ser.name}</option>
-                    ))}
-                </Form.Select>
-                <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>{t("doctor")}</Form.Label>
-                <Form.Select id='doctorr'>
-                    <option value="0">{t("chooseDoctor")}</option>
-                    {doctors.map((doc) =>(
-                        <option value={doc.firstName + ' ' + doc.lastName} onClick={(e)=>setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
-                    ))}
-                </Form.Select>
-            </Form.Group>
-            <Row className="align-items-center mb-3">
-                <Col>
-                    <Form.Group>
-                        <Form.Label>{t("dateFrom")}</Form.Label>
-                        <Form.Control type='date' placeholder={t("dateFrom")} value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)}/>
-                    </Form.Group>
-                </Col>
-                <Col>
-                    <Form.Group>
-                        <Form.Label>{t("dateTo")}</Form.Label>
-                        <Form.Control type='date' placeholder={t("dateTo")} value={dateTo} onChange={(e)=>setDateTo(e.target.value)}/>
-                    </Form.Group>
-                </Col>
-            </Row>
-            <div style={{display:"flex", justifyContent: 'center'}}>
-                <Button variant='primary' onClick={e=>handleSubmit(e)}>{t("searchAppointment")}</Button>
-            </div>
-        </Form>
-    )
+                                }
+
+                                {receivedReferral &&
+                                <>
+                                    <option
+                                        value={receivedReferral}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
+                                    <option onClick={e => {
+                                        clearReferralFields(e)
+                                    }} value="0">{t("useReferral")}</option>
+
+                                    {referrals.filter(ref => ref.id !== receivedReferral.id).map((ref) => (
+                                        <option value={ref} key={ref.id} onClick={(e) => {
+                                            setSelectedReferral(ref)
+                                            setErrors({
+                                                ['serviceMess']: null,
+                                                ['appType']: null
+                                            })
+                                        }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                    ))}
+                                </>
+                                }
+                            </Form.Select>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("service")}</Form.Label>
+                    <Form.Select id='selectService' isInvalid={!!errors.serviceMess}>
+                        <option
+                            onClick={e => clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : t("chooseService")}</option>
+                        {services.map((ser) => (
+                            <option value={ser.name} onClick={(e) => {
+                                setService(ser);
+                                if (!!errors['serviceMess'])
+                                    setErrors({
+                                        ...errors,
+                                        ['serviceMess']: null
+                                    })
+                            }}>{ser.name}</option>
+                        ))}
+                    </Form.Select>
+                    <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("doctor")}</Form.Label>
+                    <Form.Select id='doctorr'>
+                        <option value="0">{t("chooseDoctor")}</option>
+                        {doctors.map((doc) => (
+                            <option value={doc.firstName + ' ' + doc.lastName}
+                                    onClick={(e) => setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
+                        ))}
+                    </Form.Select>
+                </Form.Group>
+                <Row className="align-items-center mb-3">
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{t("dateFrom")}</Form.Label>
+                            <Form.Control type='date' placeholder={t("dateFrom")} value={dateFrom}
+                                          onChange={(e) => setDateFrom(e.target.value)}/>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{t("dateTo")}</Form.Label>
+                            <Form.Control type='date' placeholder={t("dateTo")} value={dateTo}
+                                          onChange={(e) => setDateTo(e.target.value)}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <div style={{display: "flex", justifyContent: 'center'}}>
+                    <Button variant='primary' onClick={e => handleSubmit(e)}>{t("searchAppointment")}</Button>
+                </div>
+            </Form>
+        )
+    }
 }
 
 export default withRouter(NewAppointmentForm);

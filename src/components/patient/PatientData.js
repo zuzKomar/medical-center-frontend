@@ -11,6 +11,7 @@ const  today = new Date();
 
 const PatientData = ({t, logout}) => {
     const history = useHistory();
+    const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -72,11 +73,6 @@ const PatientData = ({t, logout}) => {
     const [postCode, setPostCode] = useState(undefined);
     const [country, setCountry] = useState(undefined);
 
-    useEffect(()=>{
-        logout(history);
-    },[])
-
-
     useEffect(() => {
         const getPatient = async () =>{
             const patient = await fetchPatient()
@@ -107,6 +103,9 @@ const PatientData = ({t, logout}) => {
         const res = await fetch(`${baseUrl}/patients/${userId}`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
+        if(res.status === 403){
+            setRedirect(true);
+        }
         const data = await res.json()
 
         return data
@@ -148,11 +147,12 @@ const PatientData = ({t, logout}) => {
 
 
         if(emailChange === true && (password === undefined || password === '')){
-            window.alert(t("emailAndPasswordRequired"));
-        }else{
+            window.alert(t("emailAndPasswordRequired"))
+        }
+        if(password !== undefined && password !== ''){
             let newAuthObj = {}
-            if(password !== undefined && password !== ''){
-                newAuthObj['password'] = password;
+            newAuthObj['password'] = password;
+            if(emailChange === true){
                 newAuthObj['email'] = email;
             }
 
@@ -174,8 +174,11 @@ const PatientData = ({t, logout}) => {
         }
     }
 
-    if(!data) {
-        return null;
+    if(redirect === true) {
+        logout(history);
+        return (
+            <></>
+        )
     }else{
         return(
             <div className="itemsList">
