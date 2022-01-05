@@ -255,5 +255,7 @@
   "emailAndPasswordRequired" : "W przypadku zmiany adresu e-mail wymagana jest również zmiana hasła!",
   "tokenExpiredLogout" : "Nastąpiło wylogowanie z powodu wygaśnięcia sesji.",
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
-  "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX"
+  "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX",
+  "checkupResultRequired" : "Należy wprowadzić wynik badania!",
+  "checkupResultFileRequired" : "Należy załączyć plik PDF z wynikiem!"
 }

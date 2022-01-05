@@ -255,5 +255,7 @@
   "emailAndPasswordRequired" : "In case of e-mail address change, password change is required!",
   "tokenExpiredLogout" : "You've been logged out due to session expiration.",
   "registerSuccessful": "Registration was successful!",
-  "postCodeError": "Postal code should have XX-XXX format!"
+  "postCodeError": "Postal code should have XX-XXX format!",
+  "checkupResultRequired" : "Result must be added!",
+  "checkupResultFileRequired" : "PDF file must be added!"
 }

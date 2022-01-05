@@ -94,7 +94,7 @@ const App = () =>{
                           }
                           {(role === doctor && logged === true) &&
                               <Switch>
-                                  <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} logout={logOut}/>}/>
+                                  <Route exact path="/today-visits" component={() => <TodayAppointmentList t={t} logout={logOut}/>} />
                                   <Route exact path="/today-visits/:id/details" component={() => <AppointmentDetails t={t} logout={logOut}/>} />
                                   <Route exact path="/today-visits/:id/details/visits-history" component={() => <VisitsHistoryList t={t} logout={logOut}/>} />
                                   <Route exact path="/today-visits/:id/details/check-ups" component={() => <CheckUpList t={t} logout={logOut}/>} />

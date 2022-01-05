@@ -111,12 +111,12 @@ const UploadNewFile = ({t, logout}) =>{
             if(selectedFile !== undefined && fileDescription !== undefined){
                 selectedFile["description"] = fileDescription;
 
-                fetch(`${baseUrl}/patients/${baseUrl}/files`,{
+                fetch(`${baseUrl}/patients/${userId}/files`,{
                     method : 'POST',
                     headers :{
+                        'Authorization' : `Bearer ${userToken}`,
                         'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': `${baseUrl}`,
-                        'Authorization' : `Bearer ${userToken}`
+                        'Access-Control-Allow-Origin': `${baseUrl}`
                     },
                     body: JSON.stringify(selectedFile)
                 }).then(()=>{
@@ -131,7 +131,7 @@ const UploadNewFile = ({t, logout}) =>{
 
      const handleFileDownload = (e, file) => {
          e.preventDefault();
-         fetch(`${baseUrl}/patients/${baseUrl}/files/${file.id}`,{
+         fetch(`${baseUrl}/patients/${userId}/files/${file.id}`,{
              headers: {'Authorization' : `Bearer ${userToken}`}
          })
              .then(res => res.json())
@@ -149,7 +149,7 @@ const UploadNewFile = ({t, logout}) =>{
      const handleFileDeletion = (e, file) =>{
         e.preventDefault();
 
-        fetch(`${baseUrl}/patients/${baseUrl}/files/${file.id}`,{
+        fetch(`${baseUrl}/patients/${userId}/files/${file.id}`,{
             headers: {'Authorization' : `Bearer ${userToken}`},
             method: 'DELETE',
         }).then(res => res.json())

@@ -37,11 +37,11 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
         const newErrors = {};
 
         if(result === undefined || result === ''){
-            newErrors.result = 'Result must be added!';
+            newErrors.result = t("checkupResultRequired");
         }
 
         if (file === undefined) {
-            newErrors.file = 'File must be added!';
+            newErrors.file = t("checkupResultFileRequired");
         }
 
         return newErrors;
@@ -95,7 +95,12 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
                 },
                 body: JSON.stringify(fetchBody)
             })
-            .then((res) => res.json())
+            .then((res) => {
+                if(res.status === 403){
+                    window.alert('bląd');
+                }
+                res.json()
+            })
                 .then(()=>new Promise(resolve => setTimeout(resolve, 2000)))
             .then(window.alert(t("checkUpRealized")))
             .catch((err) => console.log(err));

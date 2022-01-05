@@ -6,6 +6,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 const TodayAppointmentList = ({t, logout}) => {
     const history = useHistory();
+
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -52,19 +53,19 @@ const TodayAppointmentList = ({t, logout}) => {
         if(params.page !== null && params.size !== null){
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}&size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
-            });
+            })
         }else if(params.page !== null && params.size === null){
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
-            });
+            })
         }else if(params.page === null && params.size !== null){
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
-            });
+            })
         }else{
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
-            });
+            })
         }
 
         const data = await res.json();
@@ -96,9 +97,11 @@ const TodayAppointmentList = ({t, logout}) => {
                     ))}
                 </select>
             </div>
-            <div className="appointmentList">
-                {appointments.map(appointment => <DoctorAppointment key={appointment.id} app={appointment} t={t} />)}
-            </div>
+            {/*<div className="appointmentList">*/}
+            {/*    {appointments.map(appointment => (*/}
+            {/*        <DoctorAppointment key={appointment.id} app={appointment} t={t} />*/}
+            {/*    ))}*/}
+            {/*</div>*/}
             <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
         </div>
     )
