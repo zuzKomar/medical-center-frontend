@@ -250,6 +250,9 @@
   "package": "op",
   "userWithPeselNotFound": "Nie znaleziono użytkownika o podanym numerze pesel lub jest już zarejestrowany!",
   "userDontExists" : "Podany użytkownik nie istnieje! Upewnij się, że podajesz prawidłowe dane.",
+  "peselIsUsed" : "Podany numer PESEL jest już w użyciu!",
+  "emailIsUsed" : "Podany adres email jest już w użyciu!",
+  "emailAndPasswordRequired" : "W przypadku zmiany adresu e-mail wymagana jest również zmiana hasła!",
   "tokenExpiredLogout" : "Nastąpiło wylogowanie z powodu wygaśnięcia sesji.",
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
   "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX"

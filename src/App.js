@@ -18,7 +18,7 @@ import AppointmentDetails from "./components/appointment/doctor/AppointmentDetai
 import VisitsHistoryList from "./components/appointment/doctor/visitsHistory/VisitsHistoryList";
 import FilesTable from "./components/appointment/doctor/files/FilesTable";
 import DoctorCheckUpList from "./components/checkup/doctor/DoctorCheckUpList";
-import background from '../src/stetoscope.jpg';
+import background from '../src/img/stetoscope.jpg';
 import {useTranslation} from "react-i18next";
 import {
     BrowserRouter as Router,

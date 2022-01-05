@@ -138,17 +138,21 @@ const PatientData = ({t, logout}) => {
                 'Content-Type': 'application/json;charset=UTF-8',
                 },
             body: JSON.stringify(newObj)
-        }).then((res)=>res.json())
-            .catch((err)=>console.log(err));
+        }).then((res)=>{
+            if(res.status === 403){
+                window.alert(t("peselIsUsed"));
+                throw new Error(t("peselIsUsed"))
+            }
+            res.json()
+        }).catch((err)=>console.log(err));
 
 
-        if((password !== undefined && password !== '') || emailChange === true){
+        if(emailChange === true && (password === undefined || password === '')){
+            window.alert(t("emailAndPasswordRequired"));
+        }else{
             let newAuthObj = {}
-
             if(password !== undefined && password !== ''){
                 newAuthObj['password'] = password;
-            }
-            if(emailChange === true){
                 newAuthObj['email'] = email;
             }
 
@@ -158,10 +162,15 @@ const PatientData = ({t, logout}) => {
                     'Authorization' : `Bearer ${userToken}`,
                     'Access-Control-Allow-Origin': `${baseUrl}`,
                     'Content-Type': 'application/json;charset=UTF-8',
-                    },
+                },
                 body : JSON.stringify(newAuthObj)
-            }).then((res)=>res.json())
-                .catch(err=>console.log(err))
+            }).then((res)=>{
+                if(res.status === 403){
+                    window.alert(t("emailIsUsed"));
+                    throw new Error(t("emailIsUsed"))
+                }
+                res.json()
+            }).catch(err=>console.log(err))
         }
     }
 

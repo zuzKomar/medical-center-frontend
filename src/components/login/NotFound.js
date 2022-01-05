@@ -1,5 +1,5 @@
 import React from "react";
-import errorImage from '../../404.png';
+import errorImage from '../../img/404.png';
 
 const NotFound = () =>(
     <div className="loginForm" style={{marginTop:"10%", marginBottom:"27%"}}>

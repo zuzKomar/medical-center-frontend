@@ -1,5 +1,5 @@
 import React from "react";
-import logo from '../../logo.png';
+import logo from '../../img/logo.png';
 import {Navbar, Nav, NavDropdown, Container, ListGroup} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 import {BsPerson} from 'react-icons/bs'

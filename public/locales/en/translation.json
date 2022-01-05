@@ -250,6 +250,9 @@
   "package": "pack",
   "userWithPeselNotFound": "User with given pesel number was not found or has already registered!",
   "userDontExists" : "User does not exist! Please make sure you passed correct credentials.",
+  "peselIsUsed" : "Given PESEL number is already used!",
+  "emailIsUsed" : "Given e-mail address is already used!",
+  "emailAndPasswordRequired" : "In case of e-mail address change, password change is required!",
   "tokenExpiredLogout" : "You've been logged out due to session expiration.",
   "registerSuccessful": "Registration was successful!",
   "postCodeError": "Postal code should have XX-XXX format!"
