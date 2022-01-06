@@ -60,7 +60,7 @@ const CheckUp = ({checkup, t}) =>{
             </div>
             <div>
                 <FaRegUser size={42}/>
-                {checkUp.doctorFirstName + ' ' + checkUp.doctorLastName}
+                {t("doctorTitle") + ' ' + checkUp.doctorFirstName + ' ' + checkUp.doctorLastName}
             </div>
 
             {state ? (
