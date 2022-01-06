@@ -339,13 +339,21 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                 }
             }).catch((err)=>console.log(err));
 
-            sessionStorage.clear();
+            sessionStorage.removeItem('description');
+            sessionStorage.removeItem('recommendations');
+            sessionStorage.removeItem('referrals');
+            sessionStorage.removeItem('medications');
+            sessionStorage.removeItem('checkups');
         }
     }
 
     const handleCancel = (e) =>{
         e.preventDefault();
-        sessionStorage.clear();
+        sessionStorage.removeItem('description');
+        sessionStorage.removeItem('recommendations');
+        sessionStorage.removeItem('referrals');
+        sessionStorage.removeItem('medications');
+        sessionStorage.removeItem('checkups');
         history.push({
             pathname : '/today-visits'
         })
