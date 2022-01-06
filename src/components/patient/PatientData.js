@@ -9,7 +9,7 @@ import {baseUrl} from "../../config/config";
 
 const  today = new Date();
 
-const PatientData = ({t, logout}) => {
+const PatientData = ({t, logout, setLogged}) => {
     const history = useHistory();
     const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
@@ -46,8 +46,8 @@ const PatientData = ({t, logout}) => {
         birthDate: yup.date().max(today, t("dateFromFutureError")).required(t("required")),
         phoneNumber: yup.string().min(9, t("phoneNumberError")).required(t("required")),
         email: yup.string().email(t("emailError")).required(t("required")),
-        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")),
-        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")),
+        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
+        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")).required(t("required")),
         street: yup.string().min(2).required(t("required")),
         streetNumber: yup.string().required(t("required")),
         city: yup.string().required(t("required")),
@@ -74,12 +74,20 @@ const PatientData = ({t, logout}) => {
     const [country, setCountry] = useState(undefined);
 
     useEffect(() => {
-        const getPatient = async () =>{
-            const patient = await fetchPatient()
-            setPatient(patient);
-        }
+        let controller = new AbortController();
 
-        getPatient()
+        (async () =>{
+            try{
+                const patient = await fetchPatient()
+                setPatient(patient);
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () => controller?.abort();
+
     }, [])
 
     useEffect(()=>{
@@ -140,6 +148,7 @@ const PatientData = ({t, logout}) => {
         }).then((res)=>{
             if(res.status === 403){
                 window.alert(t("peselIsUsed"));
+                logout(history);
                 throw new Error(t("peselIsUsed"))
             }
             res.json()
@@ -156,7 +165,7 @@ const PatientData = ({t, logout}) => {
                 newAuthObj['email'] = email;
             }
 
-            fetch(`${baseUrl}/users/${userId}/changePassword`,{
+            fetch(`${baseUrl}/users/${userId}/changeCredentials`,{
                 method: 'PATCH',
                 headers : {
                     'Authorization' : `Bearer ${userToken}`,
@@ -167,9 +176,17 @@ const PatientData = ({t, logout}) => {
             }).then((res)=>{
                 if(res.status === 403){
                     window.alert(t("emailIsUsed"));
+                    logout(history);
                     throw new Error(t("emailIsUsed"))
                 }
-                res.json()
+            }).then(()=>{
+              if(emailChange === true){
+                  window.alert(t("emailChangeLogout"));
+                  history.push('/login');
+                  sessionStorage.clear();
+                  sessionStorage.setItem('logged', 'false');
+                  setLogged(false);
+              }
             }).catch(err=>console.log(err))
         }
     }
@@ -280,6 +297,7 @@ const PatientData = ({t, logout}) => {
                                     </Form.Group>
                                 </Col>
                             </Row>
+                            <h6 style={{color: '#e60000'}}>{t("changeEmail")}</h6>
                             <br/>
                             <Row className="align-items-center mb-3">
                                 <Col>

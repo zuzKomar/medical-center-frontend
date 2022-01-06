@@ -81,7 +81,7 @@ const App = () =>{
                           }
                           {(role === patient && logged === true) &&
                               <Switch>
-                                  <Route exact path="/my-account" component={() => <PatientData t={t} logout={logOut}/>} />
+                                  <Route exact path="/my-account" component={() => <PatientData t={t} logout={logOut} setLogged={setLogged}/>} />
                                   <Route exact path="/my-files"  component={() => <UploadNewFile t={t} logout={logOut}/>}/>
                                   <Route exact path="/appointments" component={() => <AppointmentList t={t} logout={logOut}/>}/>
                                   <Route exact path="/new-appointment" component={() => <NewAppointment t={t} logout={logOut}/>}/>

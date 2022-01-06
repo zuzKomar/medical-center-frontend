@@ -6,7 +6,7 @@ import Pagination from "@material-ui/lab/Pagination";
 
 const TodayAppointmentList = ({t, logout}) => {
     const history = useHistory();
-
+    const [redirect, setRedirect] = useState(false);
     const [userId, setUserId] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('id'));
         return saved || undefined;
@@ -34,17 +34,21 @@ const TodayAppointmentList = ({t, logout}) => {
         return params;
     }
 
-    useEffect(()=>{
-        logout(history);
-    },[])
-
     useEffect(() => {
-        const getAppointments = async () => {
-            const appointments = await fetchAppointments()
-            setAppointments(appointments.appointments)
-            setCount(appointments.totalPages)
-        }
-        getAppointments();
+        let controller = new AbortController();
+        (async () => {
+            try{
+                const appointments = await fetchAppointments()
+                setAppointments(appointments.appointments)
+                setCount(appointments.totalPages)
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     }, [page, pageSize])
 
     const fetchAppointments = async () =>{
@@ -54,18 +58,30 @@ const TodayAppointmentList = ({t, logout}) => {
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}&size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }else if(params.page !== null && params.size === null){
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?page=${params.page}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }else if(params.page === null && params.size !== null){
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits?size=${params.size}`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }else{
             res = await fetch(`${baseUrl}/doctors/${userId}/todaysVisits`,{
                 headers: {'Authorization' : `Bearer ${userToken}`}
             })
+            if(res.status === 403){
+                setRedirect(true);
+            }
         }
 
         const data = await res.json();
@@ -82,29 +98,37 @@ const TodayAppointmentList = ({t, logout}) => {
         setPage(1);
     };
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("todayAppointments")}</h2>
-            </div>
-            <div className="itemsNumber">
-                <p>{t("elementsNumber")}&nbsp;</p>
-                <select onChange={handlePageSizeChange} value={pageSize}>
-                    {pageSizes.map((size) => (
-                        <option key={size} value={size}>
-                            {size}
-                        </option>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("todayAppointments")}</h2>
+                </div>
+                <div className="itemsNumber">
+                    <p>{t("elementsNumber")}&nbsp;</p>
+                    <select onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="appointmentList">
+                    {appointments.map(appointment => (
+                        <DoctorAppointment key={appointment.id} app={appointment} t={t}/>
                     ))}
-                </select>
+                </div>
+                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                            shape="rounded" onChange={handlePageChange}/>
             </div>
-            {/*<div className="appointmentList">*/}
-            {/*    {appointments.map(appointment => (*/}
-            {/*        <DoctorAppointment key={appointment.id} app={appointment} t={t} />*/}
-            {/*    ))}*/}
-            {/*</div>*/}
-            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1} shape="rounded" onChange={handlePageChange}/>
-        </div>
-    )
+        )
+    }
 }
 
 export default TodayAppointmentList;

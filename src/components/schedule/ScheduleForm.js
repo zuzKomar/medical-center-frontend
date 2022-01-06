@@ -28,26 +28,41 @@ const ScheduleForm = ({t, logout}) =>{
     };
 
     useEffect(()=>{
-        const getSpecializations = async () =>{
-            const specializations = await fetchSpecializations()
-            specializations.forEach(spec => {
-                spec.name = t(spec.name)
-            })
-            setSpecializations(specializations)
-        }
+        let controller = new AbortController();
 
-        getSpecializations();
+        (async () =>{
+            try{
+                const specializations = await fetchSpecializations()
+                specializations.forEach(spec => {
+                    spec.name = t(spec.name)
+                })
+                setSpecializations(specializations)
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     },[])
 
 
     useEffect(()=>{
-        if(selectedSpecialization!==undefined){
-            const getDoctors = async () =>{
-                const doctors = await fetchDoctors()
-                setDoctors(doctors)
-            }
+        let controller = new AbortController();
 
-            getDoctors()
+        if(selectedSpecialization!==undefined){
+            (async () =>{
+                try{
+                    const doctors = await fetchDoctors()
+                    setDoctors(doctors)
+                    controller = null;
+                }catch (e){
+                    console.log(e)
+                    setRedirect(true);
+                }
+            })();
+            return () =>controller?.abort();
         }
 
     }, [selectedSpecialization])

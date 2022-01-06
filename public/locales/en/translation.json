@@ -254,9 +254,11 @@
   "emailIsUsed" : "Given e-mail address is already used!",
   "emailAndPasswordRequired" : "In case of e-mail address change, password change is required!",
   "tokenExpiredLogout" : "You've been logged out due to session expiration.",
+  "emailChangeLogout" : "You've been logged out due to e-mail address change",
   "registerSuccessful": "Registration was successful!",
   "postCodeError": "Postal code should have XX-XXX format!",
   "checkupResultRequired" : "Result must be added!",
   "checkupResultFileRequired" : "PDF file must be added!",
-  "notFound": "Sorry, this page could not be found!"
+  "notFound": "Sorry, this page could not be found!",
+  "changeEmail" : "E-mail address change will cause a logout"
 }

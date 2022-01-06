@@ -254,9 +254,11 @@
   "emailIsUsed" : "Podany adres email jest już w użyciu!",
   "emailAndPasswordRequired" : "W przypadku zmiany adresu e-mail wymagana jest również zmiana hasła!",
   "tokenExpiredLogout" : "Nastąpiło wylogowanie z powodu wygaśnięcia sesji.",
+  "emailChangeLogout" : "Nastąpiło wylogowanie z powodu zmiany adresu e-mail",
   "registerSuccessful": "Rejestracja przebiegła pomyślnie",
   "postCodeError": "Kod pocztowy powinien być w formacie: XX-XXX",
   "checkupResultRequired" : "Należy wprowadzić wynik badania!",
   "checkupResultFileRequired" : "Należy załączyć plik PDF z wynikiem!",
-  "notFound": "Przepraszamy, nie znaleziono strony!"
+  "notFound": "Przepraszamy, nie znaleziono strony!",
+  "changeEmail" : "Zmiana adresu e-mail spowoduje wylogowanie z systemu"
 }
