@@ -63,12 +63,12 @@ const AppointmentModal = ({selectedAppointment, setOpenModal, selectedReferral, 
             },
             body: JSON.stringify(data),
         }).then((res) => {
-            res.json()
             if(res.status === 403){
                 setRedirect(true);
             }else{
                 window.alert(t("appointmentReserved"))
             }
+            res.json()
         }).then(history.push({
                 pathname : '/appointments'
             })).catch((err)=> console.log(err));
