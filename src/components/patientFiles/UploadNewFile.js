@@ -30,25 +30,42 @@ const UploadNewFile = ({t, logout}) =>{
     };
 
     useEffect(()=>{
-        const getPatientFiles = async ()=>{
-            if(selectedFile === undefined){
-                const patientFiles = await fetchPatientFiles()
-                setFiles(patientFiles);
+        let controller = new AbortController();
+
+        (async ()=>{
+            try{
+                if(selectedFile === undefined){
+                    const patientFiles = await fetchPatientFiles()
+                    setFiles(patientFiles);
+                    controller = null;
+                }
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
             }
-        }
-        getPatientFiles()
+        })();
+        return () =>controller?.abort();
 
     },[selectedFile])
 
     useEffect(()=>{
-        const getPatientFiles = async () =>{
+        let controller = new AbortController();
+
+        (async () =>{
             if(deletedFile !== undefined){
-                const patientFiles = await fetchPatientFiles()
-                setFiles(patientFiles);
-                setDeletedFile(undefined);
+                try{
+                    const patientFiles = await fetchPatientFiles()
+                    setFiles(patientFiles);
+                    setDeletedFile(undefined);
+                    controller = null;
+                }catch (e){
+                    console.log(e)
+                    setRedirect(true);
+                }
             }
-        }
-        getPatientFiles()
+        })();
+        return () =>controller?.abort();
+
     },[deletedFile])
 
     const fetchPatientFiles = async ()=>{
@@ -157,12 +174,10 @@ const UploadNewFile = ({t, logout}) =>{
             headers: {'Authorization' : `Bearer ${userToken}`},
             method: 'DELETE',
         }).then(res => {
-            res.json()
             if(res.status === 403){
                 setRedirect(true);
             }
-        })
-            .catch(err => console.log(err))
+        }).catch(err => console.log(err))
      }
 
      const findFormErrors = () =>{

@@ -6,8 +6,8 @@ import {baseUrl} from "../../../config/config";
 import RangeSlider from "react-bootstrap-range-slider";
 import Button from "react-bootstrap/Button";
 
-const AppointmentDetailsForm = ({appointment, t}) => {
-
+const AppointmentDetailsForm = ({appointment, t, logout}) => {
+    const [redirect, setRedirect] = useState(false);
     const [userToken, setUserToken] = useState(()=>{
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
@@ -68,53 +68,89 @@ const AppointmentDetailsForm = ({appointment, t}) => {
     };
 
     useEffect(() => {
-        const getServices = async () => {
-            const services = await fetchServices()
-            services.forEach(service => {
-                service.name = t(service.name)
-            })
-            setServices(services)
-        }
-        getServices();
+        let controller = new AbortController();
+
+        (async () => {
+            try{
+                const services = await fetchServices()
+                services.forEach(service => {
+                    service.name = t(service.name)
+                })
+                setServices(services)
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     }, [])
 
     const fetchServices = async () =>{
         const res = await fetch(`${baseUrl}/medicalServices`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         });
+        if(res.status === 403){
+            setRedirect(true);
+        }
         return await res.json();
     }
 
     useEffect(() => {
-        const getCheckUps = async () => {
-            const checkUps = await fetchCheckUps()
-            checkUps.forEach(checkUp => {
-                checkUp.name = t(checkUp.name)
-            })
-            setCheckUps(checkUps)
-        }
-        getCheckUps()
+        let controller = new AbortController();
+
+        (async () => {
+            try{
+                const checkUps = await fetchCheckUps()
+                checkUps.forEach(checkUp => {
+                    checkUp.name = t(checkUp.name)
+                })
+                setCheckUps(checkUps)
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     }, [])
 
     const fetchCheckUps = async () =>{
         const res = await fetch(`${baseUrl}/checkups`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         });
+        if(res.status === 403){
+            setRedirect(true);
+        }
         return await res.json();
     }
 
     useEffect(() => {
-        const getMedications = async () => {
-            const medications = await fetchMedications()
-            setMedications(medications)
-        }
-        getMedications()
+        let controller = new AbortController();
+
+        (async () => {
+            try{
+                const medications = await fetchMedications()
+                setMedications(medications);
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     }, [])
 
     const fetchMedications = async () =>{
         const res = await fetch(`${baseUrl}/medications`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
         });
+        if(res.status === 403){
+            setRedirect(true);
+        }
         return await res.json();
     }
 
@@ -288,15 +324,20 @@ const AppointmentDetailsForm = ({appointment, t}) => {
                 method : 'PATCH',
                 headers :{
                     'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': `${baseUrl}`,
                     'Authorization' : `Bearer ${userToken}`
                 },
                 body : JSON.stringify(fetchBody)
-            }).then((res)=>res.json())
-                .then(window.alert(t("appointmentDetailsMessage")))
-                .then(history.push({
-                    pathname : '/today-visits'
-                }))
-                .catch((err)=>console.log(err));
+            }).then((res)=>{
+                if(res.status === 403){
+                    logout(history);
+                }else{
+                    window.alert(t("appointmentDetailsMessage"));
+                    history.push({
+                        pathname : '/today-visits'
+                    })
+                }
+            }).catch((err)=>console.log(err));
 
             sessionStorage.clear();
         }

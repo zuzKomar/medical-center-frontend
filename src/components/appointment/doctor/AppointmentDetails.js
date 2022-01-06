@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useHistory} from "react-router-dom";
 import AppointmentDetailsForm from "./AppointmentDetailsForm";
 import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
@@ -7,10 +7,6 @@ const AppointmentDetails = ({t, logout}) => {
     let history = useHistory();
     const appointment = history.location.state;
 
-    useEffect(()=>{
-        logout(history);
-    },[])
-
     return (
         <div className="itemsList">
             <div className="listHeader">
@@ -18,7 +14,7 @@ const AppointmentDetails = ({t, logout}) => {
             </div>
             <br/>
             <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
-            <AppointmentDetailsForm appointment={appointment} t={t}/>
+            <AppointmentDetailsForm appointment={appointment} t={t} logout={logout}/>
         </div>
     )
 }

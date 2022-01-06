@@ -38,13 +38,21 @@ const ReferralList = ({t, logout}) =>{
     }
 
     useEffect(() =>{
-        const getReferrals = async () =>{
+        let controller = new AbortController();
+
+        (async () =>{
+            try{
                 const referrals = await fetchReferrals()
                 setReferrals(referrals.referrals)
                 setCount(referrals.totalPages)
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
 
-        }
-        getReferrals()
     },[page, pageSize])
 
     useEffect(()=>{
