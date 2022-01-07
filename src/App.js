@@ -25,6 +25,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import {Redirect} from "react-router";
 
 
 const App = () =>{
@@ -76,7 +77,9 @@ const App = () =>{
                               <Switch>
                                   <Route exact path="/login" component={() => <LoginForm t={t} changeLanguage={changeLanguage} setLogged={setLogged} setRole={setRole}/>}/>
                                   <Route exact path="/register" component={() => <RegisterForm t={t} changeLanguage={changeLanguage}/>}/>
-                                  <Route component={()=><NotFound t={t}/>}/>
+                                  <Route exact path="/">
+                                      <Redirect to="/login"/>
+                                  </Route>
                               </Switch>
                           }
                           {(role === patient && logged === true) &&
