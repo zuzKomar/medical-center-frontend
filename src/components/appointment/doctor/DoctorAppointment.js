@@ -46,7 +46,7 @@ const DoctorAppointment = ({app, t}) => {
                 <>
                     <hr />
                     <div style={{display: 'flex' ,justifyContent: 'flex-end'}}>
-                        <button className="actionButton" onClick={e => handleClick(e)}>{t("addVisitDetails")}</button>
+                        <button className="actionButton" onClick={e => handleClick(e)}>{t("startVisit")}</button>
                     </div>
                 </>
             }
