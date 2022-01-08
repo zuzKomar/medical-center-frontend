@@ -15,10 +15,10 @@ const ReferralList = ({t, logout}) =>{
         return saved || undefined;
     });
 
-    const pageSizes = [3, 5, 10];
     const [referrals, setReferrals] = useState([]);
     const [selectedReferral, setSelectedReferral] = useState(undefined);
 
+    const pageSizes = [3, 5, 10];
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);

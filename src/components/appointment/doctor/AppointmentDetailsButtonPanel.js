@@ -20,10 +20,7 @@ const AppointmentDetailsButtonPanel = ({appointment, t}) => {
         else if (button === checkUpButton) {
             history.push({
                 pathname: `/today-visits/${appointment.id}/details/check-ups`,
-                state: {
-                    detail : appointment,
-                    patientId : appointment.patientId
-                }
+                state:  appointment
             })
         }
         else if (button === backButton) {

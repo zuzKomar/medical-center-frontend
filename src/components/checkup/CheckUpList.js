@@ -18,6 +18,8 @@ const CheckUpList = ({t, logout}) =>{
     });
 
     const history = useHistory();
+    const app = history.location.state;
+    const [appointment, setAppointment] = useState(app ? app : undefined);
     const location = useLocation();
     const pageSizes = [3, 5, 10];
     const [checkups, setCheckups] = useState([]);
@@ -25,9 +27,6 @@ const CheckUpList = ({t, logout}) =>{
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [pageSize, setPageSize] = useState(pageSizes[0]);
-
-    const [appointment, setAppointment] = useState(undefined);
-    const [patientId, setPatientId] = useState(undefined);
 
     const getRequestParams = (page, pageSize) =>{
         let params = {};
@@ -46,52 +45,83 @@ const CheckUpList = ({t, logout}) =>{
             const checkUps = await fetchCheckups()
             setCheckups(checkUps.diagnosticTests)
             setCount(checkUps.totalPages)
+            console.log(appointment);
         }
         getCheckups()
     },[page, pageSize])
 
-    useEffect(()=>{
-        if(location.state !== undefined){
-            setAppointment(location.state.detail);
-            setPatientId(location.state.patientId)
-        }
-    },[location])
 
     const fetchCheckups = async () =>{
         const params = getRequestParams(page, pageSize);
         let res;
-        if(params.page !== null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}&size=${params.size}`,{
-                headers: {'Authorization' : `Bearer ${userToken}`}
-            })
-            if(res.status === 403){
-                setRedirect(true);
-            }
+        if(appointment === undefined){
+            if(params.page !== null && params.size !== null){
+                res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
 
-        }else if(params.page !== null && params.size === null){
-            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}`,{
-                headers: {'Authorization' : `Bearer ${userToken}`}
-            })
-            if(res.status === 403){
-                setRedirect(true);
-            }
+            }else if(params.page !== null && params.size === null){
+                res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?page=${params.page}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
 
-        }else if(params.page === null && params.size !== null){
-            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?size=${params.size}`,{
-                headers: {'Authorization' : `Bearer ${userToken}`}
-            })
-            if(res.status === 403){
-                setRedirect(true);
-            }
+            }else if(params.page === null && params.size !== null){
+                res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests?size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
 
+            }else{
+                res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+            }
         }else{
-            res = await fetch(`${baseUrl}/patients/${userId}/diagnosticTests`,{
-                headers: {'Authorization' : `Bearer ${userToken}`}
-            })
-            if(res.status === 403){
-                setRedirect(true);
+            if(params.page !== null && params.size !== null){
+                res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/diagnosticTests?page=${params.page}&size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
+            }else if(params.page !== null && params.size === null){
+                res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/diagnosticTests?page=${params.page}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
+            }else if(params.page === null && params.size !== null){
+                res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/diagnosticTests?size=${params.size}`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
+
+            }else{
+                res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/diagnosticTests`,{
+                    headers: {'Authorization' : `Bearer ${userToken}`}
+                })
+                if(res.status === 403){
+                    setRedirect(true);
+                }
             }
         }
+
 
         const data = await res.json();
 
