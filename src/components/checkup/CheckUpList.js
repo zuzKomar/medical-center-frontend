@@ -145,7 +145,7 @@ const CheckUpList = ({t, logout}) =>{
         return (
             <div className="itemsList">
                 <div className="listHeader">
-                    <h2>{t("yourCheckUps")}</h2>
+                    <h2>{appointment ? t("checkupsHistory") : t("yourCheckUps")}</h2>
                 </div>
                 <br/>
                 {(appointment !== undefined) &&

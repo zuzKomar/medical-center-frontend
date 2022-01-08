@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {baseUrl} from "../../../../config/config";
-import {Table} from "@material-ui/core";
+import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
@@ -40,7 +40,7 @@ const FilesTable = ({t, logout}) => {
             headers: {'Authorization' : `Bearer ${userToken}`}
         })
         if(res.status === 403){
-            setRedirect(true);
+           setRedirect(true);
         }
         const data = await res.json()
 

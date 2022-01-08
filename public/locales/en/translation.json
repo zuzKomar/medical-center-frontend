@@ -138,6 +138,7 @@
   "deleteCheckUp": "DELETE CHECK-UP",
   "saveChanges": "Save changes",
   "appointmentsHistory": "Appointments History",
+  "checkupsHistory" : "Diagnostic tests History",
   "noAppointmentsToShow": "No Appointments to show",
   "realizedCheckUps": "Realized Check-ups",
   "ePrescriptions": "E-prescriptions",

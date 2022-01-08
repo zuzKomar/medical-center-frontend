@@ -138,6 +138,7 @@
   "deleteCheckUp": "USUŃ BADANIE",
   "saveChanges": "Zapisz zmiany",
   "appointmentsHistory": "Historia Wizyt",
+  "checkupsHistory" : "Historia badań",
   "noAppointmentsToShow": "Brak Wizyt do wyświetlenia",
   "realizedCheckUps": "Zrealizowanie Badania",
   "ePrescriptions": "E-Recepty",
