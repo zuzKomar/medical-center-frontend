@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import AppointmentDetailsForm from "./AppointmentDetailsForm";
 import AppointmentDetailsButtonPanel from "./AppointmentDetailsButtonPanel";
 
 const AppointmentDetails = ({t, logout}) => {
     let history = useHistory();
-    const appointment = history.location.state;
+    const app = history.location.state;
+    const [appointment, setAppointment] = useState(app ? app : undefined);
 
     return (
         <div className="itemsList">

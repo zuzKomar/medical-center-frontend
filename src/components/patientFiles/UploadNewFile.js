@@ -259,11 +259,11 @@ const UploadNewFile = ({t, logout}) =>{
                                 <td>
                                     <ul className="listActions">
                                         <li>
-                                            <Button variant='primary' href={`${baseUrl}/patients/1/files/${file.id}`}
+                                            <Button variant='primary' href={`${baseUrl}/patients/${userId}/files/${file.id}`}
                                                     onClick={e => handleFileDownload(e, file)}>{t("download")}</Button>
                                         </li>
                                         <li>
-                                            <Button variant='danger' href={`${baseUrl}/patients/1/files/${file.id}`}
+                                            <Button variant='danger' href={`${baseUrl}/patients/${userId}/files/${file.id}`}
                                                     onClick={e => {
                                                         setDeletedFile(file);
                                                         handleFileDeletion(e, file)

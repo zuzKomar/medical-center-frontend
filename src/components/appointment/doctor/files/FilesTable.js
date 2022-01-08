@@ -7,10 +7,6 @@ import AppointmentDetailsButtonPanel from "../AppointmentDetailsButtonPanel";
 
 const FilesTable = ({t, logout}) => {
 
-    const [userId, setUserId] = useState(()=>{
-        const saved = sessionStorage.getItem('id');
-        return saved || undefined;
-    });
     const [userToken, setUserToken] = useState(()=>{
         const saved = sessionStorage.getItem('token');
         return saved || undefined;
@@ -18,25 +14,37 @@ const FilesTable = ({t, logout}) => {
 
     const [files, setFiles] = useState([]);
     let history = useHistory();
-    const appointment = history.location.state;
-
-    useEffect(()=>{
-        logout(history);
-    },[])
+    const app = history.location.state;
+    const [appointment, setAppointment] = useState(app ? app : undefined);
+    const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        const getFiles = async () => {
-            const files = await fetchFiles()
-            setFiles(files)
-        }
-        getFiles();
+        let controller = new AbortController();
+
+        (async () => {
+            try{
+                const files = await fetchFiles()
+                setFiles(files);
+                controller = null;
+            }catch (e){
+                console.log(e)
+                setRedirect(true);
+            }
+        })();
+        return () =>controller?.abort();
+
     }, [])
 
     const fetchFiles = async () => {
         const res = await fetch(`${baseUrl}/patients/${appointment.patient.id}/files`,{
             headers: {'Authorization' : `Bearer ${userToken}`}
-        });
-        return await res.json();
+        })
+        if(res.status === 403){
+            setRedirect(true);
+        }
+        const data = await res.json()
+
+        return data;
     }
 
     const handleFileDownload = (e, file) => {
@@ -56,38 +64,46 @@ const FilesTable = ({t, logout}) => {
             });
     }
 
-    return(
-        <div className="itemsList">
-            <div className="listHeader">
-                <h2>{t("patientFiles")}</h2>
-            </div>
-            <AppointmentDetailsButtonPanel appointment={appointment} t={t} />
-            {files.length > 0 ?
-                <Table className="table table-hover table-bordered fileTable topBuffer" style={{width : '80%'}}>
-                    <thead style={{backgroundColor : '#e6eeff'}}>
-                    <tr>
-                        <th>{t("name")}:</th>
-                        <th>{t("description")}:</th>
-                        <th>{t("createDate")}</th>
-                        <th>{t("action")}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {files.map((file)=>
-                        <tr key={file.id}>
-                            <td>{file.name}</td>
-                            <td>{file.description}</td>
-                            <td>{file.uploadDate}</td>
-                            <td>
-                                <Button variant='primary' onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
-                            </td>
+    if(redirect === true){
+        logout(history);
+        return (
+            <></>
+        )
+    }else {
+        return (
+            <div className="itemsList">
+                <div className="listHeader">
+                    <h2>{t("patientFiles")}</h2>
+                </div>
+                <AppointmentDetailsButtonPanel appointment={appointment} t={t}/>
+                {files.length > 0 ?
+                    <Table className="table table-hover table-bordered fileTable topBuffer" style={{width: '80%'}}>
+                        <thead style={{backgroundColor: '#e6eeff'}}>
+                        <tr>
+                            <th>{t("name")}:</th>
+                            <th>{t("description")}:</th>
+                            <th>{t("createDate")}</th>
+                            <th>{t("action")}</th>
                         </tr>
-                    )}
-                    </tbody>
-                </Table> : <span className="topBuffer">{t("noFiles")}</span>
-            }
-        </div>
-    )
+                        </thead>
+                        <tbody>
+                        {files.map((file) =>
+                            <tr key={file.id}>
+                                <td>{file.name}</td>
+                                <td>{file.description}</td>
+                                <td>{file.uploadDate}</td>
+                                <td>
+                                    <Button variant='primary'
+                                            onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </Table> : <span className="topBuffer">{t("noFiles")}</span>
+                }
+            </div>
+        )
+    }
 }
 
 export default FilesTable;
