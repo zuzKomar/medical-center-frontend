@@ -83,9 +83,7 @@ const TodayAppointmentList = ({t, logout}) => {
                 setRedirect(true);
             }
         }
-
         const data = await res.json();
-
         return data;
     }
 

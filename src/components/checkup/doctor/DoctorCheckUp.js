@@ -94,14 +94,12 @@ const DoctorCheckUp = ({checkup, setSelectedCheckup, t}) => {
                     'Authorization' : `Bearer ${userToken}`
                 },
                 body: JSON.stringify(fetchBody)
-            })
-            .then((res) => {
+            }).then((res) => {
                 if(res.status === 403){
                     window.alert('bląd');
                 }
                 res.json()
-            })
-                .then(()=>new Promise(resolve => setTimeout(resolve, 2000)))
+            }).then(()=>new Promise(resolve => setTimeout(resolve, 2000)))
             .then(window.alert(t("checkUpRealized")))
             .catch((err) => console.log(err));
             setSelectedCheckup(checkUp);

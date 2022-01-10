@@ -35,7 +35,10 @@ const PatientData = ({t, logout, setLogged}) => {
                         if ((parseInt(pesel.substring(4, 6)) > 31) || (parseInt(pesel.substring(2, 4)) > 12))
                             return false;
 
-                        let checksum = (1 * parseInt(digits[0]) + 3 * parseInt(digits[1]) + 7 * parseInt(digits[2]) + 9 * parseInt(digits[3]) + 1 * parseInt(digits[4]) + 3 * parseInt(digits[5]) + 7 * parseInt(digits[6]) + 9 * parseInt(digits[7]) + 1 * parseInt(digits[8]) + 3 * parseInt(digits[9])) % 10;
+                        let checksum = (1 * parseInt(digits[0]) + 3 * parseInt(digits[1]) + 7 * parseInt(digits[2])
+                                        + 9 * parseInt(digits[3]) + 1 * parseInt(digits[4]) + 3 * parseInt(digits[5])
+                                        + 7 * parseInt(digits[6]) + 9 * parseInt(digits[7]) + 1 * parseInt(digits[8])
+                                        + 3 * parseInt(digits[9])) % 10;
                         if (checksum === 0)
                             checksum = 10;
                         checksum = 10 - checksum;
@@ -46,8 +49,8 @@ const PatientData = ({t, logout, setLogged}) => {
         birthDate: yup.date().max(today, t("dateFromFutureError")).required(t("required")),
         phoneNumber: yup.string().min(9, t("phoneNumberError")).required(t("required")),
         email: yup.string().email(t("emailError")).required(t("required")),
-        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")).required(t("required")),
-        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")).required(t("required")),
+        password: yup.string().min(6, t("passwordMinCharactersError")).max(50, t("passwordMaxCharactersError")),
+        confirmPassword: yup.string().oneOf([yup.ref('password'), ''], t("passwordMatch")),
         street: yup.string().min(2).required(t("required")),
         streetNumber: yup.string().required(t("required")),
         city: yup.string().required(t("required")),

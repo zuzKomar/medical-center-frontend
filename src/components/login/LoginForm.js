@@ -25,8 +25,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                 'userEmail' : values.email,
                 'password' : values.password
             }),
-        })
-            .then(res => {
+        }).then(res => {
                 if(res.status === 403) {
                     setNotExistError(t("userDontExists"));
                     throw new Error(t("userDontExists"))
@@ -51,9 +50,7 @@ const LoginForm = ({t, changeLanguage, setLogged, setRole}) => {
                 }else if(decoded.role === doctor){
                     history.push({
                         pathname : '/today-visits'})
-                }
-            })
-            .catch(err=>console.log(err))
+                }}).catch(err=>console.log(err))
     }
 
     const schema = yup.object().shape({

@@ -64,46 +64,39 @@ const FilesTable = ({t, logout}) => {
             });
     }
 
-    if(redirect === true){
-        logout(history);
-        return (
-            <></>
-        )
-    }else {
-        return (
-            <div className="itemsList">
-                <div className="listHeader">
-                    <h2>{t("patientFiles")}</h2>
-                </div>
-                <AppointmentDetailsButtonPanel appointment={appointment} t={t}/>
-                {files.length > 0 ?
-                    <Table className="table table-hover table-bordered fileTable topBuffer" style={{width: '80%'}}>
-                        <thead style={{backgroundColor: '#e6eeff'}}>
-                        <tr>
-                            <th>{t("name")}:</th>
-                            <th>{t("description")}:</th>
-                            <th>{t("createDate")}</th>
-                            <th>{t("action")}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {files.map((file) =>
-                            <tr key={file.id}>
-                                <td>{file.name}</td>
-                                <td>{file.description}</td>
-                                <td>{file.uploadDate}</td>
-                                <td>
-                                    <Button variant='primary'
-                                            onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
-                                </td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </Table> : <span className="topBuffer">{t("noFiles")}</span>
-                }
+    return (
+        <div className="itemsList">
+            <div className="listHeader">
+                <h2>{t("patientFiles")}</h2>
             </div>
-        )
-    }
+            <AppointmentDetailsButtonPanel appointment={appointment} t={t}/>
+            {files.length > 0 ?
+                <Table className="table table-hover table-bordered fileTable topBuffer" style={{width: '80%'}}>
+                    <thead style={{backgroundColor: '#e6eeff'}}>
+                    <tr>
+                        <th>{t("name")}:</th>
+                        <th>{t("description")}:</th>
+                        <th>{t("createDate")}</th>
+                        <th>{t("action")}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {files.map((file) =>
+                        <tr key={file.id}>
+                            <td>{file.name}</td>
+                            <td>{file.description}</td>
+                            <td>{file.uploadDate}</td>
+                            <td>
+                                <Button variant='primary'
+                                        onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
+                            </td>
+                        </tr>
+                    )}
+                    </tbody>
+                </Table> : <span className="topBuffer">{t("noFiles")}</span>
+            }
+        </div>
+    )
 }
 
 export default FilesTable;

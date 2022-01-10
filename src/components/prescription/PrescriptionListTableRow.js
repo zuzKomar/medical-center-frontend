@@ -1,7 +1,6 @@
 import React from "react";
 
 const PrescriptionListTableRow = ({prescription, t}) =>{
-
     return(
         <tr key={prescription.id}>
             <td>{prescription.creationDate}</td>
@@ -28,5 +27,4 @@ const PrescriptionListTableRow = ({prescription, t}) =>{
         </tr>
     )
 }
-
 export default PrescriptionListTableRow;

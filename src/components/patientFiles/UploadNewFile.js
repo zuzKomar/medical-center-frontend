@@ -105,7 +105,6 @@ const UploadNewFile = ({t, logout}) =>{
         }
         let test = new Uint8Array(byteNumbers);
         let array = Array.from(test);
-
         let today = new Date();
         let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
