@@ -395,7 +395,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                 <Col md>
                     <Form.Group>
                         <Form.Label column="sm">{t("chooseService")}:</Form.Label>
-                        <Form.Select aria-label="Floating label select example" id="serviceSelect">
+                        <Form.Select id="serviceSelect">
                             <option onClick={() => setService(undefined)}>{t("chooseService")}</option>
                             {services.map((ser)=>(
                                 <option value={ser} onClick={()=>{
@@ -432,7 +432,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                     <Form.Label>{t("medications")}</Form.Label>
                     <Form.Group>
                         <Form.Label column="sm">{t("chooseMedication")}:</Form.Label>
-                        <Form.Select aria-label="Floating label select example"  id="medicationSelect">
+                        <Form.Select id="medicationSelect">
                             <option onClick={() => setMedication(undefined)}>{t("chooseMedication")}</option>
                             {medications.map((medication) =>(
                                 <option value={medication} key={medication.id}
@@ -440,7 +440,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                                 ))}
                         </Form.Select>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Group className="mb-3">
                         <Form.Label column="sm">{t("dosage")}:</Form.Label>
                         <Form.Control type="text" placeholder={t("dosage")} value={medicationDosage} onChange={(e)=>setMedicationDosage(e.target.value)}/>
                     </Form.Group>
@@ -478,7 +478,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                     <Col md>
                         <Form.Group>
                             <Form.Label column="sm">{t("chooseCheckUp")}:</Form.Label>
-                            <Form.Select aria-label="Floating label select example" id="checkupSelect">
+                            <Form.Select id="checkupSelect">
                                 <option onClick={() => setSelectedCheckup(undefined)}>{t("chooseCheckUp")}</option>
                                 {checkUps.map((checkUp)=>(
                                    <option value={checkUp} key={checkUp.id}
@@ -491,13 +491,13 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                 </Row>
                 <Row className="mb-3">
                     <Col md>
-                        <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
+                        <Form.Group className="mb-3">
                             <Form.Label column="sm">{t("description")}:</Form.Label>
                             <Form.Control as="textarea" rows={3} value={checkupDescription} onChange={(e)=>setCheckupDescription(e.target.value)}/>
                         </Form.Group>
                     </Col>
                     <Col md>
-                        <Form.Group className="mb-3" controlId="detailForm.ControlTextArea2">
+                        <Form.Group className="mb-3">
                             <Form.Label column="sm">{t("result")}:</Form.Label>
                             <Form.Control as="textarea" rows={3} value={checkupResult} onChange={(e)=>setCheckupResult(e.target.value)}/>
                         </Form.Group>
