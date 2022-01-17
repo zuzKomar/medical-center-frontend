@@ -133,6 +133,20 @@ const ScheduleForm = ({t, logout}) =>{
                 .catch((err)=>console.log(err));
         }
     }
+
+    function handleSpecializationOnChange(event){
+        let specId = parseInt(event.target.value);
+        setSelectedSpecialization(specializations.find(specialization => specialization.id === specId));
+        setSelectedDoctor(undefined);
+        setSchedule(undefined);
+    }
+
+    function handleDoctorOnChange(event){
+        let doctorId = parseInt(event.target.value);
+        setSelectedDoctor(doctors.find(doctor => doctor.id === doctorId));
+        setSchedule(undefined);
+    }
+
     if(redirect === true){
         logout(history);
         return (
@@ -149,21 +163,11 @@ const ScheduleForm = ({t, logout}) =>{
                         <Col>
                             <Form.Group>
                                 <Form.Label>{t("chooseSpecialization")}:</Form.Label>
-                                <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}>
+                                <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}
+                                        onChange={handleSpecializationOnChange}>
                                     <option onClick={clearSpecialization}>{t("chooseSpecialization")}</option>
                                     {specializations.map((spec) => (
-                                        <option value={spec} onClick={(e) => {
-                                            setSelectedDoctor(undefined);
-                                            reset();
-                                            setSchedule(undefined);
-                                            setSelectedSpecialization(spec);
-
-                                            if (!!errors['specialization'])
-                                                setErrors({
-                                                    ...errors,
-                                                    ['specialization']: null
-                                                })
-                                        }}>{spec.name}</option>
+                                        <option value={spec.id}>{spec.name}</option>
                                     ))}
                                 </Form.Select>
                                 <Form.Control.Feedback type='invalid'>{errors.specialization}</Form.Control.Feedback>
@@ -174,18 +178,11 @@ const ScheduleForm = ({t, logout}) =>{
                         <Col>
                             <Form.Group>
                                 <Form.Label>{t("chooseDoctor")}:</Form.Label>
-                                <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}>
+                                <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}
+                                onChange={handleDoctorOnChange}>
                                     <option onClick={clearDoctor}>{t("chooseDoctor")}</option>
                                     {doctors.map((doc) => (
-                                        <option value={doc} onClick={(e) => {
-                                            setSelectedDoctor(doc);
-                                            setSchedule(undefined);
-                                            if (!!errors['doctor'])
-                                                setErrors({
-                                                    ...errors,
-                                                    ['doctor']: null
-                                                })
-                                        }}>{doc.firstName + ' ' + doc.lastName}</option>
+                                        <option value={doc.id}>{doc.firstName + ' ' + doc.lastName}</option>
                                     ))}
                                 </Form.Select>
                                 <Form.Control.Feedback type='invalid'>{errors.doctor}</Form.Control.Feedback>
