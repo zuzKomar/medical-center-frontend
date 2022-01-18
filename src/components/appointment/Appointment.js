@@ -142,7 +142,7 @@ const Appointment = ({appointment, setCancelledAppointment, t, logout}) =>{
                                     <FaFile size={42}/>
                                     <p className="header">{t("madeCheckUps")}</p>
                                 </div>
-                                <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test) => test.diagnosticTestName)) : t("noCheckUps")}</p>
+                                <p>{app.diagnosticTests.length > 0 ? (app.diagnosticTests.map((test) => test.diagnosticTestName + ', ')) : t("noCheckUps")}</p>
                                 <hr/>
 
                                 <div className="subsections">

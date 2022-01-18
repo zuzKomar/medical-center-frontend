@@ -98,7 +98,7 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
         if(receivedReferral !== undefined){
             setSelectedReferral(receivedReferral);
             let element = document.getElementById('selectedReferral');
-            element.value = receivedReferral;
+            element.value = receivedReferral.id;
             if(receivedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
@@ -118,8 +118,9 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
 
     useEffect(()=>{
         if(selectedReferral !== undefined){
+            setSelectedReferral(selectedReferral);
             let element = document.getElementById('selectedReferral');
-            element.value = selectedReferral;
+            element.value = selectedReferral.id;
             if(selectedReferral.medicalService.facilityService === true){
                 setAppointmentType('facility');
                 const radioBtnFacility = document.querySelector('#facility');
@@ -287,6 +288,40 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
             }
         }
     }
+
+    function handleLanguageChange(event){
+        setLanguage(event.target.value);
+    }
+
+    function handleReferralChange(event){
+        let refId = parseInt(event.target.value);
+
+        if(refId !== 0){
+            setSelectedReferral(referrals.find(ref => ref.id === refId));
+            setErrors({
+                ['serviceMess']: null,
+                ['appType']: null
+            })
+        }else{
+            clearReferralFields(event);
+        }
+    }
+
+    function handleServiceChange(event){
+        let serviceId = parseInt(event.target.value);
+        setService(services.find(ser => ser.id === serviceId));
+        if (!!errors['serviceMess'])
+            setErrors({
+                ...errors,
+                ['serviceMess']: null
+            })
+    }
+
+    function handleDoctorChange(event){
+        let doctorId = parseInt(event.target.value);
+        setSelectedDoctor(doctors.find(doctor=>doctor.id === doctorId))
+    }
+
     if(redirect === true){
         logout(history);
         return (
@@ -319,9 +354,9 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
                     <Col>
                         <Form.Group>
                             <Form.Label>{t("language")}:</Form.Label>
-                            <Form.Select id='selectedLanguage'>
+                            <Form.Select id='selectedLanguage' onChange={handleLanguageChange}>
                                 {languages.map((lang) => (
-                                    <option value={lang} onClick={(e) => setLanguage(lang)}>{lang}</option>
+                                    <option value={lang}>{lang}</option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
@@ -329,41 +364,24 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
                     <Col>
                         <Form.Group>
                             <Form.Label>{t("referral")}:</Form.Label>
-                            <Form.Select id='selectedReferral' defaultValue={receivedReferral}>
+                            <Form.Select id='selectedReferral' defaultValue={receivedReferral} onChange={handleReferralChange}>
 
                                 {!receivedReferral &&
                                 <>
-                                    <option onClick={e => {
-                                        clearReferralFields(e)
-                                    }} value="0">{t("useReferral")}</option>
+                                    <option value="0">{t("useReferral")}</option>
                                     {referrals.map((ref) => (
-                                        <option value={ref} key={ref.id} onClick={(e) => {
-                                            setSelectedReferral(ref)
-                                            setErrors({
-                                                ['serviceMess']: null,
-                                                ['appType']: null
-                                            })
-                                        }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                        <option value={ref.id}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
                                     ))}
                                 </>
                                 }
 
                                 {receivedReferral &&
                                 <>
-                                    <option
-                                        value={receivedReferral}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
-                                    <option onClick={e => {
-                                        clearReferralFields(e)
-                                    }} value="0">{t("useReferral")}</option>
+                                    <option value={receivedReferral.id}>{(t("dueTo") + " " + receivedReferral.expiryDate + ' - ' + receivedReferral.medicalService.name)}</option>
+                                    <option value="0">{t("useReferral")}</option>
 
                                     {referrals.filter(ref => ref.id !== receivedReferral.id).map((ref) => (
-                                        <option value={ref} key={ref.id} onClick={(e) => {
-                                            setSelectedReferral(ref)
-                                            setErrors({
-                                                ['serviceMess']: null,
-                                                ['appType']: null
-                                            })
-                                        }}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
+                                        <option value={ref.id}>{ref.medicalService ? (t("dueTo") + " " + ref.expiryDate + ' - ' + ref.medicalService.name) : ''}</option>
                                     ))}
                                 </>
                                 }
@@ -373,29 +391,21 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
                 </Row>
                 <Form.Group className="mb-3">
                     <Form.Label>{t("service")}</Form.Label>
-                    <Form.Select id='selectService' isInvalid={!!errors.serviceMess}>
+                    <Form.Select id='selectService' isInvalid={!!errors.serviceMess} onChange={handleServiceChange}>
                         <option
                             onClick={e => clearService(e)}>{selectedReferral ? selectedReferral.medicalService.name : t("chooseService")}</option>
                         {services.map((ser) => (
-                            <option value={ser.name} onClick={(e) => {
-                                setService(ser);
-                                if (!!errors['serviceMess'])
-                                    setErrors({
-                                        ...errors,
-                                        ['serviceMess']: null
-                                    })
-                            }}>{ser.name}</option>
+                            <option value={ser.id}>{ser.name}</option>
                         ))}
                     </Form.Select>
                     <Form.Control.Feedback type='invalid'>{errors.serviceMess}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>{t("doctor")}</Form.Label>
-                    <Form.Select id='doctorr'>
+                    <Form.Select id='doctorr' onChange={handleDoctorChange}>
                         <option value="0">{t("chooseDoctor")}</option>
                         {doctors.map((doc) => (
-                            <option value={doc.firstName + ' ' + doc.lastName}
-                                    onClick={(e) => setSelectedDoctor(doc)}>{doc.firstName + ' ' + doc.lastName}</option>
+                            <option value={doc.id}>{doc.firstName + ' ' + doc.lastName}</option>
                         ))}
                     </Form.Select>
                 </Form.Group>

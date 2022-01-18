@@ -12,6 +12,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
         const saved = JSON.parse(sessionStorage.getItem('token'));
         return saved || undefined;
     });
+    const facility = 'FACILITY';
 
     const history = useHistory();
     const ref = useRef();
@@ -154,6 +155,11 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
         return await res.json();
     }
 
+    function handleServiceChange(event){
+        let serviceId = parseInt(event.target.value);
+        setService(services.find(service => service.id === serviceId));
+    }
+
     const handleReferralAddition = (e) => {
         e.preventDefault();
         let referral = {};
@@ -183,6 +189,11 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                setReferralToDelete(undefined);
            }
         }
+    }
+
+    function handleMedicationChange(event){
+        let medId = parseInt(event.target.value);
+        setMedication(medications.find(med => med.id === medId));
     }
 
     const handleMedicationAddition = (e) =>{
@@ -220,6 +231,11 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                 setMedicationToDelete(undefined);
             }
         }
+    }
+
+    function handleCheckupChange(event){
+        let checkupId = parseInt(event.target.value);
+        setSelectedCheckup(checkUps.find(checkup => checkup.id === checkupId));
     }
 
     const handleCheckupAddition = (e) =>{
@@ -395,12 +411,10 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                 <Col md>
                     <Form.Group>
                         <Form.Label column="sm">{t("chooseService")}:</Form.Label>
-                        <Form.Select id="serviceSelect">
+                        <Form.Select id="serviceSelect" onChange={handleServiceChange}>
                             <option onClick={() => setService(undefined)}>{t("chooseService")}</option>
                             {services.map((ser)=>(
-                                <option value={ser} onClick={()=>{
-                                    setService(ser);
-                                }}>{ser.name}</option>
+                                <option value={ser.id}>{ser.name}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
@@ -432,11 +446,10 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                     <Form.Label>{t("medications")}</Form.Label>
                     <Form.Group>
                         <Form.Label column="sm">{t("chooseMedication")}:</Form.Label>
-                        <Form.Select id="medicationSelect">
+                        <Form.Select id="medicationSelect" onChange={handleMedicationChange}>
                             <option onClick={() => setMedication(undefined)}>{t("chooseMedication")}</option>
                             {medications.map((medication) =>(
-                                <option value={medication} key={medication.id}
-                                        onClick={()=>setMedication(medication)}>{medication.name}</option>
+                                <option value={medication.id}>{medication.name}</option>
                                 ))}
                         </Form.Select>
                     </Form.Group>
@@ -471,6 +484,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
             <Row>
 
             </Row>
+            {appointment.type === facility &&
             <div className="topBuffer">
                 <Form.Label>{t("checkups")}:</Form.Label>
                 <h6 style={{color: '#e60000'}}>{t("checkUpsInfo")}</h6>
@@ -478,11 +492,10 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                     <Col md>
                         <Form.Group>
                             <Form.Label column="sm">{t("chooseCheckUp")}:</Form.Label>
-                            <Form.Select id="checkupSelect">
+                            <Form.Select id="checkupSelect" onChange={handleCheckupChange}>
                                 <option onClick={() => setSelectedCheckup(undefined)}>{t("chooseCheckUp")}</option>
                                 {checkUps.map((checkUp)=>(
-                                   <option value={checkUp} key={checkUp.id}
-                                    onClick={()=>setSelectedCheckup(checkUp)}>{checkUp.name}</option>
+                                   <option value={checkUp.id}>{checkUp.name}</option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
@@ -526,7 +539,7 @@ const AppointmentDetailsForm = ({appointment, t, logout}) => {
                     <button className="deleteButton" onClick={(e)=>handleCheckupDeletion(e)}>{t("deleteCheckUp")}</button>
                 </div>
                 <hr />
-            </div>
+            </div>}
             <div style={{display:"flex", justifyContent: 'center'}}>
                 <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='danger' onClick={(e)=>handleCancel(e)}>{t("cancel")}</Button>
                 <Button style={{marginLeft : '1%', marginRight:'1%'}} variant='primary' onClick={(e)=>handleSubmit(e)}>{t("saveChanges")}</Button>
