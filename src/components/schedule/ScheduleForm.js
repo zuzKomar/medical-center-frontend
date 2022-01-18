@@ -136,15 +136,26 @@ const ScheduleForm = ({t, logout}) =>{
 
     function handleSpecializationOnChange(event){
         let specId = parseInt(event.target.value);
-        setSelectedSpecialization(specializations.find(specialization => specialization.id === specId));
         setSelectedDoctor(undefined);
+        reset();
         setSchedule(undefined);
+        setSelectedSpecialization(specializations.find(specialization => specialization.id === specId));
+        if (!!errors['specialization'])
+            setErrors({
+                ...errors,
+                ['specialization']: null
+            })
     }
 
     function handleDoctorOnChange(event){
         let doctorId = parseInt(event.target.value);
         setSelectedDoctor(doctors.find(doctor => doctor.id === doctorId));
         setSchedule(undefined);
+        if (!!errors['doctor'])
+            setErrors({
+                ...errors,
+                ['doctor']: null
+            })
     }
 
     if(redirect === true){
@@ -163,8 +174,7 @@ const ScheduleForm = ({t, logout}) =>{
                         <Col>
                             <Form.Group>
                                 <Form.Label>{t("chooseSpecialization")}:</Form.Label>
-                                <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization}
-                                        onChange={handleSpecializationOnChange}>
+                                <Form.Select id="selectedSpecialization" isInvalid={!!errors.specialization} onChange={handleSpecializationOnChange}>
                                     <option onClick={clearSpecialization}>{t("chooseSpecialization")}</option>
                                     {specializations.map((spec) => (
                                         <option value={spec.id}>{spec.name}</option>
@@ -178,8 +188,7 @@ const ScheduleForm = ({t, logout}) =>{
                         <Col>
                             <Form.Group>
                                 <Form.Label>{t("chooseDoctor")}:</Form.Label>
-                                <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref}
-                                onChange={handleDoctorOnChange}>
+                                <Form.Select id="selectedDoctor" isInvalid={!!errors.doctor} ref={ref} onChange={handleDoctorOnChange}>
                                     <option onClick={clearDoctor}>{t("chooseDoctor")}</option>
                                     {doctors.map((doc) => (
                                         <option value={doc.id}>{doc.firstName + ' ' + doc.lastName}</option>
