@@ -308,6 +308,8 @@ const NewAppointmentForm = ({getAppointments, t, logout}) =>{
     }
 
     function handleServiceChange(event){
+        setSelectedDoctor(undefined);
+        setDoctors([]);
         let serviceId = parseInt(event.target.value);
         setService(services.find(ser => ser.id === serviceId));
         if (!!errors['serviceMess'])
