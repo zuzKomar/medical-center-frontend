@@ -125,21 +125,25 @@ const DoctorCheckUpList = ({t, logout}) => {
                 <div className="listHeader">
                     <h2>{t("checkUpsToRealize")}</h2>
                 </div>
-                <div className="itemsNumber">
-                    <p>{t("elementsNumber")}&nbsp;</p>
-                    <select onChange={handlePageSizeChange} value={pageSize}>
-                        {pageSizes.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {checkUps.map(checkUp => (
-                    <DoctorCheckUp checkup={checkUp} setSelectedCheckup={setSelectedCheckup} t={t}/>
-                ))}
-                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
-                            shape="rounded" onChange={handlePageChange}/>
+                {checkUps.length > 0 ?
+                <>
+                    <div className="itemsNumber">
+                        <p>{t("elementsNumber")}&nbsp;</p>
+                        <select onChange={handlePageSizeChange} value={pageSize}>
+                            {pageSizes.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {checkUps.map(checkUp => (
+                        <DoctorCheckUp checkup={checkUp} setSelectedCheckup={setSelectedCheckup} t={t}/>
+                    ))}
+                    <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                                shape="rounded" onChange={handlePageChange}/>
+                </> : t("noCheckUps")
+                }
             </div>
         )
     }

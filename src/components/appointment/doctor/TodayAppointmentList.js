@@ -107,23 +107,27 @@ const TodayAppointmentList = ({t, logout}) => {
                 <div className="listHeader">
                     <h2>{t("todayAppointments")}</h2>
                 </div>
-                <div className="itemsNumber">
-                    <p>{t("elementsNumber")}&nbsp;</p>
-                    <select onChange={handlePageSizeChange} value={pageSize}>
-                        {pageSizes.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
+                {appointments.length > 0 ?
+                <>
+                    <div className="itemsNumber">
+                        <p>{t("elementsNumber")}&nbsp;</p>
+                        <select onChange={handlePageSizeChange} value={pageSize}>
+                            {pageSizes.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="appointmentList">
+                        {appointments.map(appointment => (
+                            <DoctorAppointment key={appointment.id} app={appointment} t={t}/>
                         ))}
-                    </select>
-                </div>
-                <div className="appointmentList">
-                    {appointments.map(appointment => (
-                        <DoctorAppointment key={appointment.id} app={appointment} t={t}/>
-                    ))}
-                </div>
-                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
-                            shape="rounded" onChange={handlePageChange}/>
+                    </div>
+                    <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                                shape="rounded" onChange={handlePageChange}/>
+                </> : t("noAppointmentsToShow")
+                }
             </div>
         )
     }
