@@ -224,6 +224,7 @@ const AppointmentList = ({t, logout}) =>{
                             </Form.Group>
                         </Form>
                     </div>
+                    {filteredAppointments.length > 0 &&
                     <div className="itemsNumber" style={{height: '4%'}}>
                         <p>{t("elementsNumber")}&nbsp;</p>
                         <select onChange={handlePageSizeChange} value={pageSize}>
@@ -234,16 +235,21 @@ const AppointmentList = ({t, logout}) =>{
                             ))}
                         </select>
                     </div>
+                    }
                 </div>
+                {filteredAppointments.length > 0 ?
+                        <>
+                            <div className="appointmentList">
+                                {filteredAppointments.map((appointment) => (
+                                    <Appointment key={appointment.id} appointment={appointment}
+                                                 setCancelledAppointment={setCancelledAppointment} t={t} logout={logout}/>
+                                ))}
+                            </div>
 
-                <div className="appointmentList">
-                    {filteredAppointments.map((appointment) => (
-                        <Appointment key={appointment.id} appointment={appointment}
-                                     setCancelledAppointment={setCancelledAppointment} t={t} logout={logout}/>
-                    ))}
-                </div>
-                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
-                            shape="rounded" onChange={handlePageChange}/>
+                            <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                                        shape="rounded" onChange={handlePageChange}/>
+                        </> : t("noAppointmentsToShow")
+                }
             </div>
         )
     }

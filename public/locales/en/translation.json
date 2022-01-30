@@ -62,6 +62,7 @@
   "eReceiptIssued": "E-receipt was issued",
   "noReceipts": "No receipts",
   "noRecommendations": "No recommendations",
+  "noReferrals" : "No referrals",
   "newAppointment": "New Appointment",
   "availableAppointments": "Available Appointments",
   "noAppointments": "There are no available visits that meet the selected criteria",

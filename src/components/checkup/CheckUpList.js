@@ -151,21 +151,27 @@ const CheckUpList = ({t, logout}) =>{
                 {(appointment !== undefined) &&
                 <AppointmentDetailsButtonPanel appointment={appointment} t={t}/>
                 }
-                <div className="itemsNumber">
-                    <p>{t("elementsNumber")}&nbsp;</p>
-                    <select onChange={handlePageSizeChange} value={pageSize}>
-                        {pageSizes.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
+                {checkups.length > 0 &&
+                    <div className="itemsNumber">
+                        <p>{t("elementsNumber")}&nbsp;</p>
+                        <select onChange={handlePageSizeChange} value={pageSize}>
+                            {pageSizes.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                }
+                {checkups.length > 0 ?
+                    <>
+                        {checkups.map((checkup) => (
+                            <CheckUp key={checkup.id} checkup={checkup} t={t} logout={logout}/>
                         ))}
-                    </select>
-                </div>
-                {checkups.map((checkup) => (
-                    <CheckUp key={checkup.id} checkup={checkup} t={t} logout={logout}/>
-                ))}
-                <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
-                            shape="rounded" onChange={handlePageChange}/>
+                        <Pagination className="my-3" count={count} page={page} siblingCount={1} boundaryCount={1}
+                                    shape="rounded" onChange={handlePageChange}/>
+                    </> : t("noCheckUps")
+                }
             </div>
         )
     }

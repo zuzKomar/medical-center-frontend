@@ -58,7 +58,9 @@ const PrescriptionList = ({t, logout}) =>{
                     <h2>{t("yourPrescriptions")}</h2>
                 </div>
                 <div className="appointmentList">
-                    <PrescriptionListTable prescriptionData={prescriptions} t={t}/>
+                    {prescriptions.length > 0 ?
+                        <PrescriptionListTable prescriptionData={prescriptions} t={t}/> : t("noPrescriptions")
+                    }
                 </div>
             </div>
         )

@@ -47,13 +47,10 @@ const Appointment = ({appointment, setCancelledAppointment, t, logout}) =>{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${userToken}`
-            },
+            }
         }).then((res)=>{
-            res.json()
             if(res.status === 403){
                 setRedirect(true);
-            }else{
-                window.alert(t("confirmedAppointmentInfo"))
             }
         }).catch((err)=>console.log(err));
     }
@@ -69,14 +66,12 @@ const Appointment = ({appointment, setCancelledAppointment, t, logout}) =>{
             headers:{
                 'Content-Type': 'application/json',
                 'Authorization' : `Bearer ${userToken}`
-            },
+            }
         }).then((res)=>{
-            res.json()
             if(res.status === 403){
                 setRedirect(true);
-            }else{
-                window.alert(t("canceledAppointmentInfo"))
             }
+            window.alert(t("canceledAppointmentInfo"))
         }).catch((err)=>console.log(err));
     }
 
