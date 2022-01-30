@@ -57,18 +57,12 @@ const NewAppointment = ({t, logout}) =>{
         }
     }
 
-    function filterAppointmentsByHour(app){
-        let time = new Date()
-        return new Date(app.date) > time;
-    }
-
     useEffect(()=>{
         if(receivedService !== undefined){
             const getAvailableAppointments = async () =>{
                 const apps = await fetchAppointments();
-                const filteredApps = apps.appointments.filter(filterAppointmentsByHour);
                 setCount(apps.totalPages);
-                setAppointments(filteredApps);
+                setAppointments(apps.appointments);
             }
 
             getAvailableAppointments()
@@ -83,11 +77,11 @@ const NewAppointment = ({t, logout}) =>{
 
     const fetchAppointments = async ()=>{
         const params = getRequestParams(page, pageSize);
-
+        let time = new Date().toString().slice(16,24);
         let res;
         if(doctor!==null){
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
@@ -95,21 +89,21 @@ const NewAppointment = ({t, logout}) =>{
                 }
 
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
                     setRedirect(true);
                 }
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
                     setRedirect(true);
                 }
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&doctorId=${doctor.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
@@ -118,7 +112,7 @@ const NewAppointment = ({t, logout}) =>{
             }
         }else{
             if(params.page !== null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
@@ -126,7 +120,7 @@ const NewAppointment = ({t, logout}) =>{
                 }
 
             }else if(params.page !== null && params.size === null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&page=${params.page}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
@@ -134,7 +128,7 @@ const NewAppointment = ({t, logout}) =>{
                 }
 
             }else if(params.page === null && params.size !== null){
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}&size=${params.size}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
@@ -142,7 +136,7 @@ const NewAppointment = ({t, logout}) =>{
                 }
 
             }else{
-                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T23:59:00&language=${language}`,{
+                res = await fetch(`${baseUrl}/appointments?medicalServiceId=${receivedService.id}&dateFrom=${dateFrom}T${time}&dateTo=${dateTo}T23:59:00&language=${language}`,{
                     headers: {'Authorization' : `Bearer ${userToken}`}
                 });
                 if(res.status === 403){
