@@ -93,7 +93,7 @@ const FilesTable = ({t, logout}) => {
                                 <td>{file.uploadDate}</td>
                                 <td>
                                     <Button variant='primary'
-                                            onClick={e => handleFileDownload(e, file)}>{t("Download")}</Button>
+                                            onClick={e => handleFileDownload(e, file)}>{t("download")}</Button>
                                 </td>
                             </tr>
                         )}
